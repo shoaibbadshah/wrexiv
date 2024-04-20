@@ -16,12 +16,12 @@ import type { UserCredential, User } from "firebase/auth";
 import { setCookie } from "nookies";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDR_FmO4dmlGPxS9Bzrlx4l3rThnGxyeE0",
-  authDomain: "globaldeel.firebaseapp.com",
-  projectId: "globaldeel",
-  storageBucket: "globaldeel.appspot.com",
-  messagingSenderId: "678746368141",
-  appId: "1:678746368141:web:ac35198697b4a08b0a1ac4",
+  apiKey: "AIzaSyBPVK6s9KDNktnUe-UPyQT4H3FPYkRs8c4",
+  authDomain: "globaltalentdb.firebaseapp.com",
+  projectId: "globaltalentdb",
+  storageBucket: "globaltalentdb.appspot.com",
+  messagingSenderId: "868079795963",
+  appId: "1:868079795963:web:7359915be67893d10c7a5e",
 };
 
 export const getCurrentUser = (): Promise<UserWithAccessToken | null> =>

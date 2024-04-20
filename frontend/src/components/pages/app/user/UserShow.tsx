@@ -3,7 +3,6 @@
 import UserSettingsMenu from "@/components/organisms/UserSettingsMenu";
 import useAuthUser from "@/hooks/useAuthUser";
 import useCurrentTenantUser from "@/hooks/useCurrentTenant";
-import useUser from "@/hooks/useUser";
 
 const UserShow = () => {
   const { user } = useAuthUser();

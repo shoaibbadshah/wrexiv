@@ -41,14 +41,17 @@ export default function ApplicationLayout({ children }: Props) {
           <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-8">
             <div className="flex items-center">
               <Link href="/app">
-                <Image
+                <h3 className="text-xl font-bold text-gray-900">
+                  GlobalTalentDB
+                </h3>
+                {/* <Image
                   src="/logo.png"
                   alt="Logo"
                   width={140}
                   height={40}
                   className="max-h-10 lg:max-h-none"
                   style={{ objectFit: "contain" }}
-                />
+                /> */}
               </Link>
             </div>
             <div className="hidden sm:flex items-center space-x-2 grow ">

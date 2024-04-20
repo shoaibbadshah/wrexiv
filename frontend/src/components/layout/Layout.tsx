@@ -4,7 +4,6 @@ import { ReactNode, useEffect } from "react";
 import ReduxProvider from "@/providers/ReduxProvider";
 import { usePathname, useRouter } from "next/navigation";
 import LandingPageLayout from "./LandingPageLayout";
-import PortfolioLayout from "./PortfolioLayout";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "@/lib/firebase";
 import { useDispatch } from "react-redux";
@@ -13,12 +12,10 @@ import useAuthUser from "@/hooks/useAuthUser";
 import BlogLayout from "./BlogLayout";
 import ApplicationLayout from "./ApplicationLayout";
 import ApolloClientProvider from "@/providers/ApolloClientProvider";
-import MuiThemeProvider from "@/providers/MuiThemeProvider";
 import Snackbar from "../organisms/Snackbar";
 import useFlash from "@/hooks/useFlash";
 import { FIRST_APP_PAGE } from "@/constants/urls";
 import TranslationProvider from "@/providers/TranslationProvider";
-import FinderLayout from "./FinderLayout";
 import AdminLayout from "./AdminLayout";
 
 const AUTH_PAGE_PATHS = ["/sign_in", "/sign_up", "/app/verifying"];
@@ -70,20 +67,12 @@ const LayoutRouter = ({ children }: { children: ReactNode }) => {
     return <BlogLayout>{children}</BlogLayout>;
   }
 
-  if (firstPath === "finder") {
-    return <FinderLayout>{children}</FinderLayout>;
-  }
-
   if (firstPath === "app") {
     return <ApplicationLayout>{children}</ApplicationLayout>;
   }
 
   if (firstPath === "admin") {
     return <AdminLayout>{children}</AdminLayout>;
-  }
-
-  if (firstPath === "portfolio") {
-    return <PortfolioLayout>{children}</PortfolioLayout>;
   }
 
   return <LandingPageLayout>{children}</LandingPageLayout>;
@@ -94,10 +83,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <ReduxProvider>
       <ApolloClientProvider>
         <TranslationProvider>
-          <MuiThemeProvider>
-            <LayoutRouter>{children}</LayoutRouter>
-            <Snackbar />
-          </MuiThemeProvider>
+          <LayoutRouter>{children}</LayoutRouter>
+          <Snackbar />
         </TranslationProvider>
       </ApolloClientProvider>
     </ReduxProvider>

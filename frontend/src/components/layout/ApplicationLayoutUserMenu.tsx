@@ -108,14 +108,7 @@ const ApplicationLayoutUserMenu = () => {
           <Menu.Item>
             <Link href="/">
               <button className="block px-3 py-1 text-sm leading-6 text-gray-900">
-                GlobalDeel Top
-              </button>
-            </Link>
-          </Menu.Item>
-          <Menu.Item>
-            <Link href="/finder">
-              <button className="block px-3 py-1 text-sm leading-6 text-gray-900">
-                GlobalDeel Finder
+                Top Page
               </button>
             </Link>
           </Menu.Item>

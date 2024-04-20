@@ -1,28 +1,12 @@
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
   {
-    key: "triple-three-interviews",
-    url: "/333interview",
-    label: "333 Interviews",
+    key: "globaldeel",
+    url: "globaldeel.com",
+    label: "GlobalDeel",
   },
-  {
-    key: "lead-generation",
-    url: "/lead_generation",
-    label: "Lead Generation",
-  },
-  /* {
-    key: "japan-community",
-    url: "/japan_community",
-    label: "Japan Community",
-  },
-   /*{
-    key: "content-marketing",
-    url: "/content_marketing",
-    label: "Content Marketing",
-  },*/
 ];
 
 export default function Header() {
@@ -34,8 +18,9 @@ export default function Header() {
       >
         <div className="flex lg:flex-1 space-x-8">
           <Link href="/">
+            <h3 className="text-white">GlobalTalentDB</h3>
             <span className="sr-only">Your Company</span>
-            <Image src="/logo.png" alt="logo" height="60" width="200" />
+            {/* <Image src="/logo.png" alt="logo" height="60" width="200" /> */}
           </Link>
           <div className="space-x-4 hidden lg:flex items-center">
             {navigation.map(item => {
