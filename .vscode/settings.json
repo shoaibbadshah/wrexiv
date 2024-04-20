@@ -1,0 +1,51 @@
+{
+  "editor.formatOnSave": true,
+  "[terraform]": {
+    "editor.defaultFormatter": "hashicorp.terraform",
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "npm.packageManager": "yarn",
+  "cSpell.words": [
+    "CRAWLBASE",
+    "Deel",
+    "Glamping",
+    "globaldeel",
+    "graphene",
+    "langchain",
+    "onwarn",
+    "openai",
+    "postback",
+    "serp",
+    "supabase"
+  ],
+  "python.analysis.extraPaths": ["./api"],
+  // "python.analysis.extraPaths": ["/usr/local/lib/python3.11/site-packages"],
+  // path の問題を解決できないため、一旦 Python の import チェックを向こうにする
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingImports": "none"
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "database": "app_db",
+      "username": "app_user",
+      "name": "globaldeel-db"
+    }
+  ]
+}

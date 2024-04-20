@@ -1,0 +1,12 @@
+overwrite: true
+schema: "http://localhost:8080/graphql"
+documents: ./src/graphql/queries/*.ts
+generates:
+  ./src/graphql/generated.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      scalars:
+        ISO8601DateTime: string

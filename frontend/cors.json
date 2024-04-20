@@ -1,0 +1,22 @@
+[
+  {
+    "origin": ["http://localhost:3000"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  },
+  {
+    "origin": ["https://www.anylangpitch.com"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  },
+  {
+    "origin": ["https://anylangpitch.com"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  },
+  {
+    "origin": ["https://firebasestorage.googleapis.com"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]

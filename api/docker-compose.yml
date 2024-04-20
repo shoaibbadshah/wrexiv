@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  api:
+    container_name: globaldeel-api
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./app:/usr/src/app
+    depends_on:
+      - db
+    env_file:
+      - .env
+    command: flask run --host=0.0.0.0 --port 8080
+
+  db:
+    container_name: globaldeel-db
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    environment:
+      - POSTGRES_USER=app_user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=app_db
+    volumes:
+      - globaldeel-db-store:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  globaldeel-db-store:

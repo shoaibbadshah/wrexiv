@@ -1,0 +1,1 @@
+export const FINDER_ARTICLES_TOP_BLOG_POSTS_LIMIT = 3;

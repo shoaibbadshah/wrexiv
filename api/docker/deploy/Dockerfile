@@ -1,0 +1,18 @@
+FROM python:3.11-slim
+
+WORKDIR /usr/src/app
+ENV FLASK_APP=app FLASK_RUN_HOST=0.0.0.0 FLASK_DEBUG=1
+
+COPY /app/requirements.txt ./
+COPY /app ./
+
+RUN pip install -r requirements.txt
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+COPY entrypoint.sh ./
+RUN chmod +x entrypoint.sh
+
+CMD ["./entrypoint.sh"]
+
