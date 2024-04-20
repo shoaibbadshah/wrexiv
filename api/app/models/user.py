@@ -1,6 +1,6 @@
-from sqlalchemy_utils import UUIDType
+from sqlalchemy_utils import UUIDType, ChoiceType
 import uuid
-from sqlalchemy import String, Column, ForeignKey
+from sqlalchemy import String, Column
 from sqlalchemy.orm import relationship
 from app import db
 from sqlalchemy.sql import func
@@ -8,6 +8,8 @@ from sqlalchemy.sql import func
 
 class User(db.Model):
     __tablename__ = "users"
+
+    ROLE_TYPES = [("agency_user", "Agency User")]
 
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
 
@@ -22,8 +24,12 @@ class User(db.Model):
         nullable=False,
     )
 
-    tenant_users = relationship("TenantUser", back_populates="user", lazy="dynamic")
-    admin_user = relationship("AdminUser", back_populates="user", uselist=False)
+    role_id = Column(UUIDType(binary=False), nullable=True)
+    role_type = Column(ChoiceType(ROLE_TYPES), nullable=True)
+
+    agency_user = relationship("AgencyUser", back_populates="user", uselist=False)
+
+    __mapper_args__ = {"polymorphic_identity": "user", "polymorphic_on": role_type}
 
     def __repr__(self):
         return f"<User {self.email}>"
