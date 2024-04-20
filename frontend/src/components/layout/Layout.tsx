@@ -17,6 +17,7 @@ import useFlash from "@/hooks/useFlash";
 import { FIRST_APP_PAGE } from "@/constants/urls";
 import TranslationProvider from "@/providers/TranslationProvider";
 import AdminLayout from "./AdminLayout";
+import MuiThemeProvider from "@/providers/MuiThemeProvider";
 
 const AUTH_PAGE_PATHS = ["/sign_in", "/sign_up", "/app/verifying"];
 const APP_PAGE_PATHS = ["app"];
@@ -82,10 +83,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <ReduxProvider>
       <ApolloClientProvider>
-        <TranslationProvider>
-          <LayoutRouter>{children}</LayoutRouter>
-          <Snackbar />
-        </TranslationProvider>
+        <MuiThemeProvider>
+          <TranslationProvider>
+            <LayoutRouter>{children}</LayoutRouter>
+            <Snackbar />
+          </TranslationProvider>
+        </MuiThemeProvider>
       </ApolloClientProvider>
     </ReduxProvider>
   );

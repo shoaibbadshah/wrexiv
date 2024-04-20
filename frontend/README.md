@@ -13,6 +13,10 @@ gsutil cors set cors.json gs://dreammvp.appspot.com
 App router よくわからないので、一旦 components の中で。
 page 固有のものを /pages に入れ、atoms, molecules, organisms は共通
 
+## Mui can be used only for
+- DataGrid
+- Snackbar
+
 
 # how to run
 this project uses NextJS 14 with App Router
