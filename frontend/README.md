@@ -1,4 +1,5 @@
-# Globaldeel Frontend
+# GlobalTalentDB Frontend
+
 ## Contentful codegen
 
 Notion のメモに書いてあるコマンドを一旦は直接実行する
@@ -33,5 +34,3 @@ yarn dev
 
 it should run on your `localhost:3000`
 
-# Documentation
-to help you understand the structure of this code faster, you can check this [notion](https://www.notion.so/globaldeel/GlobalDeel-Structure-6074c31e35c544ba9e51a0b992cf801a?pvs=4).

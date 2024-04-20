@@ -8,15 +8,15 @@ def setup_cors(app):
             r"/graphql/*": {
                 "origins": [
                     "http://localhost:3000",
-                    "https://globaldeel.com",
-                    "https://www.globaldeel.com",
+                    "https://globaltalentdb.com",
+                    "https://www.globaltalentdb.com",
                 ]
             },
             r"/chain/*": {
                 "origins": [
                     "http://localhost:3000",
-                    "https://globaldeel.com",
-                    "https://www.globaldeel.com",
+                    "https://globaltalentdb.com",
+                    "https://www.globaltalentdb.com",
                 ]
             },
         },

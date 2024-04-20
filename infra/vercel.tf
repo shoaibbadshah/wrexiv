@@ -21,15 +21,15 @@ variable "mui_pro_license_key" {}
 variable "stripe_publishable_key" {}
 variable "stripe_secret_key" {}
 
-resource "vercel_project" "globaldeel" {
-  name            = "globaldeel"
+resource "vercel_project" "globaltalentdb" {
+  name            = "globaltalentdb"
   framework       = "nextjs"
   build_command   = "yarn build"
   team_id         = "team_cUUJOF5e58em9YTg9UnbzH1n"
   install_command = "yarn"
   git_repository = {
     type              = "github"
-    repo              = "wrexiv/globaldeel"
+    repo              = "wrexiv/globaltalentdb"
     branch            = "main"
     production_branch = "main"
   }

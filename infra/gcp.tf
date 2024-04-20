@@ -1,6 +1,6 @@
 provider "google" {
   credentials = file("./credentials.json")
-  project     = "globaldeel"
+  project     = "globaltalentdb"
   region      = "asia-northeast1"
   zone        = "asia-northeast1-a"
 }
@@ -21,9 +21,9 @@ variable "crawlbase_api_key" {}
 variable "prospeo_api_key" {}
 variable "sendgrid_api_key" {}
 
-# terraform import google_cloud_run_v2_service.api globaldeel/asia-northeast1/globaldeel-api
+# terraform import google_cloud_run_v2_service.api globaltalentdb/asia-northeast1/globaltalentdb-api
 resource "google_cloud_run_v2_service" "api" {
-  name           = "globaldeel-api"
+  name           = "globaltalentdb-api"
   location       = "asia-northeast1"
   ingress        = "INGRESS_TRAFFIC_ALL"
   client         = "gcloud"
@@ -34,11 +34,11 @@ resource "google_cloud_run_v2_service" "api" {
       name = "cloudsql"
 
       cloud_sql_instance {
-        instances = ["globaldeel:us-central1:globaldeel-db"]
+        instances = ["globaltalentdb:us-central1:globaltalentdb-db"]
       }
     }
     containers {
-      image = "asia-northeast1-docker.pkg.dev/globaldeel/globaldeel/globaldeel-api"
+      image = "asia-northeast1-docker.pkg.dev/globaltalentdb/globaltalentdb/globaltalentdb-api"
       volume_mounts {
         mount_path = "/cloudsql"
         name       = "cloudsql"
@@ -70,11 +70,11 @@ resource "google_cloud_run_v2_service" "api" {
       }
       env {
         name  = "INSTANCE_CONNECTION_NAME"
-        value = "globaldeel:us-central1:globaldeel-db"
+        value = "globaltalentdb:us-central1:globaltalentdb-db"
       }
       env {
         name  = "INSTANCE_UNIX_SOCKET"
-        value = "/cloudsql/globaldeel:us-central1:globaldeel-db"
+        value = "/cloudsql/globaltalentdb:us-central1:globaltalentdb-db"
       }
       env {
         name  = "APP_ENV"

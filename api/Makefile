@@ -1,10 +1,10 @@
-PROJECT_ID = globaldeel
+PROJECT_ID = globaltalentdb
 REGION = asia-northeast1
 DOCKER_PKG_PATH = $(REGION)-docker.pkg.dev
 IMAGE_NAME = $(DOCKER_PKG_PATH)/$(PROJECT_ID)/$(PROJECT_ID)/$(PROJECT_ID)-api
 DOCKER_FILE_PATH = ./docker/deploy/Dockerfile
-SERVICE_NAME = globaldeel-api
-DB_VOLUME_NAME = globaldeel-db
+SERVICE_NAME = globaltalentdb-api
+DB_VOLUME_NAME = globaltalentdb-db
 DB_SERVICE_NAME = db
 DB_USER = app_user
 DB_HOST = db
@@ -40,7 +40,7 @@ open-db:
 	docker-compose run --rm $(DB_SERVICE_NAME) psql -U $(DB_USER) -h $(DB_HOST) -d $(DB_NAME)
 
 open-production-db:
-	gcloud sql connect globaldeel-db --user=postgres
+	gcloud sql connect globaltalentdb-db --user=postgres
 
 show-migration-revisions:
 	docker-compose run --rm $(DB_SERVICE_NAME) alembic -c migrations/alembic.ini history

@@ -22,7 +22,6 @@
     "CRAWLBASE",
     "Deel",
     "Glamping",
-    "globaldeel",
     "graphene",
     "langchain",
     "onwarn",
@@ -45,7 +44,7 @@
       "driver": "PostgreSQL",
       "database": "app_db",
       "username": "app_user",
-      "name": "globaldeel-db"
+      "name": "globaltalentdb-db"
     }
   ]
 }

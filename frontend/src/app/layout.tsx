@@ -9,7 +9,7 @@ import LoadingScreen from "@/components/organisms/LoadingScreen";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GlobalDeel ",
+  title: "GlobalTalentDB",
   description:
     "Unite for Global Success: Partner with Local Specialists and Ambitious Allies Abroad",
 };
