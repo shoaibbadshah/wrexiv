@@ -4,25 +4,25 @@ docker-compose run db bash
 psql -U app_user -h db -d app_db
 
 
-## 作成
+## DB tables
 
 docker-compose run api bash
 flask db migrate -m "Create tenant table"
 flask db upgrade
 flask db downgrade
 
-なぜか以下を migration ファイルに置かないとエラーになる
+### Add this to migration files
 import sqlalchemy_utils
 
-## vscode の postgreSQL 接続
+## vscode postgreSQL
 psql -h localhost -p 5432 -U app_user -d app_db
 
-### うまくいかない場合
+### might need these
 ps aux | grep postgres
 brew services list
 launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql@14.plist
 
-## Firebase の認証で Token used too early が出るとき
+## When you get the Token used too early error on Firebase Authentication
 ```
 sntp ntp.nict.jp
 sudo rm /var/db/timed/com.apple.timed.plist
@@ -33,9 +33,8 @@ sudo sntp -sS ntp.nict.jp
 ```
 
 
-## その他
+## Others
 
 - enum はハマったので一旦 DB で使わない
 - repositories も一旦使わない
 - services も一旦使わない
-
