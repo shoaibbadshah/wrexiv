@@ -11,25 +11,17 @@ import snackbarReducer, {
 import mobileMenuReducer, {
   initialState as mobileMenuState,
 } from "./mobileMenuSlice";
-import contentGenerationReducer, {
-  initialState as contentGenerationState,
-} from "./contentGenerationSlice";
-import leadsReducer, { initialState as leadsState } from "./leadsSlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   snackbar: snackbarReducer,
   mobileMenu: mobileMenuReducer,
-  contentGeneration: contentGenerationReducer,
-  leads: leadsReducer,
 });
 
 const preloadedState = () => ({
   auth: authState,
   snackbar: snackbarState,
   mobileMenu: mobileMenuState,
-  contentGeneration: contentGenerationState,
-  leads: leadsState,
 });
 
 /**
@@ -50,6 +42,6 @@ type AppDispatch = typeof store.dispatch;
 export const useDispatch = () => useDispatchBase<AppDispatch>();
 
 // And utilize `useSelector`
-export const useSelector = <TSelected = unknown>(
+export const useSelector = <TSelected = unknown,>(
   selector: (state: RootState) => TSelected
 ): TSelected => useSelectorBase<RootState, TSelected>(selector);
