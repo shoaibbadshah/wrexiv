@@ -1,4 +1,4 @@
-from app.graphql.types.agency_type import AgencyType
+from app.graph.types.agency_type import AgencyType
 from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
 import graphene

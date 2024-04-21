@@ -16,3 +16,9 @@ requests
 google-cloud-translate
 sendgrid
 sentry-sdk[flask]
+pytest
+pytest-mock
+pytest-cov
+pytest-flask
+pytest-flask-sqlalchemy
+factory_boy

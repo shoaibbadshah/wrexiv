@@ -2,7 +2,7 @@ from app.config.sentry import setup_sentry
 from app.infra.database import init_app
 from flask import Flask
 from flask_graphql import GraphQLView
-from app.graphql.schema import schema
+from app.graph.schema import schema
 from app.config.auth import setup_auth
 from app.config.cors import setup_cors
 from app.config.logging import setup_logging
