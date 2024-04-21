@@ -19,6 +19,7 @@ class Agency(db.Model):
     )
 
     agency_users = relationship("AgencyUser", back_populates="agency")
+    talent_profiles = relationship("TalentProfile", back_populates="agency")
 
     def __repr__(self):
         return f"<Agency {self.name}>"

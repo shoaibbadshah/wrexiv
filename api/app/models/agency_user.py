@@ -24,7 +24,7 @@ class AgencyUser(db.Model):
     agency = relationship("Agency", back_populates="agency_users")
 
     user_id = Column(UUIDType(binary=False), ForeignKey("users.id"), nullable=False)
-    user = relationship("User", back_populates="agency_users")
+    user = relationship("User", back_populates="agency_user", uselist=False)
 
     __mapper_args__ = {"polymorphic_identity": "agency_user"}
 

@@ -11,6 +11,7 @@ import { navigation } from "./navigation";
 import { usePathname, useRouter } from "next/navigation";
 import useCurrentTenantUser from "@/hooks/useCurrentTenant";
 import { FIRST_APP_PAGE } from "@/constants/urls";
+import { useTalentProfilesQuery } from "@/graphql/generated";
 
 type Props = {
   children: ReactNode;
@@ -21,15 +22,17 @@ const INITIALIZE_PAGE = "/app/tenant/new";
 export default function ApplicationLayout({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-  const { isInitialized, loading } = useCurrentTenantUser();
+  const { data, loading } = useTalentProfilesQuery({
+    fetchPolicy: "network-only",
+  });
 
-  if (!loading && !isInitialized && pathname !== INITIALIZE_PAGE) {
+  /* if (!loading && !isInitialized && pathname !== INITIALIZE_PAGE) {
     router.replace(INITIALIZE_PAGE);
   }
 
   if (isInitialized && pathname === INITIALIZE_PAGE) {
     router.replace(FIRST_APP_PAGE);
-  }
+  } */
 
   return (
     <div className="flex h-[100vh] max-h-[100vh] overflow-hidden">

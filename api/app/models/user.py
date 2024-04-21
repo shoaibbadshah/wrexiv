@@ -29,7 +29,5 @@ class User(db.Model):
 
     agency_user = relationship("AgencyUser", back_populates="user", uselist=False)
 
-    __mapper_args__ = {"polymorphic_identity": "user", "polymorphic_on": role_type}
-
     def __repr__(self):
         return f"<User {self.email}>"

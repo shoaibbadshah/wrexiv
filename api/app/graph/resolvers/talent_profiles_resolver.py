@@ -7,7 +7,7 @@ from graphql import GraphQLError
 class TalentProfilesResolver:
     talent_profiles = graphene.List(TalentProfileType)
 
-    def resolve_tenant_profiles(self, info):
+    def resolve_talent_profiles(self, info):
         if g.get("current_agency") is None:
             return GraphQLError("Agency not found")
 
