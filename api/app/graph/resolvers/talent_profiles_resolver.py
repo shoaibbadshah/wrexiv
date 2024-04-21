@@ -9,6 +9,6 @@ class TalentProfilesResolver:
 
     def resolve_talent_profiles(self, info):
         if g.get("current_agency") is None:
-            return GraphQLError("Agency not found")
+            raise GraphQLError("Agency not found")
 
         return g.current_agency.talent_profiles

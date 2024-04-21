@@ -1,6 +1,6 @@
 import factory
 from datetime import datetime
-from models.talent_profile import TalentProfile
+from app.models.talent_profile import TalentProfile
 from app import db
 import uuid
 from .agency_factory import AgencyFactory

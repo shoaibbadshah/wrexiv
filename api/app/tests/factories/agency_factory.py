@@ -1,6 +1,6 @@
 import factory
 from datetime import datetime
-from models.agency import Agency
+from app.models.agency import Agency
 from app import db
 import uuid
 
