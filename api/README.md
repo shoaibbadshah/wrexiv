@@ -32,9 +32,19 @@ sudo kill </usr/libexec/timedのPID>
 sudo sntp -sS ntp.nict.jp
 ```
 
+## Test
+
+```
+docker-compose run api bash
+python -m pytest
+python -m pytest -s
+python -m pytest tests/services/test_facilities_service.py -vv
+python -m pytest tests/services/test_facilities_service.py::test_specific_function
+```
 
 ## Others
 
 - enum はハマったので一旦 DB で使わない
 - repositories も一旦使わない
 - services も一旦使わない
+
