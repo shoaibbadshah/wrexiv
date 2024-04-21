@@ -40,14 +40,31 @@ export type CreateAgencyUserInput = {
   name: Scalars['String'];
 };
 
+export type CreateTalentProfile = {
+  __typename?: 'CreateTalentProfile';
+  talentProfile?: Maybe<TalentProfileType>;
+};
+
+export type CreateTalentProfileInput = {
+  avatar?: InputMaybe<Scalars['String']>;
+  bio?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createAgency?: Maybe<CreateAgency>;
+  createTalentProfile?: Maybe<CreateTalentProfile>;
 };
 
 
 export type MutationCreateAgencyArgs = {
   input: CreateAgencyInput;
+};
+
+
+export type MutationCreateTalentProfileArgs = {
+  input: CreateTalentProfileInput;
 };
 
 export type Query = {
@@ -78,6 +95,13 @@ export type TalentProfilesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type TalentProfilesQuery = { __typename?: 'Query', talentProfiles?: Array<{ __typename?: 'TalentProfileType', id: any, name: string, createdAt: any, updatedAt: any } | null> | null };
+
+export type CreateTalentProfileMutationVariables = Exact<{
+  input: CreateTalentProfileInput;
+}>;
+
+
+export type CreateTalentProfileMutation = { __typename?: 'Mutation', createTalentProfile?: { __typename?: 'CreateTalentProfile', talentProfile?: { __typename?: 'TalentProfileType', id: any, name: string, createdAt: any, updatedAt: any } | null } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -122,6 +146,44 @@ export function useTalentProfilesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type TalentProfilesQueryHookResult = ReturnType<typeof useTalentProfilesQuery>;
 export type TalentProfilesLazyQueryHookResult = ReturnType<typeof useTalentProfilesLazyQuery>;
 export type TalentProfilesQueryResult = Apollo.QueryResult<TalentProfilesQuery, TalentProfilesQueryVariables>;
+export const CreateTalentProfileDocument = gql`
+    mutation CreateTalentProfile($input: CreateTalentProfileInput!) {
+  createTalentProfile(input: $input) {
+    talentProfile {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export type CreateTalentProfileMutationFn = Apollo.MutationFunction<CreateTalentProfileMutation, CreateTalentProfileMutationVariables>;
+
+/**
+ * __useCreateTalentProfileMutation__
+ *
+ * To run a mutation, you first call `useCreateTalentProfileMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTalentProfileMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTalentProfileMutation, { data, loading, error }] = useCreateTalentProfileMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateTalentProfileMutation(baseOptions?: Apollo.MutationHookOptions<CreateTalentProfileMutation, CreateTalentProfileMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTalentProfileMutation, CreateTalentProfileMutationVariables>(CreateTalentProfileDocument, options);
+      }
+export type CreateTalentProfileMutationHookResult = ReturnType<typeof useCreateTalentProfileMutation>;
+export type CreateTalentProfileMutationResult = Apollo.MutationResult<CreateTalentProfileMutation>;
+export type CreateTalentProfileMutationOptions = Apollo.BaseMutationOptions<CreateTalentProfileMutation, CreateTalentProfileMutationVariables>;
 export const MeDocument = gql`
     query Me {
   user {

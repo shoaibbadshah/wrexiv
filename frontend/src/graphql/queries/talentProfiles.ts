@@ -11,4 +11,17 @@ const TALENT_PROFILES = gql`
   }
 `;
 
-export { TALENT_PROFILES };
+const CREATE_TALENT_PROFILE = gql`
+  mutation CreateTalentProfile($input: CreateTalentProfileInput!) {
+    createTalentProfile(input: $input) {
+      talentProfile {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+export { TALENT_PROFILES, CREATE_TALENT_PROFILE };
