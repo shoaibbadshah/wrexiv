@@ -2,7 +2,7 @@ from app.graph.types.agency_type import AgencyType
 from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
 import graphene
-from app.infra.database import db
+from app import db
 from sqlalchemy.exc import SQLAlchemyError
 from flask import g
 

@@ -44,3 +44,6 @@ open-production-db:
 
 show-migration-revisions:
 	docker-compose run --rm $(DB_SERVICE_NAME) alembic -c migrations/alembic.ini history
+
+run-test:
+	docker-compose run api bash -c "export APP_ENV=testing && python -m pytest"
