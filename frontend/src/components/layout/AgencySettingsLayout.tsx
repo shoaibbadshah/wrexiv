@@ -10,7 +10,7 @@ const AgencySettingsLayout = ({ children }: PropsType) => {
   return (
     <div className="flex">
       <AgencySettingsMenu />
-      <div>{children}</div>
+      {children}
     </div>
   );
 };
