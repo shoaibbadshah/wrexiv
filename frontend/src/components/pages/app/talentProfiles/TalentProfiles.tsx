@@ -5,6 +5,7 @@ import { useTalentProfilesQuery } from "@/graphql/generated";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import TalentDetails from "./TalentDetails";
+import TalentAddForm from "./TalentAddForm";
 import Talent from "./Types";
 
 const data: Talent[] = [
@@ -106,12 +107,17 @@ const TalentProfiles = () => {
 
   const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
+  const [openForm, setOpenForm] = useState<boolean>(false);
 
   const handleOpenDetails = (open: boolean, talent: Talent | null = null) => {
     console.log('open', open);
     console.log('talent', talent);
     setOpenDetails(open);
     setSelectedTalent(talent);
+  }
+
+  const handleOpenForm = (open: boolean) => {
+    setOpenForm(open);
   }
 
   return (
@@ -126,6 +132,7 @@ const TalentProfiles = () => {
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
           <button
             type="button"
+            onClick={() => handleOpenForm(true)}
             className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Add talent
@@ -184,6 +191,13 @@ const TalentProfiles = () => {
           open={openDetails}
           handleOpen={handleOpenDetails}
           talent={selectedTalent}
+        />
+      }
+
+      {openForm &&
+        <TalentAddForm
+          open={openForm}
+          handleOpen={handleOpenForm}
         />
       }
     </div>
