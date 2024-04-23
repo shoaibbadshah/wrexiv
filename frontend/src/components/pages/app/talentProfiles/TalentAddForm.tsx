@@ -34,7 +34,7 @@ export default function TalentAddForm({
             <Dialog as="div" className="relative z-10" onClose={() => handleOpen(false)}>
                 <div className="fixed inset-0" />
                 <div className="fixed inset-0 overflow-hidden">
-                    <div className="absolute inset-0 overflow-hidden">
+                    <div className="absolute inset-0 overflow-hidden bg-gray-500 bg-opacity-10 transition-opacity">
                         <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16 mt-16">
                             <Transition.Child
                                 as={Fragment}
