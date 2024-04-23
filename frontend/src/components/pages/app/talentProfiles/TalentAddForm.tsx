@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { PhotoIcon } from '@heroicons/react/24/solid'
+import { DocumentPlusIcon } from '@heroicons/react/24/solid'
 
 import Image from 'next/image'
 
@@ -18,19 +18,15 @@ export default function TalentAddForm({
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(event.target.files || []);
-
-        // Add all new file names to the existing list
         const newFileNames = files.map((file) => file.name);
 
         setUploadedFileNames((prev) => [...prev, ...newFileNames]);
-
-        // Clear the file input to allow re-uploading
-        event.target.value = ''; // This allows multiple uploads with different files each time
+        event.target.value = '';
     };
 
-    const handleRemoveFile = (index: number) => {
-        // Remove the file at the specified index from the list
-        setUploadedFileNames((prev) => prev.filter((_, i) => i !== index));
+    const handleRemoveFile = (event: React.MouseEvent<HTMLButtonElement>, index: number) => {
+        event.preventDefault();
+        setUploadedFileNames((prev) => prev.filter((_, i) => i !== index))
     };
 
     return (
@@ -84,13 +80,13 @@ export default function TalentAddForm({
                                                 </label>
                                                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                                                     <div className="text-center">
-                                                        <PhotoIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
+                                                        <DocumentPlusIcon className="mx-auto h-12 w-12 text-gray-300" aria-hidden="true" />
                                                         <div className="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
                                                             <label
                                                                 htmlFor="file-upload"
                                                                 className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
                                                             >
-                                                                <span>Drag or drop files</span>
+                                                                <span>Upload files</span>
                                                                 <input
                                                                     id="file-upload"
                                                                     name="file-upload"
@@ -101,31 +97,32 @@ export default function TalentAddForm({
                                                                     onChange={handleFileChange}
                                                                 />
                                                             </label>
+                                                            <p className="pl-1">or drag and drop</p>
                                                         </div>
                                                         <p className="text-xs leading-5 text-gray-600">PDF, DOC, DOCX up to 10MB</p>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        {uploadedFileNames.length > 0 && (
-                                            <div className="mt-4 text-sm text-gray-600">
-                                                <strong>Uploaded files:</strong>
-                                                <ul>
-                                                    {uploadedFileNames.map((name, index) => (
-                                                        <li key={index} className="flex items-center justify-between">
-                                                            {name}
-                                                            <button
-                                                                className="text-red-600 hover:text-red-800" // Remove button with hover effect
-                                                                onClick={() => handleRemoveFile(index)} // Handle file removal
-                                                            >
-                                                                <XMarkIcon className="w-4 h-4" aria-hidden="true" />
-                                                            </button>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        )}
+                                            {uploadedFileNames.length > 0 && (
+                                                <div className="mt-4 text-sm text-gray-600 px-6">
+                                                    <strong className="block mb-2">Uploaded files:</strong>
+                                                    <ul className="space-y-2">
+                                                        {uploadedFileNames.map((name, index) => (
+                                                            <li key={index} className="flex items-center justify-between p-2 bg-gray-100 rounded">
+                                                                <span>{name}</span>
+                                                                <button
+                                                                    className="text-red-600 hover:text-red-800 transition"
+                                                                    onClick={(event) => handleRemoveFile(event, index)}
+                                                                >
+                                                                    <XMarkIcon className="w-4 h-4" aria-hidden="true" />
+                                                                </button>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </div>
 
                                         {/* Action buttons */}
                                         <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
@@ -138,8 +135,10 @@ export default function TalentAddForm({
                                                     Cancel
                                                 </button>
                                                 <button
-                                                    type="submit"
-                                                    className="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                                    type="button"
+                                                    disabled={uploadedFileNames.length === 0}
+                                                    className={`inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
+                                                        ${uploadedFileNames.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                                                 >
                                                     Create
                                                 </button>

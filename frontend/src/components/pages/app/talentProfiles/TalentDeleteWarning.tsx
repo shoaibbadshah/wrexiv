@@ -1,13 +1,13 @@
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 
-import Talent from './Types'
+import Talent from "@/types/TalentProfileType";
 
 type PropsType = {
     open: boolean;
     handleOpen: (open: boolean) => void;
-    handleDelete: (id: string) => void;
+    handleDelete: (talent: Talent) => void;
     talent: Talent;
 }
 
@@ -52,7 +52,7 @@ export default function TalentDeleteWarning({
                                     </div>
                                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                         <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                                            Deactivate account
+                                            Delete Talent
                                         </Dialog.Title>
                                         <div className="mt-2">
                                             <p className="text-sm text-gray-500">
@@ -65,7 +65,7 @@ export default function TalentDeleteWarning({
                                     <button
                                         type="button"
                                         className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                        onClick={() => handleDelete(talent.id)}
+                                        onClick={() => handleDelete(talent)}
                                     >
                                         Delete
                                     </button>
