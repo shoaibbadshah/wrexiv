@@ -1,6 +1,7 @@
 from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
 from app.models.user import User
+from app.graph.dataloader.agency_user_loader import AgencyUserLoader
 import firebase_admin
 from firebase_admin import credentials, auth as firebase_auth
 from flask import g, request, abort
@@ -14,7 +15,7 @@ firebase_admin.initialize_app(cred)
 
 def setup_auth(app):
     @app.before_request
-    def check_auth():
+    async def check_auth():
         if request.method == "OPTIONS":
             return
 
@@ -44,7 +45,8 @@ def setup_auth(app):
 
             g.current_user = user
 
-            agency_user = AgencyUser.query.filter_by(user_id=g.current_user.id).first()
+            agency_loader = AgencyUserLoader()
+            agency_user = await agency_loader.load(g.current_user.id)
 
             if agency_user is not None:
                 g.current_agency_user = agency_user
