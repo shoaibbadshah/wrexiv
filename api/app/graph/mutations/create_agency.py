@@ -5,7 +5,7 @@ import graphene
 from app import db
 from sqlalchemy.exc import SQLAlchemyError
 from flask import g
-
+from graphql import GraphQLError
 
 class CreateAgencyUserInput(graphene.InputObjectType):
     name = graphene.String(required=True)
@@ -23,6 +23,12 @@ class CreateAgency(graphene.Mutation):
     agency = graphene.Field(AgencyType)
 
     def mutate(self, info, input):
+        if g.get("current_user") is None:
+            return GraphQLError("User must be logged in to create an agency")
+        
+        if g.get("current_agency") is not None:
+            return GraphQLError("User is already associated with an agency")
+
         try:
             new_agency = Agency(name=input.name)
             db.session.add(new_agency)
