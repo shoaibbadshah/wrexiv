@@ -24,19 +24,17 @@ const CURRENT_AGENCY = gql`
   }
 `;
 
-// const CREATE_AGENCY_USER = gql`
-//   mutation CreateAgencyUser($input: CreateAgencyUserInput!) {
-//     createAgencyUser(input: $input) {
-//       agencyUser {
-//         id
-//         name
-//         createdAt
-//         updatedAt
-//         agencyId
-//         userId
-//       }
-//     }
-//   }
-// `;
+const CREATE_AGENCY_USER = gql`
+  mutation CreateAgency($input: CreateAgencyInput!) {
+    createAgency(input: $input) {
+      agency {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 
-export { CURRENT_AGENCY_USER, CURRENT_AGENCY };
+export { CURRENT_AGENCY_USER, CURRENT_AGENCY, CREATE_AGENCY_USER };

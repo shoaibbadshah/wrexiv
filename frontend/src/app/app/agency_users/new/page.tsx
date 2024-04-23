@@ -2,12 +2,9 @@
 
 import Container from "@/components/molecules/Container";
 import { FIRST_APP_PAGE } from "@/constants/urls";
-import {
-  useCurrentAgencyLazyQuery,
-  useCurrentAgencyQuery,
-  useCurrentAgencyUserQuery,
-} from "@/graphql/generated";
-import { useRouter } from "next/navigation";
+import { useCreateAgencyMutation } from "@/graphql/generated";
+import { ApolloError } from "@apollo/client";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface INewUserFormInput {
@@ -16,21 +13,42 @@ interface INewUserFormInput {
 }
 
 const NewAgencyUserPage = () => {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<INewUserFormInput>();
 
+  const [createAgency] = useCreateAgencyMutation();
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   const onSubmit = async (params: INewUserFormInput) => {
     const { agencyName, agencyUserName } = params;
-    console.log(params);
-    // router.replace(FIRST_APP_PAGE);
-  };
+    try {
+      const { data } = await createAgency({
+        variables: {
+          input: {
+            name: agencyName,
+            agencyUser: {
+              name: agencyUserName,
+            },
+          },
+        },
+      });
+      setErrorMessage("");
 
-  const data = useCurrentAgencyQuery();
-  console.log("useCurrentAgencyQuery", data);
+      if (data?.createAgency?.agency) {
+        // use window.location.href to perform a full page reload
+        window.location.href = FIRST_APP_PAGE;
+      }
+    } catch (e) {
+      if (e instanceof ApolloError) {
+        setErrorMessage(e.message);
+      } else {
+        setErrorMessage("An error occurred");
+      }
+    }
+  };
 
   return (
     <div className="w-full mx-auto my-40 flex justify-center">
@@ -75,9 +93,12 @@ const NewAgencyUserPage = () => {
               className="border px-3 py-2 rounded w-full"
             />
             {errors.agencyName && (
-              <p className="mt-1 text-red-500">{errors.agencyName.message}</p>
+              <p className="mt-1 text-red-500">
+                {errors.agencyUserName?.message}
+              </p>
             )}
           </div>
+          {errorMessage && <div className="text-red-500">{errorMessage}</div>}
           <div>
             <button
               type="submit"

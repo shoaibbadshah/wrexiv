@@ -112,6 +112,13 @@ export type CurrentAgencyQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type CurrentAgencyQuery = { __typename?: 'Query', currentAgency?: { __typename?: 'AgencyType', id: any, name: string, createdAt: any, updatedAt: any } | null };
 
+export type CreateAgencyMutationVariables = Exact<{
+  input: CreateAgencyInput;
+}>;
+
+
+export type CreateAgencyMutation = { __typename?: 'Mutation', createAgency?: { __typename?: 'CreateAgency', agency?: { __typename?: 'AgencyType', id: any, name: string, createdAt: any, updatedAt: any } | null } | null };
+
 export type TalentProfilesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -206,6 +213,44 @@ export function useCurrentAgencyLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type CurrentAgencyQueryHookResult = ReturnType<typeof useCurrentAgencyQuery>;
 export type CurrentAgencyLazyQueryHookResult = ReturnType<typeof useCurrentAgencyLazyQuery>;
 export type CurrentAgencyQueryResult = Apollo.QueryResult<CurrentAgencyQuery, CurrentAgencyQueryVariables>;
+export const CreateAgencyDocument = gql`
+    mutation CreateAgency($input: CreateAgencyInput!) {
+  createAgency(input: $input) {
+    agency {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+}
+    `;
+export type CreateAgencyMutationFn = Apollo.MutationFunction<CreateAgencyMutation, CreateAgencyMutationVariables>;
+
+/**
+ * __useCreateAgencyMutation__
+ *
+ * To run a mutation, you first call `useCreateAgencyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAgencyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAgencyMutation, { data, loading, error }] = useCreateAgencyMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateAgencyMutation(baseOptions?: Apollo.MutationHookOptions<CreateAgencyMutation, CreateAgencyMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAgencyMutation, CreateAgencyMutationVariables>(CreateAgencyDocument, options);
+      }
+export type CreateAgencyMutationHookResult = ReturnType<typeof useCreateAgencyMutation>;
+export type CreateAgencyMutationResult = Apollo.MutationResult<CreateAgencyMutation>;
+export type CreateAgencyMutationOptions = Apollo.BaseMutationOptions<CreateAgencyMutation, CreateAgencyMutationVariables>;
 export const TalentProfilesDocument = gql`
     query TalentProfiles {
   talentProfiles {
