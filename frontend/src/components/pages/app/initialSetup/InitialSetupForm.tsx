@@ -13,8 +13,7 @@ interface INewUserFormInput {
 }
 
 const InitialSetupForm = () => {
-  const [createAgency] = useCreateAgencyMutation();
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [createAgency, { error, reset }] = useCreateAgencyMutation();
   const {
     register,
     handleSubmit,
@@ -22,31 +21,23 @@ const InitialSetupForm = () => {
   } = useForm<INewUserFormInput>();
 
   const onSubmit = async (params: INewUserFormInput) => {
+    reset();
+
     const { agencyName, agencyUserName } = params;
-    try {
-      const { data } = await createAgency({
-        variables: {
-          input: {
-            name: agencyName,
-            agencyUser: {
-              name: agencyUserName,
-            },
+    await createAgency({
+      variables: {
+        input: {
+          name: agencyName,
+          agencyUser: {
+            name: agencyUserName,
           },
         },
-      });
-      setErrorMessage("");
-
-      if (data?.createAgency?.agency) {
+      },
+      onCompleted(data, clientOptions) {
         // use window.location.href to perform a full page reload
         window.location.href = FIRST_APP_PAGE;
-      }
-    } catch (e) {
-      if (e instanceof ApolloError) {
-        setErrorMessage(e.message);
-      } else {
-        setErrorMessage("An error occurred");
-      }
-    }
+      },
+    });
   };
 
   return (
@@ -96,7 +87,7 @@ const InitialSetupForm = () => {
             </p>
           )}
         </div>
-        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+        {error && <div className="text-red-500">{error.message}</div>}
         <div>
           <button
             type="submit"

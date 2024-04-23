@@ -8,3 +8,4 @@ class AgencyUserType(graphene.ObjectType):
     updated_at = graphene.DateTime(required=True)
     agency_id = graphene.UUID(required=True)
     user_id = graphene.UUID(required=True)
+    agency = graphene.Field("app.graph.types.agency_type.AgencyType")
