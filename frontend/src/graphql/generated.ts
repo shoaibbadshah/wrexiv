@@ -94,14 +94,14 @@ export type UserType = {
 export type TalentProfilesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TalentProfilesQuery = { __typename?: 'Query', talentProfiles?: Array<{ __typename?: 'TalentProfileType', id: any, name: string, createdAt: any, updatedAt: any } | null> | null };
+export type TalentProfilesQuery = { __typename?: 'Query', talentProfiles?: Array<{ __typename?: 'TalentProfileType', id: any, name: string, bio?: string | null, avatar?: string | null, createdAt: any, updatedAt: any } | null> | null };
 
 export type CreateTalentProfileMutationVariables = Exact<{
   input: CreateTalentProfileInput;
 }>;
 
 
-export type CreateTalentProfileMutation = { __typename?: 'Mutation', createTalentProfile?: { __typename?: 'CreateTalentProfile', talentProfile?: { __typename?: 'TalentProfileType', id: any, name: string, createdAt: any, updatedAt: any } | null } | null };
+export type CreateTalentProfileMutation = { __typename?: 'Mutation', createTalentProfile?: { __typename?: 'CreateTalentProfile', talentProfile?: { __typename?: 'TalentProfileType', id: any, name: string, bio?: string | null, avatar?: string | null, createdAt: any, updatedAt: any } | null } | null };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -111,13 +111,15 @@ export type MeQuery = { __typename?: 'Query', user?: { __typename?: 'UserType', 
 
 export const TalentProfilesDocument = gql`
     query TalentProfiles {
-  talentProfiles {
-    id
-    name
-    createdAt
-    updatedAt
+      talentProfiles {
+        id
+        name
+        bio
+        avatar
+        createdAt
+        updatedAt
+      }
   }
-}
     `;
 
 /**
@@ -136,13 +138,13 @@ export const TalentProfilesDocument = gql`
  * });
  */
 export function useTalentProfilesQuery(baseOptions?: Apollo.QueryHookOptions<TalentProfilesQuery, TalentProfilesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TalentProfilesQuery, TalentProfilesQueryVariables>(TalentProfilesDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<TalentProfilesQuery, TalentProfilesQueryVariables>(TalentProfilesDocument, options);
+}
 export function useTalentProfilesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TalentProfilesQuery, TalentProfilesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TalentProfilesQuery, TalentProfilesQueryVariables>(TalentProfilesDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<TalentProfilesQuery, TalentProfilesQueryVariables>(TalentProfilesDocument, options);
+}
 export type TalentProfilesQueryHookResult = ReturnType<typeof useTalentProfilesQuery>;
 export type TalentProfilesLazyQueryHookResult = ReturnType<typeof useTalentProfilesLazyQuery>;
 export type TalentProfilesQueryResult = Apollo.QueryResult<TalentProfilesQuery, TalentProfilesQueryVariables>;
@@ -152,6 +154,8 @@ export const CreateTalentProfileDocument = gql`
     talentProfile {
       id
       name
+      bio
+      avatar
       createdAt
       updatedAt
     }
@@ -178,9 +182,9 @@ export type CreateTalentProfileMutationFn = Apollo.MutationFunction<CreateTalent
  * });
  */
 export function useCreateTalentProfileMutation(baseOptions?: Apollo.MutationHookOptions<CreateTalentProfileMutation, CreateTalentProfileMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateTalentProfileMutation, CreateTalentProfileMutationVariables>(CreateTalentProfileDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateTalentProfileMutation, CreateTalentProfileMutationVariables>(CreateTalentProfileDocument, options);
+}
 export type CreateTalentProfileMutationHookResult = ReturnType<typeof useCreateTalentProfileMutation>;
 export type CreateTalentProfileMutationResult = Apollo.MutationResult<CreateTalentProfileMutation>;
 export type CreateTalentProfileMutationOptions = Apollo.BaseMutationOptions<CreateTalentProfileMutation, CreateTalentProfileMutationVariables>;
@@ -211,13 +215,13 @@ export const MeDocument = gql`
  * });
  */
 export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-      }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
 export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-        }
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+}
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;

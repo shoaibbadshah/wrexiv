@@ -11,7 +11,7 @@ import { navigation } from "./navigation";
 import { usePathname, useRouter } from "next/navigation";
 import useCurrentTenantUser from "@/hooks/useCurrentTenant";
 import { FIRST_APP_PAGE } from "@/constants/urls";
-import { useTalentProfilesQuery } from "@/graphql/generated";
+// import { useTalentProfilesQuery } from "@/graphql/generated";
 
 type Props = {
   children: ReactNode;
@@ -22,9 +22,9 @@ const INITIALIZE_PAGE = "/app/tenant/new";
 export default function ApplicationLayout({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-  const { data, loading } = useTalentProfilesQuery({
-    fetchPolicy: "network-only",
-  });
+  // const { data, loading } = useTalentProfilesQuery({
+  //   fetchPolicy: "network-only",
+  // });
 
   /* if (!loading && !isInitialized && pathname !== INITIALIZE_PAGE) {
     router.replace(INITIALIZE_PAGE);
