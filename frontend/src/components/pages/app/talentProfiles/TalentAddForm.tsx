@@ -3,8 +3,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/solid";
 
-import Image from "next/image";
-
 type PropsType = {
   open: boolean;
   handleOpen: (open: boolean) => void;

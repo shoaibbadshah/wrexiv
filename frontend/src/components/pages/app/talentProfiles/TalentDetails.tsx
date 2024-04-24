@@ -138,8 +138,9 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
                                 <Image
                                   className="absolute h-full w-full object-cover"
                                   src={data.avatar}
-                                  alt=""
-                                  layout="fill"
+                                  alt={data.name}
+                                  fill
+                                  sizes="100%"
                                 />
                               </div>
                               <div className="mt-6 px-4 sm:mt-8 sm:flex sm:items-end sm:px-6">

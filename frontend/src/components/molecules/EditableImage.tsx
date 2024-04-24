@@ -24,13 +24,15 @@ const EditableImage = ({ initialImage, onImageChange }: EditableImageProps) => {
 
   return (
     <>
-      <Image
-        src={imagePreview}
-        alt="Preview"
-        width={40}
-        height={40}
-        className="absolute h-full w-full object-cover rounded-full"
-      />
+      <div className="relative h-full w-full rounded-full">
+        <Image
+          src={imagePreview}
+          alt="Preview"
+          fill
+          sizes="100%"
+          className="object-cover rounded-full"
+        />
+      </div>
       <label className="absolute top-0 left-0 h-full w-full flex items-center justify-center bg-gray-100 bg-opacity-10 rounded-full">
         <PencilIcon className="w-12 h-12 text-white text-md" />
         <input

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 import { useTalentProfilesQuery } from "@/graphql/generated";
@@ -9,17 +9,11 @@ import Talent from "@/types/TalentProfileType";
 
 const TalentProfiles = () => {
   const { data, loading, error } = useTalentProfilesQuery();
+  const talents = data?.talentProfiles as Talent[];
 
-  const [talentData, setTalentData] = useState<Talent[] | null>(null);
   const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [openForm, setOpenForm] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (data) {
-      setTalentData(data.talentProfiles as Talent[]);
-    }
-  }, [data]);
 
   const handleOpenDetails = (open: boolean, talent: Talent | null = null) => {
     setOpenDetails(open);
@@ -55,7 +49,7 @@ const TalentProfiles = () => {
       {loading ? (
         <p className="mt-2 text-sm text-gray-700">Loading talent data...</p>
       ) : (
-        talentData && (
+        talents && (
           <div className="flex justify-center mt-8 h-[75vh] max-h-[75vh]">
             <div className="-mx-4 -my-2 overflow-y-auto overflow-x-hidden sm:-mx-6 lg:-mx-8 w-full">
               <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -77,7 +71,7 @@ const TalentProfiles = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {talentData.map(talent => (
+                    {talents.map(talent => (
                       <tr
                         key={talent.id}
                         onClick={() => handleOpenDetails(true, talent)}
@@ -88,7 +82,7 @@ const TalentProfiles = () => {
                             <div className="h-11 w-11 flex-shrink-0">
                               <Image
                                 src={talent.avatar}
-                                alt=""
+                                alt={talent.name}
                                 width={44}
                                 height={44}
                                 className="rounded-full"
