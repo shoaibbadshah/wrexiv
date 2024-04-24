@@ -1,55 +1,53 @@
-import React, { useState } from 'react'
-import { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image'
+import React, { useState } from "react";
+import { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 import TalentDeleteWarning from "./TalentDeleteWarning";
-import EditableImage from '@/components/molecules/EditableImage'
+import EditableImage from "@/components/molecules/EditableImage";
 import Talent from "@/types/TalentProfileType";
 
 type PropsType = {
   open: boolean;
   handleOpen: (open: boolean) => void;
   talent: Talent;
-}
+};
 
-
-export default function TalentDetails({
-  open,
-  handleOpen,
-  talent,
-}: PropsType) {
-
+export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
   const [openDeleteWarning, setOpenDeleteWarning] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [data, setData] = useState<Talent>(talent);
 
   const handleDelete = (talent: Talent) => {
     console.log(`Delete talent with name: ${talent.name}`);
-    handleOpen(false)
-  }
+    handleOpen(false);
+  };
 
   const handleEdit = (talent: Talent) => {
     console.log(`Edit talent with name: ${talent.name}`);
     setIsEditing(false);
-  }
+  };
 
   const handleNameChange = (name: string) => {
     setData({ ...data, name });
-  }
+  };
 
   const handleBioChange = (bio: string) => {
     setData({ ...data, bio });
-  }
+  };
 
   const handleAvatarChange = () => {
     console.log("Avatar changed");
-  }
+  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={() => handleOpen(false)}>
+      <Dialog
+        as="div"
+        className="relative z-10"
+        onClose={() => handleOpen(false)}
+      >
         <div className="fixed inset-0" />
         <div className="fixed inset-0 overflow-hidden bg-gray-500 bg-opacity-10 transition-opacity">
           <div className="absolute inset-0 overflow-hidden">
@@ -68,7 +66,10 @@ export default function TalentDetails({
                     <div className="flex-1">
                       <div className="px-4 py-6 sm:px-6">
                         <div className="flex items-start justify-between">
-                          <h2 id="slide-over-heading" className="text-base font-semibold leading-6 text-gray-900">
+                          <h2
+                            id="slide-over-heading"
+                            className="text-base font-semibold leading-6 text-gray-900"
+                          >
                             Profile
                           </h2>
                           <div className="ml-3 flex h-7 items-center">
@@ -79,7 +80,10 @@ export default function TalentDetails({
                             >
                               <span className="absolute -inset-2.5" />
                               <span className="sr-only">Close panel</span>
-                              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                              <XMarkIcon
+                                className="h-6 w-6"
+                                aria-hidden="true"
+                              />
                             </button>
                           </div>
                         </div>
@@ -91,7 +95,10 @@ export default function TalentDetails({
                           <div className="pb-1 sm:pb-6">
                             <div className="w-full flex flex-col items-center justify-center">
                               <div className="relative h-56 w-56">
-                                <EditableImage initialImage={data.avatar} onImageChange={handleAvatarChange} />
+                                <EditableImage
+                                  initialImage={data.avatar}
+                                  onImageChange={handleAvatarChange}
+                                />
                               </div>
                               <div className="mt-6 px-4 w-full flex flex-col align-start">
                                 <label className="block text-sm font-medium leading-6 text-gray-900">
@@ -102,7 +109,9 @@ export default function TalentDetails({
                                   name="name"
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                   value={data.name}
-                                  onChange={(e) => handleNameChange(e.target.value)}
+                                  onChange={e =>
+                                    handleNameChange(e.target.value)
+                                  }
                                 />
                               </div>
                               <div className="mt-6 px-4 w-full flex flex-col align-start">
@@ -113,7 +122,9 @@ export default function TalentDetails({
                                   name="bio"
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                   value={data.bio}
-                                  onChange={(e) => handleBioChange(e.target.value)}
+                                  onChange={e =>
+                                    handleBioChange(e.target.value)
+                                  }
                                 />
                               </div>
                             </div>
@@ -135,7 +146,9 @@ export default function TalentDetails({
                                 <div className="sm:flex-1">
                                   <div>
                                     <div className="flex items-center">
-                                      <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">{data.name}</h3>
+                                      <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
+                                        {data.name}
+                                      </h3>
                                       <span className="ml-2.5 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-green-400">
                                         <span className="sr-only">Online</span>
                                       </span>
@@ -148,7 +161,9 @@ export default function TalentDetails({
                           <div className="px-4 pb-5 pt-5 sm:px-0 sm:pt-0">
                             <dl className="space-y-8 px-4 sm:space-y-6 sm:px-6">
                               <div>
-                                <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">Bio</dt>
+                                <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
+                                  Bio
+                                </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
                                   <p>{data.bio}</p>
                                 </dd>
@@ -204,16 +219,16 @@ export default function TalentDetails({
             </div>
           </div>
 
-          {openDeleteWarning &&
+          {openDeleteWarning && (
             <TalentDeleteWarning
               open={openDeleteWarning}
               handleOpen={setOpenDeleteWarning}
               talent={talent}
               handleDelete={handleDelete}
             />
-          }
+          )}
         </div>
       </Dialog>
     </Transition.Root>
-  )
+  );
 }
