@@ -1,27 +1,57 @@
 "use client";
 
 import AgencySettingsLayout from "@/components/layout/AgencySettingsLayout";
-import { useMyAgencyUserQuery } from "@/graphql/generated";
-import { useState } from "react";
+import {
+  useMyAgencyUserQuery,
+  useUpdateMyAgencyMutation,
+} from "@/graphql/generated";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { ZodType, z } from "zod";
 interface IAgencySettingsForm {
   agencyName: string;
 }
 
 const Agency = () => {
+  const [updateMyAgency, { error, reset, data: mutationData }] =
+    useUpdateMyAgencyMutation();
+  const initialSetupSchema: ZodType<IAgencySettingsForm> = z.object({
+    agencyName: z.string().min(1, "Agency name is required"),
+  });
+  const { data, loading, refetch } = useMyAgencyUserQuery();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IAgencySettingsForm>();
+  } = useForm<IAgencySettingsForm>({
+    resolver: zodResolver(initialSetupSchema),
+  });
 
-  const [errorMessage, setErrorMessage] = useState<string>("");
   const onSubmit = async (params: IAgencySettingsForm) => {
-    const { agencyName } = params;
-    console.log(agencyName);
-  };
+    reset();
 
-  const { data, loading } = useMyAgencyUserQuery();
+    const { agencyName } = params;
+
+    if (agencyName == data?.myAgencyUser?.agency?.name) {
+      return;
+    }
+
+    updateMyAgency({
+      variables: {
+        input: {
+          name: agencyName,
+        },
+      },
+      onCompleted: () => {
+        refetch();
+      },
+      onError: () => {
+        // do nothing
+        // error message already obtained from useCreateAgencyMutation
+      },
+    });
+  };
 
   return (
     <AgencySettingsLayout>
@@ -38,9 +68,7 @@ const Agency = () => {
             <input
               id="agencyName"
               type="text"
-              {...register("agencyName", {
-                required: "Agency name is required",
-              })}
+              {...register("agencyName")}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
               defaultValue={data?.myAgencyUser?.agency?.name}
               disabled={loading}
@@ -49,7 +77,7 @@ const Agency = () => {
               <p className="mt-1 text-red-500">{errors.agencyName.message}</p>
             )}
           </div>
-          {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+          {error && <div className="text-red-500">{error.message}</div>}
           <div>
             <button
               disabled={loading}
@@ -59,6 +87,11 @@ const Agency = () => {
               Submit
             </button>
           </div>
+          {mutationData?.updateMyAgency?.success && (
+            <div className="text-green-500">
+              {mutationData?.updateMyAgency?.message}
+            </div>
+          )}
         </form>
       </div>
     </AgencySettingsLayout>
