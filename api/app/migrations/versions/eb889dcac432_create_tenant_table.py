@@ -1,8 +1,8 @@
-"""Create talent document tables
+"""Create tenant table
 
-Revision ID: 2f4f431eb0f8
+Revision ID: eb889dcac432
 Revises: 893febac746c
-Create Date: 2024-04-24 08:48:01.198950
+Create Date: 2024-04-24 08:15:26.474842
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import sqlalchemy_utils
 
 
 # revision identifiers, used by Alembic.
-revision = '2f4f431eb0f8'
+revision = 'eb889dcac432'
 down_revision = '893febac746c'
 branch_labels = None
 depends_on = None
