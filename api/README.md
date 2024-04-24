@@ -24,7 +24,19 @@ flask db downgrade
 import sqlalchemy_utils
 
 ## vscode postgreSQL
+- If you have postgresql client installed, you can connect to the database using the following command:
+```
 psql -h localhost -p 5432 -U app_user -d app_db
+```
+- If you don't have the client installed, you can use psql inside the docker container:
+```
+docker exec -it globaltalentdb-db /bin/bash 
+```
+then inside the container:
+```
+psql -U app_user -d app_db
+```
+
 
 ### might need these
 ps aux | grep postgres
