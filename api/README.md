@@ -49,6 +49,10 @@ flask db migrate -m <migration message>
 flask db upgrade
 ```
 
+### How to add or update the graphql schema
+Create or update the mutations on the `app\graph\mutations` directory or resolvers on the `app\graph\resolvers` directory. Then, update the schema in the `app\graph\schema.py` file.
+
+
 ### might need these
 ps aux | grep postgres
 brew services list
