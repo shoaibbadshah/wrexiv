@@ -1,3 +1,12 @@
+## Environment Variables
+Copy `.env.example` to `.env` and update the values.
+```
+cp .env.example .env
+```
+
+## Credentials
+Add `credentials.json` to `app\config\` directory.
+
 ## DB
 
 docker-compose run db bash
