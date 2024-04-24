@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import Container from "@/components/molecules/Container";
 import { FIRST_APP_PAGE } from "@/constants/urls";
 import { useCreateAgencyMutation } from "@/graphql/generated";
-import { ApolloError } from "@apollo/client";
-import { useState } from "react";
+import { ZodType, z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface INewUserFormInput {
   agencyName: string;
@@ -13,40 +13,43 @@ interface INewUserFormInput {
 }
 
 const InitialSetupForm = () => {
-  const [createAgency] = useCreateAgencyMutation();
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [createAgency, { error, reset }] = useCreateAgencyMutation();
+  const initialSetupSchema: ZodType<INewUserFormInput> = z.object({
+    agencyName: z.string().min(1, "Agency name is required"),
+    agencyUserName: z.string().min(1, "Agency user name is required"),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<INewUserFormInput>();
+  } = useForm<INewUserFormInput>({
+    resolver: zodResolver(initialSetupSchema),
+  });
 
-  const onSubmit = async (params: INewUserFormInput) => {
-    const { agencyName, agencyUserName } = params;
-    try {
-      const { data } = await createAgency({
-        variables: {
-          input: {
-            name: agencyName,
-            agencyUser: {
-              name: agencyUserName,
-            },
+  const onSubmit = (params: INewUserFormInput) => {
+    reset();
+
+    const { agencyName, agencyUserName } = initialSetupSchema.parse(params);
+
+    createAgency({
+      variables: {
+        input: {
+          name: agencyName,
+          agencyUser: {
+            name: agencyUserName,
           },
         },
-      });
-      setErrorMessage("");
-
-      if (data?.createAgency?.agency) {
+      },
+      onCompleted: () => {
         // use window.location.href to perform a full page reload
         window.location.href = FIRST_APP_PAGE;
-      }
-    } catch (e) {
-      if (e instanceof ApolloError) {
-        setErrorMessage(e.message);
-      } else {
-        setErrorMessage("An error occurred");
-      }
-    }
+      },
+      onError: () => {
+        // do nothing
+        // error message already obtained from useCreateAgencyMutation
+      },
+    });
   };
 
   return (
@@ -66,9 +69,7 @@ const InitialSetupForm = () => {
           <input
             id="agencyName"
             type="text"
-            {...register("agencyName", {
-              required: "Agency name is required",
-            })}
+            {...register("agencyName")}
             className="border px-3 py-2 rounded w-full"
           />
           {errors.agencyName && (
@@ -85,9 +86,7 @@ const InitialSetupForm = () => {
           <input
             id="agencyUserName"
             type="text"
-            {...register("agencyUserName", {
-              required: "Agency user name is required",
-            })}
+            {...register("agencyUserName")}
             className="border px-3 py-2 rounded w-full"
           />
           {errors.agencyName && (
@@ -96,7 +95,7 @@ const InitialSetupForm = () => {
             </p>
           )}
         </div>
-        {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+        {error && <div className="text-red-500">{error.message}</div>}
         <div>
           <button
             type="submit"

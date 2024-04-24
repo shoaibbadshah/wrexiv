@@ -1,6 +1,6 @@
-from app.graph.types.agency_type import AgencyType
 from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
+from app.graph.types.agency_user_type import AgencyUserType
 import graphene
 from app import db
 from sqlalchemy.exc import SQLAlchemyError
@@ -20,7 +20,7 @@ class CreateAgency(graphene.Mutation):
     class Arguments:
         input = CreateAgencyInput(required=True)
 
-    agency = graphene.Field(AgencyType)
+    agencyUser = graphene.Field(AgencyUserType)
 
     def mutate(self, info, input):
         if g.get("current_user") is None:
@@ -46,4 +46,4 @@ class CreateAgency(graphene.Mutation):
             db.session.rollback()
             raise e
 
-        return CreateAgency(agency=new_agency)
+        return CreateAgency(agencyUser=new_agency_user)

@@ -10,7 +10,7 @@ import Link from "next/link";
 import { navigation } from "./navigation";
 import { usePathname, useRouter } from "next/navigation";
 import { FIRST_APP_PAGE, GET_STARTED_URL } from "@/constants/urls";
-import { useCurrentAgencyUserQuery } from "@/graphql/generated";
+import { useMyAgencyUserQuery } from "@/graphql/generated";
 
 type Props = {
   children: ReactNode;
@@ -19,15 +19,15 @@ type Props = {
 export default function ApplicationLayout({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-  const { data, loading } = useCurrentAgencyUserQuery({
+  const { data, loading } = useMyAgencyUserQuery({
     fetchPolicy: "network-only",
   });
 
   useEffect(() => {
-    if (!loading && !data?.currentAgencyUser && pathname !== GET_STARTED_URL) {
+    if (!loading && !data?.myAgencyUser && pathname !== GET_STARTED_URL) {
       router.replace(GET_STARTED_URL);
     }
-    if (!loading && data?.currentAgencyUser && pathname === GET_STARTED_URL) {
+    if (!loading && data?.myAgencyUser && pathname === GET_STARTED_URL) {
       router.replace(FIRST_APP_PAGE);
     }
   }, [loading, data, pathname, router]);

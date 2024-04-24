@@ -33,6 +33,7 @@ export type AgencyType = {
 
 export type AgencyUserType = {
   __typename?: "AgencyUserType";
+  agency?: Maybe<AgencyType>;
   agencyId: Scalars["UUID"];
   createdAt: Scalars["DateTime"];
   id: Scalars["UUID"];
@@ -43,7 +44,7 @@ export type AgencyUserType = {
 
 export type CreateAgency = {
   __typename?: "CreateAgency";
-  agency?: Maybe<AgencyType>;
+  agencyUser?: Maybe<AgencyUserType>;
 };
 
 export type CreateAgencyInput = {
@@ -82,8 +83,7 @@ export type MutationCreateTalentProfileArgs = {
 
 export type Query = {
   __typename?: "Query";
-  currentAgency?: Maybe<AgencyType>;
-  currentAgencyUser?: Maybe<AgencyUserType>;
+  myAgencyUser?: Maybe<AgencyUserType>;
   talentProfiles?: Maybe<Array<Maybe<TalentProfileType>>>;
   user?: Maybe<UserType>;
 };
@@ -106,11 +106,11 @@ export type UserType = {
   updatedAt: Scalars["DateTime"];
 };
 
-export type CurrentAgencyUserQueryVariables = Exact<{ [key: string]: never }>;
+export type MyAgencyUserQueryVariables = Exact<{ [key: string]: never }>;
 
-export type CurrentAgencyUserQuery = {
+export type MyAgencyUserQuery = {
   __typename?: "Query";
-  currentAgencyUser?: {
+  myAgencyUser?: {
     __typename?: "AgencyUserType";
     id: any;
     name: string;
@@ -118,19 +118,13 @@ export type CurrentAgencyUserQuery = {
     updatedAt: any;
     agencyId: any;
     userId: any;
-  } | null;
-};
-
-export type CurrentAgencyQueryVariables = Exact<{ [key: string]: never }>;
-
-export type CurrentAgencyQuery = {
-  __typename?: "Query";
-  currentAgency?: {
-    __typename?: "AgencyType";
-    id: any;
-    name: string;
-    createdAt: any;
-    updatedAt: any;
+    agency?: {
+      __typename?: "AgencyType";
+      id: any;
+      name: string;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
   } | null;
 };
 
@@ -142,12 +136,21 @@ export type CreateAgencyMutation = {
   __typename?: "Mutation";
   createAgency?: {
     __typename?: "CreateAgency";
-    agency?: {
-      __typename?: "AgencyType";
+    agencyUser?: {
+      __typename?: "AgencyUserType";
       id: any;
       name: string;
       createdAt: any;
       updatedAt: any;
+      agencyId: any;
+      userId: any;
+      agency?: {
+        __typename?: "AgencyType";
+        id: any;
+        name: string;
+        createdAt: any;
+        updatedAt: any;
+      } | null;
     } | null;
   } | null;
 };
@@ -196,136 +199,90 @@ export type MeQuery = {
   } | null;
 };
 
-export const CurrentAgencyUserDocument = gql`
-  query CurrentAgencyUser {
-    currentAgencyUser {
+export const MyAgencyUserDocument = gql`
+  query myAgencyUser {
+    myAgencyUser {
       id
       name
       createdAt
       updatedAt
       agencyId
       userId
-    }
-  }
-`;
-
-/**
- * __useCurrentAgencyUserQuery__
- *
- * To run a query within a React component, call `useCurrentAgencyUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useCurrentAgencyUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCurrentAgencyUserQuery({
- *   variables: {
- *   },
- * });
- */
-export function useCurrentAgencyUserQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    CurrentAgencyUserQuery,
-    CurrentAgencyUserQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    CurrentAgencyUserQuery,
-    CurrentAgencyUserQueryVariables
-  >(CurrentAgencyUserDocument, options);
-}
-export function useCurrentAgencyUserLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    CurrentAgencyUserQuery,
-    CurrentAgencyUserQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    CurrentAgencyUserQuery,
-    CurrentAgencyUserQueryVariables
-  >(CurrentAgencyUserDocument, options);
-}
-export type CurrentAgencyUserQueryHookResult = ReturnType<
-  typeof useCurrentAgencyUserQuery
->;
-export type CurrentAgencyUserLazyQueryHookResult = ReturnType<
-  typeof useCurrentAgencyUserLazyQuery
->;
-export type CurrentAgencyUserQueryResult = Apollo.QueryResult<
-  CurrentAgencyUserQuery,
-  CurrentAgencyUserQueryVariables
->;
-export const CurrentAgencyDocument = gql`
-  query CurrentAgency {
-    currentAgency {
-      id
-      name
-      createdAt
-      updatedAt
-    }
-  }
-`;
-
-/**
- * __useCurrentAgencyQuery__
- *
- * To run a query within a React component, call `useCurrentAgencyQuery` and pass it any options that fit your needs.
- * When your component renders, `useCurrentAgencyQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCurrentAgencyQuery({
- *   variables: {
- *   },
- * });
- */
-export function useCurrentAgencyQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    CurrentAgencyQuery,
-    CurrentAgencyQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<CurrentAgencyQuery, CurrentAgencyQueryVariables>(
-    CurrentAgencyDocument,
-    options
-  );
-}
-export function useCurrentAgencyLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    CurrentAgencyQuery,
-    CurrentAgencyQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<CurrentAgencyQuery, CurrentAgencyQueryVariables>(
-    CurrentAgencyDocument,
-    options
-  );
-}
-export type CurrentAgencyQueryHookResult = ReturnType<
-  typeof useCurrentAgencyQuery
->;
-export type CurrentAgencyLazyQueryHookResult = ReturnType<
-  typeof useCurrentAgencyLazyQuery
->;
-export type CurrentAgencyQueryResult = Apollo.QueryResult<
-  CurrentAgencyQuery,
-  CurrentAgencyQueryVariables
->;
-export const CreateAgencyDocument = gql`
-  mutation CreateAgency($input: CreateAgencyInput!) {
-    createAgency(input: $input) {
       agency {
         id
         name
         createdAt
         updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useMyAgencyUserQuery__
+ *
+ * To run a query within a React component, call `useMyAgencyUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyAgencyUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyAgencyUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyAgencyUserQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    MyAgencyUserQuery,
+    MyAgencyUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<MyAgencyUserQuery, MyAgencyUserQueryVariables>(
+    MyAgencyUserDocument,
+    options
+  );
+}
+export function useMyAgencyUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MyAgencyUserQuery,
+    MyAgencyUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<MyAgencyUserQuery, MyAgencyUserQueryVariables>(
+    MyAgencyUserDocument,
+    options
+  );
+}
+export type MyAgencyUserQueryHookResult = ReturnType<
+  typeof useMyAgencyUserQuery
+>;
+export type MyAgencyUserLazyQueryHookResult = ReturnType<
+  typeof useMyAgencyUserLazyQuery
+>;
+export type MyAgencyUserQueryResult = Apollo.QueryResult<
+  MyAgencyUserQuery,
+  MyAgencyUserQueryVariables
+>;
+export const CreateAgencyDocument = gql`
+  mutation CreateAgency($input: CreateAgencyInput!) {
+    createAgency(input: $input) {
+      agencyUser {
+        id
+        name
+        createdAt
+        updatedAt
+        agencyId
+        userId
+        agency {
+          id
+          name
+          createdAt
+          updatedAt
+        }
       }
     }
   }
