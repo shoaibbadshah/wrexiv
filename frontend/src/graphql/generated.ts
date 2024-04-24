@@ -71,6 +71,7 @@ export type Mutation = {
   __typename?: "Mutation";
   createAgency?: Maybe<CreateAgency>;
   createTalentProfile?: Maybe<CreateTalentProfile>;
+  updateMyAgency?: Maybe<UpdateMyAgency>;
 };
 
 export type MutationCreateAgencyArgs = {
@@ -79,6 +80,10 @@ export type MutationCreateAgencyArgs = {
 
 export type MutationCreateTalentProfileArgs = {
   input: CreateTalentProfileInput;
+};
+
+export type MutationUpdateMyAgencyArgs = {
+  input: UpdateMyAgencyInput;
 };
 
 export type Query = {
@@ -96,6 +101,22 @@ export type TalentProfileType = {
   id: Scalars["UUID"];
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
+};
+
+export type UpdateMyAgency = {
+  __typename?: "UpdateMyAgency";
+  agencyUser?: Maybe<AgencyUserType>;
+  message?: Maybe<Scalars["String"]>;
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UpdateMyAgencyInput = {
+  agencyUser?: InputMaybe<UpdateMyAgencyUserInput>;
+  name?: InputMaybe<Scalars["String"]>;
+};
+
+export type UpdateMyAgencyUserInput = {
+  name?: InputMaybe<Scalars["String"]>;
 };
 
 export type UserType = {
@@ -152,6 +173,19 @@ export type CreateAgencyMutation = {
         updatedAt: any;
       } | null;
     } | null;
+  } | null;
+};
+
+export type UpdateMyAgencyMutationVariables = Exact<{
+  input: UpdateMyAgencyInput;
+}>;
+
+export type UpdateMyAgencyMutation = {
+  __typename?: "Mutation";
+  updateMyAgency?: {
+    __typename?: "UpdateMyAgency";
+    success?: boolean | null;
+    message?: string | null;
   } | null;
 };
 
@@ -329,6 +363,57 @@ export type CreateAgencyMutationResult =
 export type CreateAgencyMutationOptions = Apollo.BaseMutationOptions<
   CreateAgencyMutation,
   CreateAgencyMutationVariables
+>;
+export const UpdateMyAgencyDocument = gql`
+  mutation UpdateMyAgency($input: UpdateMyAgencyInput!) {
+    updateMyAgency(input: $input) {
+      success
+      message
+    }
+  }
+`;
+export type UpdateMyAgencyMutationFn = Apollo.MutationFunction<
+  UpdateMyAgencyMutation,
+  UpdateMyAgencyMutationVariables
+>;
+
+/**
+ * __useUpdateMyAgencyMutation__
+ *
+ * To run a mutation, you first call `useUpdateMyAgencyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMyAgencyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMyAgencyMutation, { data, loading, error }] = useUpdateMyAgencyMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateMyAgencyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateMyAgencyMutation,
+    UpdateMyAgencyMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateMyAgencyMutation,
+    UpdateMyAgencyMutationVariables
+  >(UpdateMyAgencyDocument, options);
+}
+export type UpdateMyAgencyMutationHookResult = ReturnType<
+  typeof useUpdateMyAgencyMutation
+>;
+export type UpdateMyAgencyMutationResult =
+  Apollo.MutationResult<UpdateMyAgencyMutation>;
+export type UpdateMyAgencyMutationOptions = Apollo.BaseMutationOptions<
+  UpdateMyAgencyMutation,
+  UpdateMyAgencyMutationVariables
 >;
 export const TalentProfilesDocument = gql`
   query TalentProfiles {
