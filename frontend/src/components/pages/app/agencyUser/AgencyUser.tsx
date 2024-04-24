@@ -14,8 +14,10 @@ interface IAgencyUserSettingsForm {
 }
 
 const AgencyUser = () => {
-  const [updateMyAgency, { error, reset, data: mutationData }] =
-    useUpdateMyAgencyMutation();
+  const [
+    updateMyAgency,
+    { error, reset, data: mutationData, loading: mutationLoading },
+  ] = useUpdateMyAgencyMutation();
   const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
     agencyUserName: z.string().min(1, "Agency name is required"),
   });
@@ -90,7 +92,7 @@ const AgencyUser = () => {
             <button
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={loading}
+              disabled={loading || mutationLoading}
             >
               Submit
             </button>
