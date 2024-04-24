@@ -1,7 +1,7 @@
 "use client";
 
 import AgencySettingsLayout from "@/components/layout/AgencySettingsLayout";
-import { useCurrentAgencyQuery } from "@/graphql/generated";
+import { useMyAgencyUserQuery } from "@/graphql/generated";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 interface IAgencySettingsForm {
@@ -21,7 +21,7 @@ const Agency = () => {
     console.log(agencyName);
   };
 
-  const { data, loading } = useCurrentAgencyQuery();
+  const { data, loading } = useMyAgencyUserQuery();
 
   return (
     <AgencySettingsLayout>
@@ -42,7 +42,7 @@ const Agency = () => {
                 required: "Agency name is required",
               })}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
-              defaultValue={data?.currentAgency?.name}
+              defaultValue={data?.myAgencyUser?.agency?.name}
               disabled={loading}
             />
             {errors.agencyName && (
