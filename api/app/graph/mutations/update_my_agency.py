@@ -30,14 +30,15 @@ class UpdateMyAgency(graphene.Mutation):
             return GraphQLError("User is not associated with an agency")
 
         try:
-            if input.name:
+            if input.get("name"):
                 Agency.query.filter_by(id=g.current_agency.id).update({"name": input.name})
-            if input.agencyUser.name:
+                g.current_agency.name = input.name
+            if input.get("agencyUser") and input.agencyUser.get("name"):
                 AgencyUser.query.filter_by(id=g.current_agency_user.id).update({"name": input.agencyUser.name})
+                g.current_agency_user.name = input.agencyUser.name
+                
             db.session.commit()
 
-            g.current_agency.name = input.name
-            g.current_agency_user.name = input.agencyUser.name
         except SQLAlchemyError as e:
             db.session.rollback()
             raise e
