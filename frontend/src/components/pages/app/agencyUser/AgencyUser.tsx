@@ -3,33 +3,64 @@
 import AgencySettingsLayout from "@/components/layout/AgencySettingsLayout";
 import {
   useMyAgencyUserQuery,
+  useUpdateMyAgencyMutation,
 } from "@/graphql/generated";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { ZodType, z } from "zod";
 
 interface IAgencyUserSettingsForm {
   agencyUserName: string;
 }
 
 const AgencyUser = () => {
+  const [updateMyAgency, { error, reset, data: mutationData }] =
+    useUpdateMyAgencyMutation();
+  const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
+    agencyUserName: z.string().min(1, "Agency name is required"),
+  });
+
+  const { data, loading, refetch } = useMyAgencyUserQuery();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IAgencyUserSettingsForm>();
+  } = useForm<IAgencyUserSettingsForm>({
+    resolver: zodResolver(initialSetupSchema),
+  });
 
-  const [errorMessage, setErrorMessage] = useState<string>("");
   const onSubmit = async (params: IAgencyUserSettingsForm) => {
-    const { agencyUserName } = params;
-    console.log(agencyUserName);
-  };
+    reset();
 
-  const { data, loading } = useMyAgencyUserQuery();
+    const { agencyUserName } = params;
+
+    if (agencyUserName == data?.myAgencyUser?.name) {
+      return;
+    }
+
+    updateMyAgency({
+      variables: {
+        input: {
+          agencyUser: {
+            name: agencyUserName,
+          },
+        },
+      },
+      onCompleted: () => {
+        refetch();
+      },
+      onError: () => {
+        // do nothing
+        // error message already obtained from useCreateAgencyMutation
+      },
+    });
+  };
 
   return (
     <AgencySettingsLayout>
       <div className="mx-12 py-8 w-full max-w-2xl">
-        <h1 className="font-bold text-xl mb-4">Agency</h1>
+        <h1 className="font-bold text-xl mb-4">Agency User</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label
@@ -54,7 +85,7 @@ const AgencyUser = () => {
               </p>
             )}
           </div>
-          {errorMessage && <div className="text-red-500">{errorMessage}</div>}
+          {error && <div className="text-red-500">{error.message}</div>}
           <div>
             <button
               type="submit"
@@ -64,6 +95,11 @@ const AgencyUser = () => {
               Submit
             </button>
           </div>
+          {mutationData?.updateMyAgency?.success && (
+            <div className="text-green-500">
+              {mutationData?.updateMyAgency?.message}
+            </div>
+          )}
         </form>
       </div>
     </AgencySettingsLayout>
