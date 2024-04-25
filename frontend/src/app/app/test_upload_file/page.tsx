@@ -1,17 +1,21 @@
 "use client";
 
-import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
 
 const AppTopPage = () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const [uploadedFileNames, setUploadedFileNames] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
     const newFileNames = files.map(file => file.name);
 
+    setFiles(prev => [...prev, ...files]);
     setUploadedFileNames(prev => [...prev, ...newFileNames]);
     event.target.value = "";
   };
@@ -23,6 +27,15 @@ const AppTopPage = () => {
     event.preventDefault();
     setUploadedFileNames(prev => prev.filter((_, i) => i !== index));
   };
+
+  const handleSubmitFile = () => {
+    const formData = new FormData();
+    files.forEach(file => {
+      formData.append("documents", file);
+    });
+    axios.post(`${API_URL}/upload_documents`, formData);
+  };
+
   return (
     <div className="m-4">
       <form className="flex h-full flex-col bg-white shadow-xl">
@@ -117,6 +130,7 @@ const AppTopPage = () => {
               type="button"
               disabled={uploadedFileNames.length === 0}
               className={`inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${uploadedFileNames.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+              onClick={handleSubmitFile}
             >
               Create
             </button>
