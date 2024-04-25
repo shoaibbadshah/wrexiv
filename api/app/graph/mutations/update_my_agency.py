@@ -24,7 +24,7 @@ class UpdateMyAgency(graphene.Mutation):
 
     def mutate(self, info, input):
         if g.get("current_user") is None:
-            return GraphQLError("User must be logged in to create an agency")
+            return GraphQLError("User must be logged in to update an agency")
         
         if g.get("current_agency") is None:
             return GraphQLError("User is not associated with an agency")
