@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from firebase_admin import storage
+import time
 
 def handle_upload_documents():
     documents = request.files.getlist("documents")
@@ -14,9 +15,13 @@ def handle_upload_documents():
     try:
         bucket = storage.bucket("globaltalentdb.appspot.com")
         for document in documents:
+            name = "".join(document.filename.split(".")[:-1])
+            ext = document.filename.split(".")[-1]
+            document.filename = f"talent_document_import/{name}-{time.time()}.{ext}"
             blob = bucket.blob(document.filename)
             blob.upload_from_string(document.read())
-        return jsonify({"message": "Upload documents success", "success": True, "documents": [document.filename for document in documents], "count": len(documents)}), 200
+        count = len(documents)
+        return jsonify({"message": f"Upload {count} document(s) success", "success": True, "documents": [document.filename for document in documents], "count": count}), 200
         
     except Exception as e:
-        return jsonify({"message": f"An error occurred ({e.__class__}): {e}", "success": False}), 500
+        return jsonify({"message": f"An error occurred: {e}", "success": False}), 500
