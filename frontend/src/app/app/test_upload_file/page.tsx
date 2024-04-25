@@ -10,6 +10,10 @@ const AppTopPage = () => {
 
   const [uploadedFileNames, setUploadedFileNames] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
+  const [message, setMessage] = useState<{
+    success: boolean;
+    content: string;
+  } | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
@@ -29,11 +33,25 @@ const AppTopPage = () => {
   };
 
   const handleSubmitFile = () => {
+    setMessage(null);
     const formData = new FormData();
     files.forEach(file => {
       formData.append("documents", file);
     });
-    axios.post(`${API_URL}/upload_documents`, formData);
+    axios
+      .post(`${API_URL}/upload_documents`, formData)
+      .then(response => {
+        setMessage({
+          success: response.data.success,
+          content: response.data.message,
+        });
+      })
+      .catch(error => {
+        setMessage({
+          success: false,
+          content: error.response.data.message || "An error occurred",
+        });
+      });
   };
 
   return (
@@ -117,7 +135,18 @@ const AppTopPage = () => {
         </div>
 
         {/* Action buttons */}
-        <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
+        <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6 flex flex-row justify-between">
+          <div className="flex items-center">
+            {message && (
+              <div
+                className={`text-sm font-semibold ${
+                  message.success ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {message.content}
+              </div>
+            )}
+          </div>
           <div className="flex justify-end space-x-3">
             <button
               type="button"
