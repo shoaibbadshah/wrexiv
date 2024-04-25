@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import ApplicationLayoutUserMenu from "./ApplicationLayoutUserMenu";
@@ -9,30 +9,28 @@ import ApplicationLayoutMobileMenuButton from "./ApplicationLayoutMobileMenuButt
 import Link from "next/link";
 import { navigation } from "./navigation";
 import { usePathname, useRouter } from "next/navigation";
-import useCurrentTenantUser from "@/hooks/useCurrentTenant";
-import { FIRST_APP_PAGE } from "@/constants/urls";
-import { useTalentProfilesQuery } from "@/graphql/generated";
+import { FIRST_APP_PAGE, GET_STARTED_URL } from "@/constants/urls";
+import { useMyAgencyUserQuery } from "@/graphql/generated";
 
 type Props = {
   children: ReactNode;
 };
 
-const INITIALIZE_PAGE = "/app/tenant/new";
-
 export default function ApplicationLayout({ children }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-  const { data, loading } = useTalentProfilesQuery({
+  const { data, loading } = useMyAgencyUserQuery({
     fetchPolicy: "network-only",
   });
 
-  /* if (!loading && !isInitialized && pathname !== INITIALIZE_PAGE) {
-    router.replace(INITIALIZE_PAGE);
-  }
-
-  if (isInitialized && pathname === INITIALIZE_PAGE) {
-    router.replace(FIRST_APP_PAGE);
-  } */
+  useEffect(() => {
+    if (!loading && !data?.myAgencyUser && pathname !== GET_STARTED_URL) {
+      router.replace(GET_STARTED_URL);
+    }
+    if (!loading && data?.myAgencyUser && pathname === GET_STARTED_URL) {
+      router.replace(FIRST_APP_PAGE);
+    }
+  }, [loading, data, pathname, router]);
 
   return (
     <div className="flex h-[100vh] max-h-[100vh] overflow-hidden">
