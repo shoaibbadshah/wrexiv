@@ -19,7 +19,7 @@ class TalentDocumentImport(db.Model):
     )
 
     talent_document_id = Column(UUIDType(binary=False), ForeignKey("talent_documents.id"), nullable=False)
-    talent_document = relationship("TalentDocument", back_populates="talent_document_import", uselist=False)
+    talent_document = relationship("TalentDocument", backref="talent_document_import")
 
     def __repr__(self):
         return f"<TalentDocumentImport {self.id}>"

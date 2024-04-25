@@ -24,7 +24,7 @@ class TalentDocument(db.Model):
     )
 
     talent_profile_id = Column(UUIDType(binary=False), ForeignKey("talent_profiles.id"), nullable=False)
-    talent_profile = relationship("TalentProfile", back_populates="talent_document", uselist=False)
+    talent_profile = relationship("TalentProfile", backref="talent_document")
 
     def __repr__(self):
         return f"<TalentDocument {self.name}>"
