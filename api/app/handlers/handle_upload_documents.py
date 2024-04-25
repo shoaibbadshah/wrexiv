@@ -16,7 +16,7 @@ def handle_upload_documents():
         for document in documents:
             blob = bucket.blob(document.filename)
             blob.upload_from_string(document.read())
-        return jsonify({"message": "Upload documents endpoint", "success": True, "documents": [document.filename for document in documents], "count": len(documents)}), 200
+        return jsonify({"message": "Upload documents success", "success": True, "documents": [document.filename for document in documents], "count": len(documents)}), 200
         
     except Exception as e:
         return jsonify({"message": f"An error occurred ({e.__class__}): {e}", "success": False}), 500
