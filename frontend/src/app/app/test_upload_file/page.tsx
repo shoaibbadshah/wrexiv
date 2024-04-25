@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
 const AppTopPage = () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const axiosAuth = useAxiosAuth();
 
   const [uploadedFileNames, setUploadedFileNames] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
@@ -29,6 +29,7 @@ const AppTopPage = () => {
     index: number
   ) => {
     event.preventDefault();
+    setFiles(prev => prev.filter((_, i) => i !== index));
     setUploadedFileNames(prev => prev.filter((_, i) => i !== index));
   };
 
@@ -38,8 +39,8 @@ const AppTopPage = () => {
     files.forEach(file => {
       formData.append("documents", file);
     });
-    axios
-      .post(`${API_URL}/upload_documents`, formData)
+    axiosAuth
+      .post("/upload_documents", formData)
       .then(response => {
         setMessage({
           success: response.data.success,
