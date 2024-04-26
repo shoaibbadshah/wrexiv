@@ -38,10 +38,14 @@ class DocumentType(Enum):
     WORD = 2
 
 def store_document(document: FileStorage) -> str:
-    bucket = storage.bucket("globaltalentdb.appspot.com")
-    name = "".join(document.filename.split(".")[:-1])
-    ext = document.filename.split(".")[-1]
-    document.filename = f"talent_document_import/{name}-{time.time()}.{ext}"
+    BUCKET_NAME = "globaltalentdb.appspot.com"
+    DOCUMENT_FOLDER_NAME = "talent_document_import"
+
+    bucket = storage.bucket(BUCKET_NAME)
+    splitted_document_filename = document.filename.split(".")
+    name = "".join(splitted_document_filename[:-1])
+    ext = splitted_document_filename[-1]
+    document.filename = f"{DOCUMENT_FOLDER_NAME}/{name}-{time.time()}.{ext}"
 
     blob = bucket.blob(document.filename)
     doc_bytes_io = io.BytesIO()
