@@ -25,3 +25,5 @@ factory_boy
 langchain-community
 docx2txt
 pypdf
+aiodataloader 
+Flask[async]
