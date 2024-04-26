@@ -1,7 +1,7 @@
 from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
 from app.models.user import User
-from app.graph.dataloader.agency_user_loader import AgencyUserLoader
+from app.graph.dataloaders.agency_user_loader import AgencyUserLoader
 import firebase_admin
 from firebase_admin import credentials, auth as firebase_auth
 from flask import g, request, abort
