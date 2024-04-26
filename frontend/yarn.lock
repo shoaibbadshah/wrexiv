@@ -86,9 +86,9 @@
     node-fetch "^2.6.1"
 
 "@aws-amplify/auth@^6.0.3":
-  version "6.0.27"
-  resolved "https://registry.npmjs.org/@aws-amplify/auth/-/auth-6.0.27.tgz#2abf0921107f2afe7ae8a488f4e85173aa18af20"
-  integrity sha512-qhoPTPuvErX7EIDcwM0u8Jt4PipJcohc9Y+veEm9sV9SP2Sop37RubpiaDaQhXnFcKvB0wTYknUTZvs3TujHRw==
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/auth/-/auth-6.2.1.tgz#576345794e639dee7cb118a1d3effe3d7a8260aa"
+  integrity sha512-LvLVHCIu0w6bReD4l28AWQ9ZCXVKwPQ2cIyP3KQ+uRRgemL5O+7X2HJEeoe5rNwoa1VRTDEZiuBhJlkQVtnYsA==
   dependencies:
     tslib "^2.5.0"
 
