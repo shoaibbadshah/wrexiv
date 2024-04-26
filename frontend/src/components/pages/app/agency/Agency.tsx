@@ -8,18 +8,21 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
+
 interface IAgencySettingsForm {
-  agencyName: string;
+  name: string;
 }
+
+const initialSetupSchema: ZodType<IAgencySettingsForm> = z.object({
+  name: z.string().min(1, "Agency name is required"),
+});
 
 const Agency = () => {
   const [
     updateMyAgency,
     { error, reset, data: mutationData, loading: mutationLoading },
   ] = useUpdateMyAgencyMutation();
-  const initialSetupSchema: ZodType<IAgencySettingsForm> = z.object({
-    agencyName: z.string().min(1, "Agency name is required"),
-  });
+
   const { data, loading, refetch } = useMyAgencyUserQuery();
 
   const {
@@ -33,17 +36,14 @@ const Agency = () => {
   const onSubmit = async (params: IAgencySettingsForm) => {
     reset();
 
-    const { agencyName } = params;
-
-    if (agencyName == data?.myAgencyUser?.agency?.name) {
+    // Do not submit if the agency name is the same as the current agency name
+    if (params.name == data?.myAgencyUser?.agency?.name) {
       return;
     }
 
     updateMyAgency({
       variables: {
-        input: {
-          name: agencyName,
-        },
+        input: params
       },
       onCompleted: () => {
         refetch();
@@ -62,21 +62,21 @@ const Agency = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label
-              htmlFor="agencyName"
+              htmlFor="name"
               className="block text-sm font-medium mb-1"
             >
               Agency Name
             </label>
             <input
-              id="agencyName"
+              id="name"
               type="text"
-              {...register("agencyName")}
+              {...register("name")}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
               defaultValue={data?.myAgencyUser?.agency?.name}
               disabled={loading}
             />
-            {errors.agencyName && (
-              <p className="mt-1 text-red-500">{errors.agencyName.message}</p>
+            {errors.name && (
+              <p className="mt-1 text-red-500">{errors.name.message}</p>
             )}
           </div>
           {error && <div className="text-red-500">{error.message}</div>}

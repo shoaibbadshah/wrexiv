@@ -10,17 +10,22 @@ import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
 
 interface IAgencyUserSettingsForm {
-  agencyUserName: string;
+  agencyUser: {
+    name: string;
+  };
 }
+
+const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
+  agencyUser: z.object({
+    name: z.string().min(1, "Agency user name is required"),
+  }),
+});
 
 const AgencyUser = () => {
   const [
     updateMyAgency,
     { error, reset, data: mutationData, loading: mutationLoading },
   ] = useUpdateMyAgencyMutation();
-  const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
-    agencyUserName: z.string().min(1, "Agency name is required"),
-  });
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
 
@@ -35,19 +40,14 @@ const AgencyUser = () => {
   const onSubmit = async (params: IAgencyUserSettingsForm) => {
     reset();
 
-    const { agencyUserName } = params;
-
-    if (agencyUserName == data?.myAgencyUser?.name) {
+    // Do not submit if the agency user name is the same as the current agency user name
+    if (params.agencyUser.name == data?.myAgencyUser?.name) {
       return;
     }
 
     updateMyAgency({
       variables: {
-        input: {
-          agencyUser: {
-            name: agencyUserName,
-          },
-        },
+        input: params,
       },
       onCompleted: () => {
         refetch();
@@ -66,24 +66,24 @@ const AgencyUser = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label
-              htmlFor="agencyUserName"
+              htmlFor="agencyUser.name"
               className="block text-sm font-medium mb-1"
             >
               Agency User Name
             </label>
             <input
-              id="agencyUserName"
+              id="agencyUser.name"
               type="text"
-              {...register("agencyUserName", {
+              {...register("agencyUser.name", {
                 required: "Agency name is required",
               })}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
               defaultValue={data?.myAgencyUser?.name}
               disabled={loading}
             />
-            {errors.agencyUserName && (
+            {errors.agencyUser?.name?.message && (
               <p className="mt-1 text-red-500">
-                {errors.agencyUserName.message}
+                {errors.agencyUser.name.message}
               </p>
             )}
           </div>

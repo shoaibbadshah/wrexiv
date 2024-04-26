@@ -1,5 +1,5 @@
 import graphene
-from app.graph.types.agency_user_type import AgencyUserType
+from app.graph.types.agency_type import AgencyType
 from graphql import GraphQLError
 from flask import g
 from app.models.agency import Agency
@@ -20,7 +20,7 @@ class UpdateMyAgency(graphene.Mutation):
 
     success = graphene.Boolean()
     message = graphene.String()
-    agencyUser = graphene.Field(AgencyUserType)
+    agency = graphene.Field(AgencyType)
 
     def mutate(self, info, input):
         if g.get("current_user") is None:
@@ -30,12 +30,12 @@ class UpdateMyAgency(graphene.Mutation):
             return GraphQLError("User is not associated with an agency")
 
         try:
-            if input.get("name"):
-                Agency.query.filter_by(id=g.current_agency.id).update({"name": input.name})
-                g.current_agency.name = input.name
-            if input.get("agencyUser") and input.agencyUser.get("name"):
-                AgencyUser.query.filter_by(id=g.current_agency_user.id).update({"name": input.agencyUser.name})
-                g.current_agency_user.name = input.agencyUser.name
+            # Update the agency
+            Agency.query.filter_by(id=g.current_agency.id).update({"name": input.get("name", g.current_agency.name)})
+
+            # Update the agency user
+            if input.get("agencyUser"):
+                AgencyUser.query.filter_by(id=g.current_agency_user.id).update({"name": input.agencyUser.get("name", g.current_agency_user.name)})
                 
             db.session.commit()
 
@@ -43,5 +43,5 @@ class UpdateMyAgency(graphene.Mutation):
             db.session.rollback()
             raise e
 
-        return UpdateMyAgency(success=True, message="Agency updated successfully", agencyUser=g.current_agency_user)
+        return UpdateMyAgency(success=True, message="Agency updated successfully")
 
