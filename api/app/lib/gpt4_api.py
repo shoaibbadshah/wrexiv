@@ -2,7 +2,7 @@ from openai import OpenAI
 from app.constants.gpt_functions import COVER_LETTER_EXTRACTION
 from flask import abort
 import json
-import sys
+import logging
 
 client = OpenAI()
 
@@ -43,5 +43,5 @@ Here is the extracted text:
         json_data = json.loads(response.choices[0].message.tool_calls[0].function.arguments)
         return json_data
     except Exception as e:
-        print(f"Unexpected error while parsing JSON from GPT-4: {e}", file=sys.stderr)
+        logging.error(f"Unexpected error while parsing JSON from GPT-4: {e}")
         abort(500, description="Failed to extract job seekers information from the document")
