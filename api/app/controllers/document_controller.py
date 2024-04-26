@@ -24,7 +24,7 @@ def process_document(document: FileStorage):
     db.session.add(talent_profile)
     db.session.flush()
     
-    talent_document = TalentDocument(talent_profile_id=talent_profile.id, name=document_name, kind="cover_letter", json=str(document_json))
+    talent_document = TalentDocument(talent_profile_id=talent_profile.id, name=document_name, kind="cover_letter", json=str(document_json), agency_id=g.current_agency.id)
     db.session.add(talent_document)
     db.session.flush()
     
