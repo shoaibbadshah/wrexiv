@@ -14,6 +14,7 @@ const AppTopPage = () => {
     success: boolean;
     content: string;
   } | null>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
@@ -39,6 +40,8 @@ const AppTopPage = () => {
     files.forEach(file => {
       formData.append("documents", file);
     });
+
+    setIsUploading(true);
     axiosAuth
       .post("/upload_documents", formData)
       .then(response => {
@@ -52,6 +55,9 @@ const AppTopPage = () => {
           success: false,
           content: error.response.data.message || "An error occurred",
         });
+      })
+      .finally(() => {
+        setIsUploading(false);
       });
   };
 
@@ -138,15 +144,22 @@ const AppTopPage = () => {
         {/* Action buttons */}
         <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6 flex flex-row justify-between">
           <div className="flex items-center max-w-[60%] sm:max-w-[75%] md:max-w-[80%] overflow-hidden">
-            {message && (
-              <div
-                className={`text-sm font-semibold ${
-                  message.success ? "text-green-600" : "text-red-600"
-                }`}
-              >
-                {message.content}
-              </div>
-            )}
+            <div className="text-sm font-semibold ">
+              {message && (
+                <span
+                  className={`${
+                    message.success ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {message.content}
+                </span>
+              )}
+              {isUploading && (
+                <span className={`${"text-yellow-600"}`}>
+                  Uploading files...
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex justify-end space-x-3">
             <button
