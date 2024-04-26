@@ -43,7 +43,7 @@ const Agency = () => {
 
     updateMyAgency({
       variables: {
-        input: params
+        input: params,
       },
       onCompleted: () => {
         refetch();
@@ -61,10 +61,7 @@ const Agency = () => {
         <h1 className="font-bold text-xl mb-4">Agency</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium mb-1"
-            >
+            <label htmlFor="name" className="block text-sm font-medium mb-1">
               Agency Name
             </label>
             <input
