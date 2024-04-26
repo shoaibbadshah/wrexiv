@@ -164,78 +164,16 @@ COVER_LETTER_EXTRACTION = [
                         "type": "string",
                         "description": "Job seeker's LinkedIn profile",
                     },
-                    "github": {
-                        "type": "string",
-                        "description": "Job seeker's GitHub profile",
-                    },
                     "website": {
                         "type": "string",
                         "description": "Job seeker's personal website",
                     },
-                    "summary": {
+                    "bio": {
                         "type": "string",
-                        "description": "Job seeker's summary",
-                    },
-                    "experience": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "title": {
-                                    "type": "string",
-                                    "description": "Job title",
-                                },
-                                "company": {
-                                    "type": "string",
-                                    "description": "Company name",
-                                },
-                                "start_date": {
-                                    "type": "string",
-                                    "description": "Start date",
-                                },
-                                "end_date": {
-                                    "type": "string",
-                                    "description": "End date",
-                                },
-                                "description": {
-                                    "type": "string",
-                                    "description": "Job description",
-                                },
-                            },
-                            "required": ["company"],
-                        },
-                    },
-                    "education": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "degree": {
-                                    "type": "string",
-                                    "description": "Degree",
-                                },
-                                "school": {
-                                    "type": "string",
-                                    "description": "School name",
-                                },
-                                "start_date": {
-                                    "type": "string",
-                                    "description": "Start date",
-                                },
-                                "end_date": {
-                                    "type": "string",
-                                    "description": "End date",
-                                },
-                                "description": {
-                                    "type": "string",
-                                    "description": "Education description",
-                                },
-                            },
-                            "required": ["school"],
-                        },
+                        "description": "Job seeker's bio or summary written in the cover letter",
                     },
                 },
-                "required": ["name", "address", "email", "phone", "linkedin", "github", "website", "summary", "experience", "education"],
+                "required": ["name", "address", "email", "phone", "linkedin", "github", "website", "bio"],
             },
         }
     }

@@ -9,7 +9,6 @@ client = OpenAI()
 def document_text_to_json(document_text: str):
     prompt = """
 I extracted text from a document. Please extract job seekers information from the text.
-Don't make any assumptions about the text. Set the parameters to null if the information is not available.
 
 Here is the extracted text:
 
@@ -17,14 +16,25 @@ Here is the extracted text:
     
     response = client.chat.completions.create(
         model="gpt-4-turbo",
-        messages=[
-            {"role": "user", "content": [
+        messages=[{
+            "role": "system", 
+            "content": [
+                {
+                    "type": "text", 
+                    "text": "You are a system to extract job seekers information from the document." \
+                            + "Don't make any assumptions about the text. Set the parameters to null if the information is not available."
+                }
+            ]},
+        {
+            "role": "user",
+            "content": [
                 {
                     "type": "text",
                     "text": prompt,
                 },
-            ]},
-        ],
+            ]
+        },
+    ],
         tools=COVER_LETTER_EXTRACTION,
         tool_choice={"type": "function", "function": {"name": "cover_letter_extraction"}},
     )
@@ -33,5 +43,5 @@ Here is the extracted text:
         json_data = json.loads(response.choices[0].message.tool_calls[0].function.arguments)
         return json_data
     except Exception as e:
-        print(e, file=sys.stderr)
+        print(f"Unexpected error while parsing JSON from GPT-4: {e}", file=sys.stderr)
         abort(500, description="Failed to extract job seekers information from the document")

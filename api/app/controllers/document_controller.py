@@ -21,7 +21,7 @@ def process_document(document: FileStorage):
 
     document_json = document_text_to_json(text)
 
-    talent_profile = TalentProfile(agency_id=g.current_agency.id, name=document_json.get("name"), bio=document_json.get("summary"))
+    talent_profile = TalentProfile(agency_id=g.current_agency.id, name=document_json.get("name"), bio=document_json.get("bio"))
     db.session.add(talent_profile)
     db.session.flush()
     
