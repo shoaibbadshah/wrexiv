@@ -8,16 +8,21 @@ import { ZodType, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface INewUserFormInput {
-  agencyName: string;
-  agencyUserName: string;
+  name: string;
+  agencyUser: {
+    name: string;
+  };
 }
+
+const initialSetupSchema: ZodType<INewUserFormInput> = z.object({
+  name: z.string().min(1, "Agency name is required"),
+  agencyUser: z.object({
+    name: z.string().min(1, "Agency user name is required"),
+  }),
+});
 
 const InitialSetupForm = () => {
   const [createAgency, { error, reset }] = useCreateAgencyMutation();
-  const initialSetupSchema: ZodType<INewUserFormInput> = z.object({
-    agencyName: z.string().min(1, "Agency name is required"),
-    agencyUserName: z.string().min(1, "Agency user name is required"),
-  });
 
   const {
     register,
@@ -30,20 +35,15 @@ const InitialSetupForm = () => {
   const onSubmit = (params: INewUserFormInput) => {
     reset();
 
-    const { agencyName, agencyUserName } = initialSetupSchema.parse(params);
-
     createAgency({
       variables: {
-        input: {
-          name: agencyName,
-          agencyUser: {
-            name: agencyUserName,
-          },
-        },
+        input: params,
       },
-      onCompleted: () => {
-        // use window.location.href to perform a full page reload
-        window.location.href = FIRST_APP_PAGE;
+      onCompleted: data => {
+        if (data.createAgency?.success) {
+          // use window.location.href to perform a full page reload
+          window.location.href = FIRST_APP_PAGE;
+        }
       },
       onError: () => {
         // do nothing
@@ -60,38 +60,35 @@ const InitialSetupForm = () => {
       </div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label
-            htmlFor="agencyName"
-            className="block text-sm font-medium mb-1"
-          >
+          <label htmlFor="name" className="block text-sm font-medium mb-1">
             Agency Name
           </label>
           <input
-            id="agencyName"
+            id="name"
             type="text"
-            {...register("agencyName")}
+            {...register("name")}
             className="border px-3 py-2 rounded w-full"
           />
-          {errors.agencyName && (
-            <p className="mt-1 text-red-500">{errors.agencyName.message}</p>
+          {errors.name?.message && (
+            <p className="mt-1 text-red-500">{errors.name.message}</p>
           )}
         </div>
         <div>
           <label
-            htmlFor="agencyName"
+            htmlFor="agencyUser.name"
             className="block text-sm font-medium mb-1"
           >
             Agency User Name
           </label>
           <input
-            id="agencyUserName"
+            id="agencyUser.name"
             type="text"
-            {...register("agencyUserName")}
+            {...register("agencyUser.name")}
             className="border px-3 py-2 rounded w-full"
           />
-          {errors.agencyName && (
+          {errors.agencyUser?.name?.message && (
             <p className="mt-1 text-red-500">
-              {errors.agencyUserName?.message}
+              {errors.agencyUser.name.message}
             </p>
           )}
         </div>

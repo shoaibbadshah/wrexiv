@@ -44,7 +44,8 @@ export type AgencyUserType = {
 
 export type CreateAgency = {
   __typename?: "CreateAgency";
-  agencyUser?: Maybe<AgencyUserType>;
+  agency?: Maybe<AgencyType>;
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type CreateAgencyInput = {
@@ -157,22 +158,7 @@ export type CreateAgencyMutation = {
   __typename?: "Mutation";
   createAgency?: {
     __typename?: "CreateAgency";
-    agencyUser?: {
-      __typename?: "AgencyUserType";
-      id: any;
-      name: string;
-      createdAt: any;
-      updatedAt: any;
-      agencyId: any;
-      userId: any;
-      agency?: {
-        __typename?: "AgencyType";
-        id: any;
-        name: string;
-        createdAt: any;
-        updatedAt: any;
-      } | null;
-    } | null;
+    success?: boolean | null;
   } | null;
 };
 
@@ -304,20 +290,7 @@ export type MyAgencyUserQueryResult = Apollo.QueryResult<
 export const CreateAgencyDocument = gql`
   mutation CreateAgency($input: CreateAgencyInput!) {
     createAgency(input: $input) {
-      agencyUser {
-        id
-        name
-        createdAt
-        updatedAt
-        agencyId
-        userId
-        agency {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-      }
+      success
     }
   }
 `;

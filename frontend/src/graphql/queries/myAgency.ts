@@ -22,20 +22,7 @@ const MY_AGENCY_USER = gql`
 const CREATE_AGENCY_USER = gql`
   mutation CreateAgency($input: CreateAgencyInput!) {
     createAgency(input: $input) {
-      agencyUser {
-        id
-        name
-        createdAt
-        updatedAt
-        agencyId
-        userId
-        agency {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-      }
+      success
     }
   }
 `;
