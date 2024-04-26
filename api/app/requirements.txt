@@ -22,3 +22,6 @@ pytest-cov
 pytest-flask
 pytest-flask-sqlalchemy
 factory_boy
+langchain-community
+docx2txt
+pypdf
