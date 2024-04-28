@@ -33,7 +33,7 @@ const Agency = () => {
     resolver: zodResolver(initialSetupSchema),
   });
 
-  const onSubmit = async (params: IAgencySettingsForm) => {
+  const onSubmit = (params: IAgencySettingsForm) => {
     reset();
 
     // Do not submit if the agency name is the same as the current agency name
@@ -88,7 +88,7 @@ const Agency = () => {
           </div>
           {mutationData?.updateMyAgency?.success && (
             <div className="text-green-500">
-              {mutationData?.updateMyAgency?.message}
+              {mutationData.updateMyAgency.message}
             </div>
           )}
         </form>
