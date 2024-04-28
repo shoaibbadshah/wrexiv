@@ -1,11 +1,11 @@
-from app.graph.types.agency_type import AgencyType
 from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
+from app.graph.types.agency_type import AgencyType
 import graphene
 from app import db
 from sqlalchemy.exc import SQLAlchemyError
 from flask import g
-
+from graphql import GraphQLError
 
 class CreateAgencyUserInput(graphene.InputObjectType):
     name = graphene.String(required=True)
@@ -13,7 +13,6 @@ class CreateAgencyUserInput(graphene.InputObjectType):
 
 class CreateAgencyInput(graphene.InputObjectType):
     name = graphene.String(required=True)
-    website = graphene.String()
     agencyUser = CreateAgencyUserInput(required=True)
 
 
@@ -22,11 +21,14 @@ class CreateAgency(graphene.Mutation):
         input = CreateAgencyInput(required=True)
 
     agency = graphene.Field(AgencyType)
+    success = graphene.Boolean()
 
     def mutate(self, info, input):
-        # g.current_agency で例外を吐いてしまう
-        # if g.current_agency:
-        #     return g.current_agency
+        if g.get("current_user") is None:
+            return GraphQLError("User must be logged in to create an agency")
+        
+        if g.get("current_agency") is not None:
+            return GraphQLError("User is already associated with an agency")
 
         try:
             new_agency = Agency(name=input.name)
@@ -45,4 +47,4 @@ class CreateAgency(graphene.Mutation):
             db.session.rollback()
             raise e
 
-        return CreateAgency(agency=new_agency)
+        return CreateAgency(agency=new_agency, success=True)
