@@ -45,7 +45,7 @@ jobs:
                 prettier_flags: "src/**/*.{js,jsx,ts,tsx}"
                 fail_on_error: false
             - name: Run ReviewDog Stylelint
-              uses: reviewdog/action-stylelint@v1.20.0
+              uses: reviewdog/action-stylelint@v1.23.0
               with:
                   reporter: github-pr-review
                   workdir: frontend
