@@ -3108,7 +3108,7 @@
 
 "@types/json-patch@0.0.30":
   version "0.0.30"
-  resolved "https://registry.npmjs.org/@types/json-patch/-/json-patch-0.0.30.tgz#7c562173216c50529e70126ceb8e7a533f865e9b"
+  resolved "https://registry.yarnpkg.com/@types/json-patch/-/json-patch-0.0.30.tgz#7c562173216c50529e70126ceb8e7a533f865e9b"
   integrity sha512-MhCUjojzDhVLnZnxwPwa+rETFRDQ0ffjxYdrqOP6TBO2O0/Z64PV5tNeYApo4bc4y4frbWOrRwv/eEkXlI13Rw==
 
 "@types/json-schema@*", "@types/json-schema@^7.0.8":
@@ -4740,9 +4740,9 @@ contentful-management@^10.40.1:
     type-fest "^4.0.0"
 
 contentful-management@^11.0.1, contentful-management@^11.25.0:
-  version "11.25.0"
-  resolved "https://registry.npmjs.org/contentful-management/-/contentful-management-11.25.0.tgz#3b9689871dafde9f32c44b889736f061cc5508d8"
-  integrity sha512-w5OqoCSzHbKXzGvgjGcQL7zCW2AKHRvSPJ5cMAAdLvPmY9vbJXXv8IucEEiAZO5yS6RUL1Pc7KXASqSnUyHoIw==
+  version "11.25.2"
+  resolved "https://registry.yarnpkg.com/contentful-management/-/contentful-management-11.25.2.tgz#1f7ad4342b9cdf77f7f45566d695c5b7d3ca6860"
+  integrity sha512-09KfIs3il8OFHzY+d2Vvq+2Jfgk8ISOKjTs3MFqqcc3Ae94T1pji8ZaHXZ6dlb9lLZT6kFYRE9aiDNUuL2Vjbg==
   dependencies:
     "@contentful/rich-text-types" "^16.3.0"
     "@types/json-patch" "0.0.30"
@@ -5727,7 +5727,7 @@ fast-copy@^2.1.7:
 
 fast-copy@^3.0.0:
   version "3.0.2"
-  resolved "https://registry.npmjs.org/fast-copy/-/fast-copy-3.0.2.tgz#59c68f59ccbcac82050ba992e0d5c389097c9d35"
+  resolved "https://registry.yarnpkg.com/fast-copy/-/fast-copy-3.0.2.tgz#59c68f59ccbcac82050ba992e0d5c389097c9d35"
   integrity sha512-dl0O9Vhju8IrcLndv2eU4ldt1ftXMqqfgN4H1cpmGV7P6jeB9FwpN9a2c8DPGE1Ys88rNUJVYDHq73CGAGOPfQ==
 
 fast-decode-uri-component@^1.0.1:
@@ -5980,7 +5980,7 @@ flatted@^3.2.9:
 
 follow-redirects@^1.15.6:
   version "1.15.6"
-  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
   integrity sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==
 
 for-each@^0.3.3:
@@ -8847,7 +8847,7 @@ protobufjs@^7.0.0, protobufjs@^7.2.4, protobufjs@^7.2.5:
 
 proxy-from-env@^1.1.0:
   version "1.1.0"
-  resolved "https://registry.npmjs.org/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
+  resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
   integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
 pseudomap@^1.0.1:
