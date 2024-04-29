@@ -1,10 +1,12 @@
-from app.graph.mutations.create_talent_profile import CreateTalentProfile
 import graphene
+
+from app.graph.mutations.create_agency import CreateAgency
+from app.graph.mutations.create_talent_profile import CreateTalentProfile
 
 from app.graph.resolvers.me_resolver import MeResolver
 from app.graph.resolvers.talent_profiles_resolver import TalentProfilesResolver
+from app.graph.resolvers.my_agency_user_resolver import MyAgencyUserResolver
 
-from app.graph.mutations.create_agency import CreateAgency
 
 
 class Mutation(graphene.ObjectType):
@@ -15,6 +17,8 @@ class Mutation(graphene.ObjectType):
 class Query(
     MeResolver,
     TalentProfilesResolver,
+    MyAgencyUserResolver,
+
     graphene.ObjectType,
 ):
     pass

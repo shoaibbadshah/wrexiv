@@ -31,15 +31,26 @@ export type AgencyType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type AgencyUserType = {
+  __typename?: "AgencyUserType";
+  agency?: Maybe<AgencyType>;
+  agencyId: Scalars["UUID"];
+  createdAt: Scalars["DateTime"];
+  id: Scalars["UUID"];
+  name: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+  userId: Scalars["UUID"];
+};
+
 export type CreateAgency = {
   __typename?: "CreateAgency";
   agency?: Maybe<AgencyType>;
+  success?: Maybe<Scalars["Boolean"]>;
 };
 
 export type CreateAgencyInput = {
   agencyUser: CreateAgencyUserInput;
   name: Scalars["String"];
-  website?: InputMaybe<Scalars["String"]>;
 };
 
 export type CreateAgencyUserInput = {
@@ -73,6 +84,7 @@ export type MutationCreateTalentProfileArgs = {
 
 export type Query = {
   __typename?: "Query";
+  myAgencyUser?: Maybe<AgencyUserType>;
   talentProfiles?: Maybe<Array<Maybe<TalentProfileType>>>;
   user?: Maybe<UserType>;
 };
@@ -95,6 +107,40 @@ export type UserType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type MyAgencyUserQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MyAgencyUserQuery = {
+  __typename?: "Query";
+  myAgencyUser?: {
+    __typename?: "AgencyUserType";
+    id: any;
+    name: string;
+    createdAt: any;
+    updatedAt: any;
+    agencyId: any;
+    userId: any;
+    agency?: {
+      __typename?: "AgencyType";
+      id: any;
+      name: string;
+      createdAt: any;
+      updatedAt: any;
+    } | null;
+  } | null;
+};
+
+export type CreateAgencyMutationVariables = Exact<{
+  input: CreateAgencyInput;
+}>;
+
+export type CreateAgencyMutation = {
+  __typename?: "Mutation";
+  createAgency?: {
+    __typename?: "CreateAgency";
+    success?: boolean | null;
+  } | null;
+};
+
 export type TalentProfilesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type TalentProfilesQuery = {
@@ -103,8 +149,6 @@ export type TalentProfilesQuery = {
     __typename?: "TalentProfileType";
     id: any;
     name: string;
-    bio?: string | null;
-    avatar?: string | null;
     createdAt: any;
     updatedAt: any;
   } | null> | null;
@@ -122,8 +166,6 @@ export type CreateTalentProfileMutation = {
       __typename?: "TalentProfileType";
       id: any;
       name: string;
-      bio?: string | null;
-      avatar?: string | null;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -143,13 +185,129 @@ export type MeQuery = {
   } | null;
 };
 
+export const MyAgencyUserDocument = gql`
+  query myAgencyUser {
+    myAgencyUser {
+      id
+      name
+      createdAt
+      updatedAt
+      agencyId
+      userId
+      agency {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useMyAgencyUserQuery__
+ *
+ * To run a query within a React component, call `useMyAgencyUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyAgencyUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyAgencyUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyAgencyUserQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    MyAgencyUserQuery,
+    MyAgencyUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<MyAgencyUserQuery, MyAgencyUserQueryVariables>(
+    MyAgencyUserDocument,
+    options
+  );
+}
+export function useMyAgencyUserLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MyAgencyUserQuery,
+    MyAgencyUserQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<MyAgencyUserQuery, MyAgencyUserQueryVariables>(
+    MyAgencyUserDocument,
+    options
+  );
+}
+export type MyAgencyUserQueryHookResult = ReturnType<
+  typeof useMyAgencyUserQuery
+>;
+export type MyAgencyUserLazyQueryHookResult = ReturnType<
+  typeof useMyAgencyUserLazyQuery
+>;
+export type MyAgencyUserQueryResult = Apollo.QueryResult<
+  MyAgencyUserQuery,
+  MyAgencyUserQueryVariables
+>;
+export const CreateAgencyDocument = gql`
+  mutation CreateAgency($input: CreateAgencyInput!) {
+    createAgency(input: $input) {
+      success
+    }
+  }
+`;
+export type CreateAgencyMutationFn = Apollo.MutationFunction<
+  CreateAgencyMutation,
+  CreateAgencyMutationVariables
+>;
+
+/**
+ * __useCreateAgencyMutation__
+ *
+ * To run a mutation, you first call `useCreateAgencyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAgencyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAgencyMutation, { data, loading, error }] = useCreateAgencyMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateAgencyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateAgencyMutation,
+    CreateAgencyMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateAgencyMutation,
+    CreateAgencyMutationVariables
+  >(CreateAgencyDocument, options);
+}
+export type CreateAgencyMutationHookResult = ReturnType<
+  typeof useCreateAgencyMutation
+>;
+export type CreateAgencyMutationResult =
+  Apollo.MutationResult<CreateAgencyMutation>;
+export type CreateAgencyMutationOptions = Apollo.BaseMutationOptions<
+  CreateAgencyMutation,
+  CreateAgencyMutationVariables
+>;
 export const TalentProfilesDocument = gql`
   query TalentProfiles {
     talentProfiles {
       id
       name
-      bio
-      avatar
       createdAt
       updatedAt
     }
@@ -211,8 +369,6 @@ export const CreateTalentProfileDocument = gql`
       talentProfile {
         id
         name
-        bio
-        avatar
         createdAt
         updatedAt
       }
