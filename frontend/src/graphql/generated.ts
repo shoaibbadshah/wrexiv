@@ -149,6 +149,8 @@ export type TalentProfilesQuery = {
     __typename?: "TalentProfileType";
     id: any;
     name: string;
+    bio?: string | null;
+    avatar?: string | null;
     createdAt: any;
     updatedAt: any;
   } | null> | null;
@@ -166,6 +168,8 @@ export type CreateTalentProfileMutation = {
       __typename?: "TalentProfileType";
       id: any;
       name: string;
+      bio?: string | null;
+      avatar?: string | null;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -308,6 +312,8 @@ export const TalentProfilesDocument = gql`
     talentProfiles {
       id
       name
+      avatar
+      bio
       createdAt
       updatedAt
     }
@@ -369,6 +375,8 @@ export const CreateTalentProfileDocument = gql`
       talentProfile {
         id
         name
+        bio
+        avatar
         createdAt
         updatedAt
       }

@@ -6,25 +6,25 @@ import Image from "next/image";
 
 import TalentDeleteWarning from "./TalentDeleteWarning";
 import EditableImage from "@/components/molecules/EditableImage";
-import Talent from "@/types/TalentProfileType";
+import { TalentProfileType } from "@/graphql/generated";
 
 type PropsType = {
   open: boolean;
   handleOpen: (open: boolean) => void;
-  talent: Talent;
+  talent: TalentProfileType;
 };
 
 export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
   const [openDeleteWarning, setOpenDeleteWarning] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [data, setData] = useState<Talent>(talent);
+  const [data, setData] = useState<TalentProfileType>(talent);
 
-  const handleDelete = (talent: Talent) => {
+  const handleDelete = (talent: TalentProfileType) => {
     console.log(`Delete talent with name: ${talent.name}`);
     handleOpen(false);
   };
 
-  const handleEdit = (talent: Talent) => {
+  const handleEdit = (talent: TalentProfileType) => {
     console.log(`Edit talent with name: ${talent.name}`);
     setIsEditing(false);
   };
@@ -96,7 +96,7 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
                             <div className="w-full flex flex-col items-center justify-center">
                               <div className="relative h-56 w-56">
                                 <EditableImage
-                                  initialImage={data.avatar}
+                                  initialImage={data.avatar || ""}
                                   onImageChange={handleAvatarChange}
                                 />
                               </div>
@@ -121,7 +121,7 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
                                 <textarea
                                   name="bio"
                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                  value={data.bio}
+                                  value={data.bio || ""}
                                   onChange={e =>
                                     handleBioChange(e.target.value)
                                   }
@@ -137,7 +137,7 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
                               <div className="relative h-40 sm:h-56">
                                 <Image
                                   className="absolute h-full w-full object-cover"
-                                  src={data.avatar}
+                                  src={data.avatar || ""}
                                   alt={data.name}
                                   fill
                                   sizes="100%"

@@ -5,17 +5,21 @@ import Image from "next/image";
 import { useTalentProfilesQuery } from "@/graphql/generated";
 import TalentDetails from "./TalentDetails";
 import TalentAddForm from "./TalentAddForm";
-import Talent from "@/types/TalentProfileType";
+import { TalentProfileType } from "@/graphql/generated";
 
 const TalentProfiles = () => {
   const { data, loading, error } = useTalentProfilesQuery();
-  const talents = data?.talentProfiles as Talent[];
+  const talents = data?.talentProfiles as TalentProfileType[];
 
-  const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
+  const [selectedTalent, setSelectedTalent] =
+    useState<TalentProfileType | null>(null);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [openForm, setOpenForm] = useState<boolean>(false);
 
-  const handleOpenDetails = (open: boolean, talent: Talent | null = null) => {
+  const handleOpenDetails = (
+    open: boolean,
+    talent: TalentProfileType | null = null
+  ) => {
     setOpenDetails(open);
     setSelectedTalent(talent);
   };
@@ -81,7 +85,7 @@ const TalentProfiles = () => {
                           <div className="flex items-center">
                             <div className="h-11 w-11 flex-shrink-0">
                               <Image
-                                src={talent.avatar}
+                                src={talent.avatar || ""}
                                 alt={talent.name}
                                 width={44}
                                 height={44}
@@ -117,7 +121,10 @@ const TalentProfiles = () => {
       )}
 
       {openForm && (
-        <TalentAddForm open={openForm} handleOpen={handleOpenForm} />
+        <TalentAddForm
+          open={openForm}
+          handleClose={() => handleOpenForm(false)}
+        />
       )}
     </div>
   );

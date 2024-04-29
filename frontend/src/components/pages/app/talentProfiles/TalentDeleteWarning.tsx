@@ -2,13 +2,13 @@ import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-import Talent from "@/types/TalentProfileType";
+import { TalentProfileType } from "@/graphql/generated";
 
 type PropsType = {
   open: boolean;
   handleOpen: (open: boolean) => void;
-  handleDelete: (talent: Talent) => void;
-  talent: Talent;
+  handleDelete: (talent: TalentProfileType) => void;
+  talent: TalentProfileType;
 };
 
 export default function TalentDeleteWarning({

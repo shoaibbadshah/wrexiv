@@ -5,10 +5,10 @@ import { DocumentPlusIcon } from "@heroicons/react/24/solid";
 
 type PropsType = {
   open: boolean;
-  handleOpen: (open: boolean) => void;
+  handleClose: () => void;
 };
 
-export default function TalentAddForm({ open, handleOpen }: PropsType) {
+export default function TalentAddForm({ open, handleClose }: PropsType) {
   const [uploadedFileNames, setUploadedFileNames] = useState<string[]>([]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,11 +29,7 @@ export default function TalentAddForm({ open, handleOpen }: PropsType) {
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-10"
-        onClose={() => handleOpen(false)}
-      >
+      <Dialog as="div" className="relative z-10" onClose={() => handleClose()}>
         <div className="fixed inset-0" />
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden bg-gray-500 bg-opacity-10 transition-opacity">
@@ -66,7 +62,7 @@ export default function TalentAddForm({ open, handleOpen }: PropsType) {
                             <button
                               type="button"
                               className="relative text-gray-400 hover:text-gray-500"
-                              onClick={() => handleOpen(false)}
+                              onClick={() => handleClose()}
                             >
                               <span className="absolute -inset-2.5" />
                               <span className="sr-only">Close panel</span>
@@ -154,7 +150,7 @@ export default function TalentAddForm({ open, handleOpen }: PropsType) {
                         <button
                           type="button"
                           className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                          onClick={() => handleOpen(false)}
+                          onClick={() => handleClose()}
                         >
                           Cancel
                         </button>
