@@ -5,14 +5,13 @@ import Image from "next/image";
 import { useTalentProfilesQuery } from "@/graphql/generated";
 import TalentDetails from "./TalentDetails";
 import TalentAddForm from "./TalentAddForm";
-import { TalentProfileType } from "@/graphql/generated";
 import { TalentProfilesQuery } from "@/graphql/generated";
 
 type Talent = NonNullable<TalentProfilesQuery["talentProfiles"]>[0];
 
 const TalentProfiles = () => {
   const { data, loading, error } = useTalentProfilesQuery();
-  const talents = data?.talentProfiles as TalentProfileType[];
+  const talents = data?.talentProfiles;
 
   const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
