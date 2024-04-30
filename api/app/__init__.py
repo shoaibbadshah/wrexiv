@@ -29,4 +29,9 @@ def create_app():
         view_func=GraphQLView.as_view("graphql", schema=schema, graphiql=True),
     )
 
+    from app.handlers.handle_upload_documents import handle_upload_documents
+    app.add_url_rule(
+        "/upload_documents", view_func=handle_upload_documents, methods=["POST"]
+    )
+
     return app
