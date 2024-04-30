@@ -1,10 +1,15 @@
 from sqlalchemy_utils import UUIDType
 import uuid
-from sqlalchemy import String, Column, ForeignKey
+from sqlalchemy import String, Column, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from app import db
 from sqlalchemy.sql import func
+import enum
 
+class Language(enum.Enum):
+    English = 1
+    Japanese = 2
+    Indonesian = 3
 
 class AgencyUser(db.Model):
     __tablename__ = "agency_users"
@@ -17,6 +22,7 @@ class AgencyUser(db.Model):
         onupdate=func.now(),
         nullable=False,
     )
+    language = Column(Enum(Language), nullable=False, default=Language.English)
 
     agency_id = Column(
         UUIDType(binary=False), ForeignKey("agencies.id"), nullable=False
