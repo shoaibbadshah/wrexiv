@@ -37,6 +37,7 @@ export type AgencyUserType = {
   agencyId: Scalars["UUID"];
   createdAt: Scalars["DateTime"];
   id: Scalars["UUID"];
+  language: Scalars["String"];
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
   userId: Scalars["UUID"];
@@ -54,6 +55,7 @@ export type CreateAgencyInput = {
 };
 
 export type CreateAgencyUserInput = {
+  language?: InputMaybe<Scalars["String"]>;
   name: Scalars["String"];
 };
 
@@ -106,7 +108,7 @@ export type TalentProfileType = {
 
 export type UpdateMyAgency = {
   __typename?: "UpdateMyAgency";
-  agencyUser?: Maybe<AgencyUserType>;
+  agency?: Maybe<AgencyType>;
   message?: Maybe<Scalars["String"]>;
   success?: Maybe<Scalars["Boolean"]>;
 };

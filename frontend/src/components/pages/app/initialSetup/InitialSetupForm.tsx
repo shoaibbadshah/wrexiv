@@ -35,9 +35,17 @@ const InitialSetupForm = () => {
   const onSubmit = (params: INewUserFormInput) => {
     reset();
 
+    const input = {
+      name: params.name,
+      agencyUser: {
+        name: params.agencyUser.name,
+        language: navigator?.language.split("-")[0],
+      },
+    };
+
     createAgency({
       variables: {
-        input: params,
+        input: input,
       },
       onCompleted: data => {
         if (data.createAgency?.success) {
