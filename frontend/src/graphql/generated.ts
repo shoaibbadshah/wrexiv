@@ -312,8 +312,8 @@ export const TalentProfilesDocument = gql`
     talentProfiles {
       id
       name
-      avatar
       bio
+      avatar
       createdAt
       updatedAt
     }
