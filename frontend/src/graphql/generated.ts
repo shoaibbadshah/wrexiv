@@ -85,7 +85,7 @@ export type MutationCreateTalentProfileArgs = {
 export type Query = {
   __typename?: "Query";
   myAgencyUser?: Maybe<AgencyUserType>;
-  talentProfiles?: Maybe<Array<Maybe<TalentProfileType>>>;
+  talentProfiles?: Maybe<Array<TalentProfileType>>;
   user?: Maybe<UserType>;
 };
 
@@ -153,7 +153,7 @@ export type TalentProfilesQuery = {
     avatar?: string | null;
     createdAt: any;
     updatedAt: any;
-  } | null> | null;
+  }> | null;
 };
 
 export type CreateTalentProfileMutationVariables = Exact<{
