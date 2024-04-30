@@ -7,9 +7,9 @@ from sqlalchemy.sql import func
 import enum
 
 class Language(enum.Enum):
-    English = 1
-    Japanese = 2
-    Indonesian = 3
+    en = 1
+    jp = 2
+    id = 3
 
 class AgencyUser(db.Model):
     __tablename__ = "agency_users"
@@ -22,7 +22,7 @@ class AgencyUser(db.Model):
         onupdate=func.now(),
         nullable=False,
     )
-    language = Column(Enum(Language), nullable=False, default=Language.English)
+    language = Column(Enum(Language), nullable=False, default=Language.en)
 
     agency_id = Column(
         UUIDType(binary=False), ForeignKey("agencies.id"), nullable=False
