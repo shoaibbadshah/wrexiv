@@ -91,6 +91,7 @@ export type MutationUpdateMyAgencyArgs = {
 
 export type Query = {
   __typename?: "Query";
+  languages?: Maybe<Array<Maybe<Scalars["String"]>>>;
   myAgencyUser?: Maybe<AgencyUserType>;
   talentProfiles?: Maybe<Array<Maybe<TalentProfileType>>>;
   user?: Maybe<UserType>;
@@ -128,6 +129,13 @@ export type UserType = {
   email: Scalars["String"];
   id: Scalars["UUID"];
   updatedAt: Scalars["DateTime"];
+};
+
+export type LanguagesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type LanguagesQuery = {
+  __typename?: "Query";
+  languages?: Array<string | null> | null;
 };
 
 export type MyAgencyUserQueryVariables = Exact<{ [key: string]: never }>;
@@ -221,6 +229,56 @@ export type MeQuery = {
   } | null;
 };
 
+export const LanguagesDocument = gql`
+  query languages {
+    languages
+  }
+`;
+
+/**
+ * __useLanguagesQuery__
+ *
+ * To run a query within a React component, call `useLanguagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLanguagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLanguagesQuery(
+  baseOptions?: Apollo.QueryHookOptions<LanguagesQuery, LanguagesQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<LanguagesQuery, LanguagesQueryVariables>(
+    LanguagesDocument,
+    options
+  );
+}
+export function useLanguagesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    LanguagesQuery,
+    LanguagesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<LanguagesQuery, LanguagesQueryVariables>(
+    LanguagesDocument,
+    options
+  );
+}
+export type LanguagesQueryHookResult = ReturnType<typeof useLanguagesQuery>;
+export type LanguagesLazyQueryHookResult = ReturnType<
+  typeof useLanguagesLazyQuery
+>;
+export type LanguagesQueryResult = Apollo.QueryResult<
+  LanguagesQuery,
+  LanguagesQueryVariables
+>;
 export const MyAgencyUserDocument = gql`
   query myAgencyUser {
     myAgencyUser {

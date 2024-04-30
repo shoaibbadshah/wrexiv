@@ -2,6 +2,7 @@
 
 import AgencySettingsLayout from "@/components/layout/AgencySettingsLayout";
 import {
+  useLanguagesQuery,
   useMyAgencyUserQuery,
   useUpdateMyAgencyMutation,
 } from "@/graphql/generated";
@@ -12,6 +13,7 @@ import { ZodType, z } from "zod";
 interface IAgencyUserSettingsForm {
   agencyUser: {
     name: string;
+    language?: string;
   };
 }
 
@@ -28,6 +30,9 @@ const AgencyUser = () => {
   ] = useUpdateMyAgencyMutation();
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
+  const { data: languages } = useLanguagesQuery();
+
+  console.log(languages);
 
   const {
     register,
