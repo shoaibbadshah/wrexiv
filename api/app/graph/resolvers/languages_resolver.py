@@ -1,6 +1,4 @@
 import graphene
-from flask import g
-from graphql import GraphQLError
 from app.models.agency_user import Language
 
 

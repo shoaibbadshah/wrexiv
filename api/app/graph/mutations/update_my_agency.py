@@ -7,7 +7,6 @@ from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
 from app import db
 from sqlalchemy.exc import SQLAlchemyError
-import sys
 
 class UpdateMyAgencyUserInput(graphene.InputObjectType):
     name = graphene.String()
