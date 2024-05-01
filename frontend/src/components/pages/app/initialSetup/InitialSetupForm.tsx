@@ -39,7 +39,7 @@ const InitialSetupForm = () => {
       name: params.name,
       agencyUser: {
         name: params.agencyUser.name,
-        language: navigator?.language.split("-")[0],
+        language: navigator?.language?.split("-")[0],
       },
     };
 
