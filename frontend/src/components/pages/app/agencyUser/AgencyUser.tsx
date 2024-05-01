@@ -43,7 +43,6 @@ const AgencyUser = () => {
   });
 
   const onSubmit = (params: IAgencyUserSettingsForm) => {
-    console.log(params);
     reset();
 
     // Do not submit if the current agency user name and language are the same
