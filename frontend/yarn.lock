@@ -4780,9 +4780,9 @@ contentful-typescript-codegen@^3.4.0:
     meow "^9.0.0"
 
 contentful@^10.6.1, contentful@^10.6.7, contentful@^10.6.9:
-  version "10.8.10"
-  resolved "https://registry.yarnpkg.com/contentful/-/contentful-10.8.10.tgz#92eac498bb1540e30a3fcac0df2eb3d56989dfcb"
-  integrity sha512-2QnMllW9alHrorHX3Q8bjaMLhoVYChikjDglWta92zxqjMHsgOyPCtq+wj0ojX4tgHNvOAS9iYOpxypY7Cf7Fw==
+  version "10.9.1"
+  resolved "https://registry.yarnpkg.com/contentful/-/contentful-10.9.1.tgz#39ab80fc7b9b7dc7a6ff8ee1e249fc18925e4c34"
+  integrity sha512-Eoi+NwmU0iEr838XMXKDMP3CWD9Wu8aR/EAd9d5Eoxr6jq1sYZGJY0nI5bEpxd8HiyvMne23m5U/SfFAaEeOBw==
   dependencies:
     "@contentful/rich-text-types" "^16.0.2"
     axios "^1.6.7"
@@ -10352,9 +10352,9 @@ type-fest@^1.0.1, type-fest@^1.2.1, type-fest@^1.2.2:
   integrity sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==
 
 type-fest@^4.0.0:
-  version "4.17.0"
-  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.17.0.tgz#4c1b2c2852d2a40ba8c0236d3afc6fc68229e5bf"
-  integrity sha512-9flrz1zkfLRH3jO3bLflmTxryzKMxVa7841VeMgBaNQGY6vH4RCcpN/sQLB7mQQYh1GZ5utT2deypMuCy4yicw==
+  version "4.18.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.18.0.tgz#414399bfdecfc60d6e89af9f5cf197aef1b6515b"
+  integrity sha512-+dbmiyliDY/2TTcjCS7NpI9yV2iEFlUDk5TKnsbkN7ZoRu5s7bT+zvYtNFhFXC2oLwURGT2frACAZvbbyNBI+w==
 
 typed-array-buffer@^1.0.2:
   version "1.0.2"
