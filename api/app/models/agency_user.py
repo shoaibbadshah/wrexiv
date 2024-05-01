@@ -7,9 +7,9 @@ from sqlalchemy.sql import func
 import enum
 
 class Language(enum.Enum):
-    en = 1
-    jp = 2
-    id = 3
+    en = "English"
+    jp = "Japanese"
+    id = "Indonesian"
 
     def __str__(self):
         return self.name

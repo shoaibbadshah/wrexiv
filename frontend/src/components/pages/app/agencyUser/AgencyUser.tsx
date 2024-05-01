@@ -113,11 +113,11 @@ const AgencyUser = () => {
               key={`select-${loading}-${languagesLoading}`}
             >
               {languagesData &&
-                languagesData.languages.map(
+                languagesData.languages?.map(
                   language =>
                     language && (
-                      <option key={language} value={language}>
-                        {language}
+                      <option key={language.id} value={language.id}>
+                        {language.name}
                       </option>
                     )
                 )}

@@ -2,7 +2,10 @@ import { gql } from "@apollo/client";
 
 const LANGUAGES = gql`
   query languages {
-    languages
+    languages {
+      id
+      name
+    }
   }
 `;
 
