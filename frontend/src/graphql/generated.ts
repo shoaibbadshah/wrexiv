@@ -85,7 +85,7 @@ export type MutationCreateTalentProfileArgs = {
 export type Query = {
   __typename?: "Query";
   myAgencyUser?: Maybe<AgencyUserType>;
-  talentProfiles?: Maybe<Array<Maybe<TalentProfileType>>>;
+  talentProfiles?: Maybe<Array<TalentProfileType>>;
   user?: Maybe<UserType>;
 };
 
@@ -149,9 +149,11 @@ export type TalentProfilesQuery = {
     __typename?: "TalentProfileType";
     id: any;
     name: string;
+    bio?: string | null;
+    avatar?: string | null;
     createdAt: any;
     updatedAt: any;
-  } | null> | null;
+  }> | null;
 };
 
 export type CreateTalentProfileMutationVariables = Exact<{
@@ -166,6 +168,8 @@ export type CreateTalentProfileMutation = {
       __typename?: "TalentProfileType";
       id: any;
       name: string;
+      bio?: string | null;
+      avatar?: string | null;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -308,6 +312,8 @@ export const TalentProfilesDocument = gql`
     talentProfiles {
       id
       name
+      bio
+      avatar
       createdAt
       updatedAt
     }
@@ -369,6 +375,8 @@ export const CreateTalentProfileDocument = gql`
       talentProfile {
         id
         name
+        bio
+        avatar
         createdAt
         updatedAt
       }
