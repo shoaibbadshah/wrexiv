@@ -7,8 +7,10 @@ import {
   useUpdateMyAgencyMutation,
 } from "@/graphql/generated";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
+import nookies from "nookies";
 
 interface IAgencyUserSettingsForm {
   agencyUser: {
@@ -25,6 +27,7 @@ const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
 });
 
 const AgencyUser = () => {
+  const router = useRouter();
   const [
     updateMyAgency,
     { error, reset, data: mutationData, loading: mutationLoading },
@@ -57,8 +60,15 @@ const AgencyUser = () => {
       variables: {
         input: params,
       },
-      onCompleted: () => {
-        refetch();
+      onCompleted: async () => {
+        await refetch();
+        nookies.set(null, "LANGUAGE", params.agencyUser.language, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/app",
+        });
+
+        // use window.location.href to perform a full page reload
+        window.location.href = `/app/${params.agencyUser.language}/agency_user`;
       },
       onError: () => {
         // do nothing

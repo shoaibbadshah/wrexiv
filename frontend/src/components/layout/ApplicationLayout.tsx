@@ -2,7 +2,6 @@
 
 import { ReactNode, useEffect } from "react";
 import { BellIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
 import ApplicationLayoutUserMenu from "./ApplicationLayoutUserMenu";
 import ApplicationLayoutMobileMenu from "./ApplicationLayoutMobileMenu";
 import ApplicationLayoutMobileMenuButton from "./ApplicationLayoutMobileMenuButton";
@@ -11,6 +10,8 @@ import { navigation } from "./navigation";
 import { usePathname, useRouter } from "next/navigation";
 import { FIRST_APP_PAGE, GET_STARTED_URL } from "@/constants/urls";
 import { useMyAgencyUserQuery } from "@/graphql/generated";
+import { i18n } from "@/../i18n-config";
+import nookies from "nookies";
 
 type Props = {
   children: ReactNode;
@@ -24,11 +25,34 @@ export default function ApplicationLayout({ children }: Props) {
   });
 
   useEffect(() => {
-    if (!loading && !data?.myAgencyUser && pathname !== GET_STARTED_URL) {
-      router.replace(GET_STARTED_URL);
-    }
-    if (!loading && data?.myAgencyUser && pathname === GET_STARTED_URL) {
-      router.replace(FIRST_APP_PAGE);
+    if (!loading) {
+      const languagePathRegex = new RegExp(`/app/(${i18n.locales.join("|")})`);
+      const pathnameWithoutLanguage = pathname.replace(
+        languagePathRegex,
+        "/app"
+      );
+
+      if (!loading && data?.myAgencyUser?.language) {
+        nookies.set(null, "LANGUAGE", data.myAgencyUser.language, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/app",
+        });
+      }
+
+      if (pathname === pathnameWithoutLanguage) {
+        const currentLanguage =
+          data?.myAgencyUser?.language || i18n.defaultLocale;
+        const currentAppPath = pathname.split("/app")[1];
+        router.replace(`/app/${currentLanguage}/${currentAppPath}`);
+      }
+
+      if (!data?.myAgencyUser && pathnameWithoutLanguage !== GET_STARTED_URL) {
+        router.replace(GET_STARTED_URL);
+      }
+
+      if (data?.myAgencyUser && pathnameWithoutLanguage === GET_STARTED_URL) {
+        router.replace(FIRST_APP_PAGE);
+      }
     }
   }, [loading, data, pathname, router]);
 

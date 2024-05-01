@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { i18n } from "@/../i18n-config";
 
 const navigations = [
   {
@@ -13,6 +14,12 @@ const navigations = [
     href: "/app/agency_user",
   },
 ];
+
+const checkPathname = (pathname: string, href: string): boolean => {
+  const languagePathRegex = new RegExp(`/app/(${i18n.locales.join("|")})`);
+  const pathnameWithoutLanguage = pathname.replace(languagePathRegex, "/app");
+  return pathnameWithoutLanguage === href;
+};
 
 const AgencySettingsMenu = () => {
   const pathname = usePathname();
@@ -27,7 +34,7 @@ const AgencySettingsMenu = () => {
             <li key={nav.label}>
               <Link
                 href={nav.href}
-                className={pathname === nav.href ? "active" : ""}
+                className={checkPathname(pathname, nav.href) ? "active" : ""}
               >
                 {nav.label}
               </Link>
