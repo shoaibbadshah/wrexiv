@@ -11,6 +11,9 @@ class Language(enum.Enum):
     jp = 2
     id = 3
 
+    def __str__(self):
+        return self.name
+
 class AgencyUser(db.Model):
     __tablename__ = "agency_users"
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)

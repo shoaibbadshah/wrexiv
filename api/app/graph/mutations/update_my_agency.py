@@ -1,4 +1,5 @@
 import graphene
+from app.models.agency_user import Language
 from app.graph.types.agency_type import AgencyType
 from graphql import GraphQLError
 from flask import g
@@ -6,9 +7,11 @@ from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
 from app import db
 from sqlalchemy.exc import SQLAlchemyError
+import sys
 
 class UpdateMyAgencyUserInput(graphene.InputObjectType):
     name = graphene.String()
+    language = graphene.String()
 
 class UpdateMyAgencyInput(graphene.InputObjectType):
     name = graphene.String()
@@ -35,13 +38,15 @@ class UpdateMyAgency(graphene.Mutation):
 
             # Update the agency user
             if input.get("agencyUser"):
-                AgencyUser.query.filter_by(id=g.current_agency_user.id).update({"name": input.agencyUser.get("name", g.current_agency_user.name)})
-                
+                AgencyUser.query.filter_by(id=g.current_agency_user.id,)\
+                    .update({
+                        "name": input.agencyUser.get("name", g.current_agency_user.name),
+                        "language": Language[input.agencyUser.get("language", g.current_agency_user.language)]
+                    })
             db.session.commit()
 
         except SQLAlchemyError as e:
             db.session.rollback()
             raise e
-
         return UpdateMyAgency(success=True, message="Agency updated successfully")
 

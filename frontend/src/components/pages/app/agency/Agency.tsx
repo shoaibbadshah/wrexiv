@@ -71,6 +71,8 @@ const Agency = () => {
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
               defaultValue={data?.myAgencyUser?.agency?.name}
               disabled={loading}
+              // Using the key prop to force a re-render when the loading state changes
+              key={data?.myAgencyUser?.agency?.name}
             />
             {errors.name && (
               <p className="mt-1 text-red-500">{errors.name.message}</p>

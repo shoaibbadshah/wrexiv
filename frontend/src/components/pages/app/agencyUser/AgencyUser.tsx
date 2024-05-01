@@ -13,13 +13,14 @@ import { ZodType, z } from "zod";
 interface IAgencyUserSettingsForm {
   agencyUser: {
     name: string;
-    language?: string;
+    language: string;
   };
 }
 
 const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
   agencyUser: z.object({
     name: z.string().min(1, "Agency user name is required"),
+    language: z.string().min(1, "Language is required"),
   }),
 });
 
@@ -30,9 +31,8 @@ const AgencyUser = () => {
   ] = useUpdateMyAgencyMutation();
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
-  const { data: languages } = useLanguagesQuery();
-
-  console.log(languages);
+  const { data: languagesData, loading: languagesLoading } =
+    useLanguagesQuery();
 
   const {
     register,
@@ -43,10 +43,14 @@ const AgencyUser = () => {
   });
 
   const onSubmit = (params: IAgencyUserSettingsForm) => {
+    console.log(params);
     reset();
 
-    // Do not submit if the agency user name is the same as the current agency user name
-    if (params.agencyUser.name == data?.myAgencyUser?.name) {
+    // Do not submit if the current agency user name and language are the same
+    if (
+      params.agencyUser.name == data?.myAgencyUser?.name &&
+      params.agencyUser.language == data?.myAgencyUser?.language
+    ) {
       return;
     }
 
@@ -79,16 +83,48 @@ const AgencyUser = () => {
             <input
               id="agencyUser.name"
               type="text"
-              {...register("agencyUser.name", {
-                required: "Agency name is required",
-              })}
+              {...register("agencyUser.name")}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
               defaultValue={data?.myAgencyUser?.name}
               disabled={loading}
+              // Using the key prop to force a re-render when the loading state changes
+              key={data?.myAgencyUser?.name}
             />
             {errors.agencyUser?.name?.message && (
               <p className="mt-1 text-red-500">
                 {errors.agencyUser.name.message}
+              </p>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor="agencyUser.language"
+              className="block text-sm font-medium mb-1"
+            >
+              Language
+            </label>
+            <select
+              id="agencyUser.language"
+              {...register("agencyUser.language")}
+              className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
+              defaultValue={data?.myAgencyUser?.language}
+              disabled={loading || languagesLoading}
+              // Using the key prop to force a re-render when the loading state changes
+              key={`select-${loading}-${languagesLoading}`}
+            >
+              {languagesData &&
+                languagesData.languages.map(
+                  language =>
+                    language && (
+                      <option key={language} value={language}>
+                        {language}
+                      </option>
+                    )
+                )}
+            </select>
+            {errors.agencyUser?.language?.message && (
+              <p className="mt-1 text-red-500">
+                {errors.agencyUser.language.message}
               </p>
             )}
           </div>
