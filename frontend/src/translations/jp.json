@@ -1,0 +1,13 @@
+{
+    "common": {
+        "language": "言語",
+        "apply": "アプライ"
+    },
+    "agency": {
+        "agency-settings": "代理店設定",
+        "agency": "代理店",
+        "agency-name": "代理店名",
+        "agency-user": "代理店ユーザー",
+        "agency-user-name": "代理店ユーザー名"
+    }
+}

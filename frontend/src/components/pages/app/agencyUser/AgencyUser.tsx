@@ -7,10 +7,11 @@ import {
   useUpdateMyAgencyMutation,
 } from "@/graphql/generated";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
 import nookies from "nookies";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 interface IAgencyUserSettingsForm {
   agencyUser: {
@@ -37,6 +38,7 @@ const AgencyUser = () => {
   const { data: languagesData, loading: languagesLoading } =
     useLanguagesQuery();
 
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -67,7 +69,7 @@ const AgencyUser = () => {
           path: "/app",
         });
 
-        // use window.location.href to perform a full page reload
+        // use window.location.href to reload agency user language
         window.location.href = `/app/${params.agencyUser.language}/agency_user`;
       },
       onError: () => {
@@ -87,7 +89,7 @@ const AgencyUser = () => {
               htmlFor="agencyUser.name"
               className="block text-sm font-medium mb-1"
             >
-              Agency User Name
+              {t("agency-user-name")}
             </label>
             <input
               id="agencyUser.name"
@@ -110,7 +112,7 @@ const AgencyUser = () => {
               htmlFor="agencyUser.language"
               className="block text-sm font-medium mb-1"
             >
-              Language
+              {t("common:language")}
             </label>
             <select
               id="agencyUser.language"
@@ -144,7 +146,7 @@ const AgencyUser = () => {
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading || mutationLoading}
             >
-              Submit
+              {t("common:apply")}
             </button>
           </div>
           {mutationData?.updateMyAgency?.success && (

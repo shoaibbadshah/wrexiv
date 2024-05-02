@@ -10,7 +10,7 @@ import { navigation } from "./navigation";
 import { usePathname, useRouter } from "next/navigation";
 import { FIRST_APP_PAGE, GET_STARTED_URL } from "@/constants/urls";
 import { useMyAgencyUserQuery } from "@/graphql/generated";
-import { i18n } from "@/../i18n-config";
+import { i18nConfig } from "@/../i18n-config";
 import nookies from "nookies";
 
 type Props = {
@@ -26,7 +26,7 @@ export default function ApplicationLayout({ children }: Props) {
 
   useEffect(() => {
     if (!loading) {
-      const languagePathRegex = new RegExp(`/app/(${i18n.locales.join("|")})`);
+      const languagePathRegex = new RegExp(`/app/(${i18nConfig.locales.join("|")})`);
       const pathnameWithoutLanguage = pathname.replace(
         languagePathRegex,
         "/app"
@@ -41,7 +41,7 @@ export default function ApplicationLayout({ children }: Props) {
 
       if (pathname === pathnameWithoutLanguage) {
         const currentLanguage =
-          data?.myAgencyUser?.language || i18n.defaultLocale;
+          data?.myAgencyUser?.language || i18nConfig.defaultLocale;
         const currentAppPath = pathname.split("/app")[1];
         router.replace(`/app/${currentLanguage}/${currentAppPath}`);
       }

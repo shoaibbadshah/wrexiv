@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { i18n } from "@/../i18n-config";
+import { i18nConfig } from "@/../i18n-config";
 
 const navigations = [
   {
@@ -16,7 +16,7 @@ const navigations = [
 ];
 
 const checkPathname = (pathname: string, href: string): boolean => {
-  const languagePathRegex = new RegExp(`/app/(${i18n.locales.join("|")})`);
+  const languagePathRegex = new RegExp(`/app/(${i18nConfig.locales.join("|")})`);
   const pathnameWithoutLanguage = pathname.replace(languagePathRegex, "/app");
   return pathnameWithoutLanguage === href;
 };

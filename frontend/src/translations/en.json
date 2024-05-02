@@ -1,0 +1,13 @@
+{
+    "common": {
+        "language": "Language",
+        "apply": "Apply"
+    },
+    "agency": {
+        "agency-settings": "Agency Settings",
+        "agency": "Agency",
+        "agency-name": "Agency Name",
+        "agency-user": "Agency User",
+        "agency-user-name": "Agency User Name"
+    }
+}
