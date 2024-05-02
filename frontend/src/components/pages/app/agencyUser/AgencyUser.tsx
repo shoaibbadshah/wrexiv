@@ -28,7 +28,6 @@ const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
 });
 
 const AgencyUser = () => {
-  const router = useRouter();
   const [
     updateMyAgency,
     { error, reset, data: mutationData, loading: mutationLoading },
@@ -82,7 +81,7 @@ const AgencyUser = () => {
   return (
     <AgencySettingsLayout>
       <div className="mx-12 py-8 w-full max-w-2xl">
-        <h1 className="font-bold text-xl mb-4">Agency User</h1>
+        <h1 className="font-bold text-xl mb-4">{t("agency-user")}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label

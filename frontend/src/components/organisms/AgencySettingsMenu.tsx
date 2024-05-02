@@ -3,40 +3,44 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { i18nConfig } from "@/../i18n-config";
+import { useTranslation } from "react-i18next";
 
 const navigations = [
   {
-    label: "Agency",
+    labelKey: "agency",
     href: "/app/agency",
   },
   {
-    label: "Agency User",
+    labelKey: "agency-user",
     href: "/app/agency_user",
   },
 ];
 
 const checkPathname = (pathname: string, href: string): boolean => {
-  const languagePathRegex = new RegExp(`/app/(${i18nConfig.locales.join("|")})`);
+  const languagePathRegex = new RegExp(
+    `/app/(${i18nConfig.locales.join("|")})`
+  );
   const pathnameWithoutLanguage = pathname.replace(languagePathRegex, "/app");
   return pathnameWithoutLanguage === href;
 };
 
 const AgencySettingsMenu = () => {
   const pathname = usePathname();
+  const { t } = useTranslation();
   return (
     <div className="bg-slate-50">
       <div className="m-4">
-        <h3>Agency Settings</h3>
+        <h3>{t("agency-settings")}</h3>
       </div>
       <ul className="menu w-56 h-screen">
         {navigations.map(nav => {
           return (
-            <li key={nav.label}>
+            <li key={t(nav.href)}>
               <Link
                 href={nav.href}
                 className={checkPathname(pathname, nav.href) ? "active" : ""}
               >
-                {nav.label}
+                {t(nav.labelKey)}
               </Link>
             </li>
           );
