@@ -44,4 +44,4 @@ Here is the extracted text:
         return json_data
     except Exception as e:
         logging.error(f"Unexpected error while parsing JSON from GPT-4: {e}")
-        abort(500, description="Failed to extract job seekers information from the document")
+        return json.loads("{}")

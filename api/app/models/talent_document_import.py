@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 class TalentDocumentImport(db.Model):
     __tablename__ = "talent_document_imports"
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-    json = Column(db.Text, nullable=True)
+    json = Column(db.Text, nullable=False)
     file_url = Column(db.String(255), nullable=False)
     created_at = Column(db.DateTime(timezone=True), default=func.now(), nullable=False)
     updated_at = Column(

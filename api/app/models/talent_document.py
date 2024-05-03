@@ -12,9 +12,9 @@ class TalentDocumentKind(enum.Enum):
 class TalentDocument(db.Model):
     __tablename__ = "talent_documents"
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-    name = Column(db.String(100), nullable=True)
-    kind = Column(Enum(TalentDocumentKind), nullable=True)
-    json = Column(db.Text, nullable=True)
+    name = Column(db.String(100), nullable=False)
+    kind = Column(Enum(TalentDocumentKind), nullable=False)
+    json = Column(db.Text, nullable=False)
     created_at = Column(db.DateTime(timezone=True), default=func.now(), nullable=False)
     updated_at = Column(
         db.DateTime(timezone=True),
