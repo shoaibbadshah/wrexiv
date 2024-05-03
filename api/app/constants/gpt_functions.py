@@ -32,7 +32,7 @@ COVER_LETTER_EXTRACTION = [
                         "description": "Job seeker's bio or summary written in the cover letter",
                     },
                 },
-                "required": ["name", "address", "email", "phone", "linkedin", "github", "website", "bio"],
+                "required": ["name", "address", "email", "phone", "website", "bio"],
             },
         }
     }
