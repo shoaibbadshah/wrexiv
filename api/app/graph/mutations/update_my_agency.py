@@ -19,8 +19,6 @@ class UpdateMyAgency(graphene.Mutation):
         input = UpdateMyAgencyInput(required=True)
 
     success = graphene.Boolean()
-    message = graphene.String()
-    agency = graphene.Field(AgencyType)
 
     def mutate(self, info, input):
         if g.get("current_user") is None:
@@ -43,5 +41,5 @@ class UpdateMyAgency(graphene.Mutation):
             db.session.rollback()
             raise e
 
-        return UpdateMyAgency(success=True, message="Agency updated successfully")
+        return UpdateMyAgency(success=True)
 

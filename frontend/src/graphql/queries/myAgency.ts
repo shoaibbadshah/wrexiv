@@ -31,7 +31,6 @@ const UPDATE_MY_AGENCY_USER = gql`
   mutation UpdateMyAgency($input: UpdateMyAgencyInput!) {
     updateMyAgency(input: $input) {
       success
-      message
     }
   }
 `;

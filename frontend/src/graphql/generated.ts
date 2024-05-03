@@ -106,8 +106,6 @@ export type TalentProfileType = {
 
 export type UpdateMyAgency = {
   __typename?: "UpdateMyAgency";
-  agencyUser?: Maybe<AgencyUserType>;
-  message?: Maybe<Scalars["String"]>;
   success?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -171,7 +169,6 @@ export type UpdateMyAgencyMutation = {
   updateMyAgency?: {
     __typename?: "UpdateMyAgency";
     success?: boolean | null;
-    message?: string | null;
   } | null;
 };
 
@@ -341,7 +338,6 @@ export const UpdateMyAgencyDocument = gql`
   mutation UpdateMyAgency($input: UpdateMyAgencyInput!) {
     updateMyAgency(input: $input) {
       success
-      message
     }
   }
 `;
