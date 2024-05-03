@@ -7,7 +7,7 @@ from app import db
 from sqlalchemy.sql import func
 
 class TalentDocumentKind(enum.Enum):
-    cover_letter = 1
+    cover_letter = "cover_letter"
 
 class TalentDocument(db.Model):
     __tablename__ = "talent_documents"
