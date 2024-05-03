@@ -5,23 +5,26 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/solid";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
-type FileWithNames = {
+type FileWithName = {
   file: File;
   name: string;
+};
+
+type Message = {
+  success: boolean;
+  content: string;
 };
 
 const AppTopPage = () => {
   const axiosAuth = useAxiosAuth();
 
-  const [files, setFiles] = useState<FileWithNames[]>([]);
-  const [message, setMessage] = useState<{
-    success: boolean;
-    content: string;
-  } | null>(null);
+  const [files, setFiles] = useState<FileWithName[]>([]);
+  const [message, setMessage] = useState<Message | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
+    setMessage(null);
 
     setFiles(prev => [
       ...prev,
