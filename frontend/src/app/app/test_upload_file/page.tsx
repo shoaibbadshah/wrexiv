@@ -53,7 +53,7 @@ const AppTopPage = () => {
       .catch(error => {
         setMessage({
           success: false,
-          content: error.response.data.message || "An error occurred",
+          content: error.response?.data?.message || "An error occurred",
         });
       })
       .finally(() => {

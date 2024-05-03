@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from app.controllers.document_controller import process_document
+import logging
 
 def handle_upload_documents():
     documents = request.files.getlist("documents")
@@ -19,4 +20,5 @@ def handle_upload_documents():
         return jsonify({"message": f"Upload {count} document(s) success", "success": True, "documents": [document.filename for document in documents], "count": count}), 200
         
     except Exception as e:
-        return jsonify({"message": f"An error occurred: {e}", "success": False}), 500
+        logging.error(f"An error occurred while uploading documents: {e}")
+        return jsonify({"message": f"An error occurred", "success": False}), 500
