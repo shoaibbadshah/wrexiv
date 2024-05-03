@@ -5,11 +5,12 @@ from app.models.talent_document_import import TalentDocumentImport
 from app.models.talent_profile import TalentProfile
 from app.models.talent_document import TalentDocument
 from app.lib.document_utils import store_document, check_document_type, extract_document_content
-from app.lib.gpt4_api import document_text_to_json
+from app.classes.ChatGpt import chat_gpt
 
 class Document:
     def __init__(self, document: FileStorage):
         self.document_name = document.filename
+
         self.document_url = store_document(document)
         self.document_type = check_document_type(self.document_name)
 
@@ -18,7 +19,7 @@ class Document:
         except ValueError as e:
             abort(400, str(e))
 
-        self.document_json = document_text_to_json(self.document_text)
+        self.document_json = chat_gpt.document_text_to_json(self.document_text)
 
     # Put the document information to the database
     def process_document(self):
