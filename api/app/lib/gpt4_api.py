@@ -8,7 +8,7 @@ client = OpenAI()
 
 def document_text_to_json(document_text: str):
     prompt = """
-I extracted text from a document. Please extract job seekers information from the text.
+I extracted text from a document. Please extract job seeker's information from the text.
 
 Here is the extracted text:
 
@@ -21,7 +21,7 @@ Here is the extracted text:
             "content": [
                 {
                     "type": "text", 
-                    "text": "You are a system to extract job seekers information from the document." \
+                    "text": "You are a system to extract job seekers information from a document." \
                             + "Don't make any assumptions about the text. Set the parameters to null if the information is not available."
                 }
             ]},

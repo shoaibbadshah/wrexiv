@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from app.infra.Document import Document
+from app.classes.Document import Document
 import logging
 
 def handle_upload_documents():

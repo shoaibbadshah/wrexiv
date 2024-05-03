@@ -23,10 +23,6 @@ COVER_LETTER_EXTRACTION = [
                         "type": "string",
                         "description": "Job seeker's phone number",
                     },
-                    "linkedin": {
-                        "type": "string",
-                        "description": "Job seeker's LinkedIn profile",
-                    },
                     "website": {
                         "type": "string",
                         "description": "Job seeker's personal website",

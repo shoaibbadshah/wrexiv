@@ -1,4 +1,4 @@
-from app.infra.DocumentType import DocumentType
+from app.classes.DocumentType import DocumentType
 from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader
 from firebase_admin import storage
 from werkzeug.datastructures import FileStorage
