@@ -27,4 +27,12 @@ const CREATE_AGENCY_USER = gql`
   }
 `;
 
-export { MY_AGENCY_USER, CREATE_AGENCY_USER };
+const UPDATE_MY_AGENCY_USER = gql`
+  mutation UpdateMyAgency($input: UpdateMyAgencyInput!) {
+    updateMyAgency(input: $input) {
+      success
+    }
+  }
+`;
+
+export { MY_AGENCY_USER, CREATE_AGENCY_USER, UPDATE_MY_AGENCY_USER };
