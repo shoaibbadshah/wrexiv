@@ -16,7 +16,7 @@ jobs:
         runs-on: ubuntu-latest
         timeout-minutes: 5
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
             - name: Set up Node
               uses: actions/setup-node@v3
               with:
@@ -45,7 +45,7 @@ jobs:
                 prettier_flags: "src/**/*.{js,jsx,ts,tsx}"
                 fail_on_error: false
             - name: Run ReviewDog Stylelint
-              uses: reviewdog/action-stylelint@v1.20.0
+              uses: reviewdog/action-stylelint@v1.23.0
               with:
                   reporter: github-pr-review
                   workdir: frontend

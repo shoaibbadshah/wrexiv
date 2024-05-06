@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /usr/src/app
 ENV FLASK_APP=app FLASK_RUN_HOST=0.0.0.0 FLASK_DEBUG=1
