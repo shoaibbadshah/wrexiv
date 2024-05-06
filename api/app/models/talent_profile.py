@@ -9,9 +9,9 @@ from sqlalchemy.sql import func
 class TalentProfile(db.Model):
     __tablename__ = "talent_profiles"
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-    name = Column(String(100), nullable=True)
+    name = Column(String(100), nullable=False)
     avatar = db.Column(db.String(255), nullable=True)
-    bio = db.Column(db.Text, nullable=True)
+    bio = db.Column(db.Text, nullable=False)
     created_at = Column(db.DateTime(timezone=True), default=func.now(), nullable=False)
     updated_at = Column(
         db.DateTime(timezone=True),
