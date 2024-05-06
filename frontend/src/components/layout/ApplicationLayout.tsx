@@ -26,7 +26,9 @@ export default function ApplicationLayout({ children }: Props) {
 
   useEffect(() => {
     if (!loading) {
-      const languagePathRegex = new RegExp(`/app/(${i18nConfig.locales.join("|")})`);
+      const languagePathRegex = new RegExp(
+        `/app/(${i18nConfig.locales.join("|")})`
+      );
       const pathnameWithoutLanguage = pathname.replace(
         languagePathRegex,
         "/app"
