@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/solid";
-import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { useCreateDocumentsMutation } from "@/graphql/generated";
