@@ -8,10 +8,10 @@ from app.lib.document_utils import store_document, check_document_type, extract_
 from app.classes.ChatGpt import chat_gpt
 
 class Document:
-    def __init__(self, document: FileStorage):
-        self.document_name = document.filename
-
-        self.document_url = store_document(document)
+    def __init__(self, name: str, url: str):
+        self.document_name = name
+        self.document_url = url
+        
         self.document_type = check_document_type(self.document_name)
 
         try:
