@@ -5,23 +5,31 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/solid";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
+type FileWithName = {
+  file: File;
+  name: string;
+};
+
+type Message = {
+  success: boolean;
+  content: string;
+};
+
 const AppTopPage = () => {
   const axiosAuth = useAxiosAuth();
 
-  const [uploadedFileNames, setUploadedFileNames] = useState<string[]>([]);
-  const [files, setFiles] = useState<File[]>([]);
-  const [message, setMessage] = useState<{
-    success: boolean;
-    content: string;
-  } | null>(null);
+  const [files, setFiles] = useState<FileWithName[]>([]);
+  const [message, setMessage] = useState<Message | null>(null);
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    const newFileNames = files.map(file => file.name);
+    setMessage(null);
 
-    setFiles(prev => [...prev, ...files]);
-    setUploadedFileNames(prev => [...prev, ...newFileNames]);
+    setFiles(prev => [
+      ...prev,
+      ...files.map(file => ({ file, name: file.name })),
+    ]);
     event.target.value = "";
   };
 
@@ -31,14 +39,13 @@ const AppTopPage = () => {
   ) => {
     event.preventDefault();
     setFiles(prev => prev.filter((_, i) => i !== index));
-    setUploadedFileNames(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmitFile = () => {
     setMessage(null);
     const formData = new FormData();
     files.forEach(file => {
-      formData.append("documents", file);
+      formData.append("documents", file.file);
     });
 
     setIsUploading(true);
@@ -53,11 +60,12 @@ const AppTopPage = () => {
       .catch(error => {
         setMessage({
           success: false,
-          content: error.response.data.message || "An error occurred",
+          content: error.response?.data?.message || "An error occurred",
         });
       })
       .finally(() => {
         setIsUploading(false);
+        setFiles([]);
       });
   };
 
@@ -118,16 +126,16 @@ const AppTopPage = () => {
             </div>
           </div>
 
-          {uploadedFileNames.length > 0 && (
+          {files.length > 0 && (
             <div className="mb-4 text-sm text-gray-600 px-6">
               <strong className="block mb-2">Uploaded files:</strong>
               <ul className="space-y-2">
-                {uploadedFileNames.map((name, index) => (
+                {files.map((file, index) => (
                   <li
                     key={index}
                     className="flex items-center justify-between p-2 bg-gray-100 rounded"
                   >
-                    <span>{name}</span>
+                    <span>{file.name}</span>
                     <button
                       className="text-red-600 hover:text-red-800 transition"
                       onClick={event => handleRemoveFile(event, index)}
@@ -171,8 +179,8 @@ const AppTopPage = () => {
             </button>
             <button
               type="button"
-              disabled={uploadedFileNames.length === 0}
-              className={`inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${uploadedFileNames.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={files.length === 0}
+              className={`inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${files.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
               onClick={handleSubmitFile}
             >
               Create
