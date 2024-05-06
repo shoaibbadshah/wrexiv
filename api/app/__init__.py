@@ -24,13 +24,11 @@ def create_app():
     from app.graph.schema import schema
     from flask_graphql import GraphQLView
 
-    # FIXME: move this to a command file
-    @app.cli.command("reset-db")
-    def reset_db_command():
-        with app.app_context():
-            db.drop_all()
-            db.create_all()
-            print("Database has been reset.")
+    from app.commands.seed_db import seed_db_command
+    from app.commands.reset_db import reset_db_command
+
+    app.cli.add_command(seed_db_command)
+    app.cli.add_command(reset_db_command)
 
     app.add_url_rule(
         "/graphql",
