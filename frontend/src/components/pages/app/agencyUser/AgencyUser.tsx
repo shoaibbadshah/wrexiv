@@ -139,7 +139,7 @@ const AgencyUser = () => {
           </div>
           {mutationData?.updateMyAgency?.success && (
             <div className="text-green-500">
-              {mutationData.updateMyAgency.message}
+              Agency user updated successfully
             </div>
           )}
         </form>
