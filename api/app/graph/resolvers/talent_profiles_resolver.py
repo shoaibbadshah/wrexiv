@@ -1,11 +1,11 @@
 from app.graph.types.talent_profile_type import TalentProfileType
-import graphene
+from graphene import List, NonNull
 from flask import g
 from graphql import GraphQLError
 
 
 class TalentProfilesResolver:
-    talent_profiles = graphene.List(TalentProfileType)
+    talent_profiles = List(NonNull(TalentProfileType))
 
     def resolve_talent_profiles(self, info):
         if g.get("current_agency") is None:

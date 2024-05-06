@@ -80,6 +80,8 @@ export type Mutation = {
   __typename?: "Mutation";
   createAgency?: Maybe<CreateAgency>;
   createTalentProfile?: Maybe<CreateTalentProfile>;
+  updateAgency?: Maybe<UpdateAgency>;
+  updateAgencyUser?: Maybe<UpdateAgencyUser>;
   updateMyAgency?: Maybe<UpdateMyAgency>;
 };
 
@@ -91,6 +93,14 @@ export type MutationCreateTalentProfileArgs = {
   input: CreateTalentProfileInput;
 };
 
+export type MutationUpdateAgencyArgs = {
+  input: UpdateAgencyInput;
+};
+
+export type MutationUpdateAgencyUserArgs = {
+  input: UpdateAgencyUserInput;
+};
+
 export type MutationUpdateMyAgencyArgs = {
   input: UpdateMyAgencyInput;
 };
@@ -99,7 +109,7 @@ export type Query = {
   __typename?: "Query";
   languages?: Maybe<Array<Maybe<LanguageType>>>;
   myAgencyUser?: Maybe<AgencyUserType>;
-  talentProfiles?: Maybe<Array<Maybe<TalentProfileType>>>;
+  talentProfiles?: Maybe<Array<TalentProfileType>>;
   user?: Maybe<UserType>;
 };
 
@@ -113,10 +123,28 @@ export type TalentProfileType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type UpdateAgency = {
+  __typename?: "UpdateAgency";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UpdateAgencyInput = {
+  id: Scalars["UUID"];
+  name?: InputMaybe<Scalars["String"]>;
+};
+
+export type UpdateAgencyUser = {
+  __typename?: "UpdateAgencyUser";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UpdateAgencyUserInput = {
+  id: Scalars["UUID"];
+  name?: InputMaybe<Scalars["String"]>;
+};
+
 export type UpdateMyAgency = {
   __typename?: "UpdateMyAgency";
-  agency?: Maybe<AgencyType>;
-  message?: Maybe<Scalars["String"]>;
   success?: Maybe<Scalars["Boolean"]>;
 };
 
@@ -193,7 +221,6 @@ export type UpdateMyAgencyMutation = {
   updateMyAgency?: {
     __typename?: "UpdateMyAgency";
     success?: boolean | null;
-    message?: string | null;
   } | null;
 };
 
@@ -205,9 +232,11 @@ export type TalentProfilesQuery = {
     __typename?: "TalentProfileType";
     id: any;
     name: string;
+    bio?: string | null;
+    avatar?: string | null;
     createdAt: any;
     updatedAt: any;
-  } | null> | null;
+  }> | null;
 };
 
 export type CreateTalentProfileMutationVariables = Exact<{
@@ -222,6 +251,8 @@ export type CreateTalentProfileMutation = {
       __typename?: "TalentProfileType";
       id: any;
       name: string;
+      bio?: string | null;
+      avatar?: string | null;
       createdAt: any;
       updatedAt: any;
     } | null;
@@ -417,7 +448,6 @@ export const UpdateMyAgencyDocument = gql`
   mutation UpdateMyAgency($input: UpdateMyAgencyInput!) {
     updateMyAgency(input: $input) {
       success
-      message
     }
   }
 `;
@@ -469,6 +499,8 @@ export const TalentProfilesDocument = gql`
     talentProfiles {
       id
       name
+      bio
+      avatar
       createdAt
       updatedAt
     }
@@ -530,6 +562,8 @@ export const CreateTalentProfileDocument = gql`
       talentProfile {
         id
         name
+        bio
+        avatar
         createdAt
         updatedAt
       }

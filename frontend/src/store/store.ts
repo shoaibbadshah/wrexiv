@@ -42,6 +42,6 @@ type AppDispatch = typeof store.dispatch;
 export const useDispatch = () => useDispatchBase<AppDispatch>();
 
 // And utilize `useSelector`
-export const useSelector = <TSelected = unknown,>(
+export const useSelector = <TSelected = unknown>(
   selector: (state: RootState) => TSelected
 ): TSelected => useSelectorBase<RootState, TSelected>(selector);
