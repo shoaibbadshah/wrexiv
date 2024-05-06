@@ -5,6 +5,8 @@ const TALENT_PROFILES = gql`
     talentProfiles {
       id
       name
+      bio
+      avatar
       createdAt
       updatedAt
     }
@@ -17,6 +19,8 @@ const CREATE_TALENT_PROFILE = gql`
       talentProfile {
         id
         name
+        bio
+        avatar
         createdAt
         updatedAt
       }
