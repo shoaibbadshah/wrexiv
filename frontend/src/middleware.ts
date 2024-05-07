@@ -5,7 +5,6 @@ import languages from "@/lib/translations/languages";
 import { i18nConfig } from "@/../i18n-config";
 
 export function middleware(request: NextRequest) {
-  let response;
   const { locales, defaultLocale } = i18nConfig;
   const pathname = request.nextUrl.pathname;
 
