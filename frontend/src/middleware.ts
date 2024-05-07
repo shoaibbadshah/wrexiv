@@ -37,46 +37,9 @@ export function middleware(request: NextRequest) {
   }
   // If the current language is included in the locales, return NextResponse.next()
   return NextResponse.next();
-
-  const isFirstVisit = !request.cookies.has("LANGUAGE");
-
-  if (!isFirstVisit) {
-    const currentLocale = request.cookies.get("LANGUAGE")?.value;
-    const isLocaleValid = (locale: string | undefined) => {
-      return locale && locales.includes(locale);
-    };
-
-    const locale = isLocaleValid(currentLocale) ? currentLocale : defaultLocale;
-
-    let newPath = `/${locale}${pathnameWithoutLanguage}`;
-    if (request.nextUrl.search) newPath += request.nextUrl.search;
-
-    response = NextResponse.redirect(new URL(newPath, request.url));
-    nextLocale = locale;
-  }
-
-  if (isPathWithLanguage) {
-    const currentLocale = request.cookies.get("LANGUAGE")?.value;
-
-    const isLocaleValid = (locale: string | undefined) => {
-      return locale && locales.includes(locale);
-    };
-    const locale = isLocaleValid(currentLocale) ? currentLocale : defaultLocale;
-
-    const currentAppPath = pathname.split(`/${locale}`)[1];
-    let newPath = `/${locale}${currentAppPath}`;
-    if (request.nextUrl.search) newPath += request.nextUrl.search;
-
-    response = NextResponse.redirect(new URL(newPath, request.url));
-    nextLocale = locale;
-  }
-
-  if (!response) response = NextResponse.next();
-
-  return response;
 }
 
 export const config = {
   matcher:
-    "/((?!api/|_next/static|_next/image|favicon.ico).*(?!png|svg|jpg|jpeg)$)",
+    "/((?!api/|_next/static|_next/image|favicon.ico|/app|/admin|/api).*(?!png|svg|jpg|jpeg)$)",
 };
