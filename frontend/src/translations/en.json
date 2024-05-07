@@ -1,9 +1,12 @@
 {
     "common": {
         "language": "Language",
-        "apply": "Apply"
+        "apply": "Apply",
+        "id": "Indonesian",
+        "en": "English",
+        "ja": "Japanese"
     },
-    "agency": {
+    "app": {
         "agency-settings": "Agency Settings",
         "agency": "Agency",
         "agency-name": "Agency Name",

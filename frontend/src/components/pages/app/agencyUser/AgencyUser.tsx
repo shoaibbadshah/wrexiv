@@ -76,10 +76,6 @@ const AgencyUser = () => {
       },
       onCompleted: async () => {
         await refetch();
-        nookies.set(null, "LANGUAGE", params.agencyUser.language, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: "/app",
-        });
 
         // use window.location.href to reload agency user language
         window.location.href = `/app/agency_user`;
@@ -131,7 +127,7 @@ const AgencyUser = () => {
             >
               {Object.values(Language).map(lang => (
                 <option key={lang} value={lang}>
-                  {lang}
+                  {t(`common:${lang}`)}
                 </option>
               ))}
             </select>

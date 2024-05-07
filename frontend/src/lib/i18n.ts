@@ -4,7 +4,7 @@ import { createInstance } from "i18next";
 import { i18nConfig } from "@/../i18n-config";
 import id from "@/translations/id.json";
 import en from "@/translations/en.json";
-import jp from "@/translations/jp.json";
+import ja from "@/translations/ja.json";
 
 export default async function initTranslations(
   locale: string,
@@ -15,14 +15,15 @@ export default async function initTranslations(
   i18nInstance.use(initReactI18next);
 
   const detectionOptions = {
-    order: ["path"],
+    order: ["cookie"],
     lookupFromPathIndex: 1,
+    lookupCookie: "i18next",
   };
 
   const resources = {
     en: en,
     id: id,
-    jp: jp,
+    ja: ja,
   };
 
   await i18nInstance.init({

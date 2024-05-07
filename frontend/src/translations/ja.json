@@ -1,9 +1,12 @@
 {
     "common": {
         "language": "言語",
-        "apply": "アプライ"
+        "apply": "アプライ",
+        "ja": "日本語",
+        "en": "英語",
+        "id": "インドネシア語"
     },
-    "agency": {
+    "app": {
         "agency-settings": "代理店設定",
         "agency": "代理店",
         "agency-name": "代理店名",

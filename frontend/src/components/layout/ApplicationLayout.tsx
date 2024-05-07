@@ -12,6 +12,7 @@ import { FIRST_APP_PAGE, GET_STARTED_URL } from "@/constants/urls";
 import { useMyAgencyUserQuery } from "@/graphql/generated";
 import { i18nConfig } from "@/../i18n-config";
 import nookies from "nookies";
+import TranslationsProvider from "@/providers/TranslationProvider";
 
 type Props = {
   children: ReactNode;
@@ -26,15 +27,6 @@ export default function ApplicationLayout({ children }: Props) {
 
   useEffect(() => {
     if (!loading) {
-      if (!loading && data?.myAgencyUser?.language) {
-        const languageCookies = nookies.get(null, "LANGUAGE");
-        console.log("isLanguageCookieSet", languageCookies);
-        nookies.set(null, "LANGUAGE", data.myAgencyUser.language, {
-          maxAge: 30 * 24 * 60 * 60,
-          path: "/app",
-        });
-      }
-
       if (!data?.myAgencyUser && pathname !== GET_STARTED_URL) {
         router.replace(GET_STARTED_URL);
       }
@@ -46,19 +38,23 @@ export default function ApplicationLayout({ children }: Props) {
   }, [loading, data, pathname, router]);
 
   return (
-    <div className="flex h-[100vh] max-h-[100vh] overflow-hidden">
-      <ApplicationLayoutMobileMenu />
-      <div className="flex flex-col h-full w-full">
-        <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6">
-          <ApplicationLayoutMobileMenuButton />
-          {/* <div className="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" /> */}
-          <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-8">
-            <div className="flex items-center">
-              <Link href="/app">
-                <h3 className="text-xl font-bold text-gray-900">
-                  GlobalTalentDB
-                </h3>
-                {/* <Image
+    <TranslationsProvider
+      locale={data?.myAgencyUser?.language ?? "en"}
+      namespaces={["app", "common"]}
+    >
+      <div className="flex h-[100vh] max-h-[100vh] overflow-hidden">
+        <ApplicationLayoutMobileMenu />
+        <div className="flex flex-col h-full w-full">
+          <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6">
+            <ApplicationLayoutMobileMenuButton />
+            {/* <div className="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" /> */}
+            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-8">
+              <div className="flex items-center">
+                <Link href="/app">
+                  <h3 className="text-xl font-bold text-gray-900">
+                    GlobalTalentDB
+                  </h3>
+                  {/* <Image
                   src="/logo.png"
                   alt="Logo"
                   width={140}
@@ -66,39 +62,42 @@ export default function ApplicationLayout({ children }: Props) {
                   className="max-h-10 lg:max-h-none"
                   style={{ objectFit: "contain" }}
                 /> */}
-              </Link>
-            </div>
-            <div className="hidden sm:flex items-center space-x-2 grow ">
-              {navigation.map(item => (
-                <Link
-                  href={item.href}
-                  className={`${item.hide ? "hidden" : ""}`}
-                  key={item.name}
-                >
-                  <button className="btn btn-ghost btn-sm">{item.name}</button>
                 </Link>
-              ))}
-            </div>
-            <div className="flex items-center gap-x-4 lg:gap-x-6">
-              {false && <div>Countries Select</div>}
-              <button
-                type="button"
-                className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
-              >
-                <span className="sr-only">View notifications</span>
-                <BellIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-              <div
-                className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200"
-                aria-hidden="true"
-              />
-              <ApplicationLayoutUserMenu />
+              </div>
+              <div className="hidden sm:flex items-center space-x-2 grow ">
+                {navigation.map(item => (
+                  <Link
+                    href={item.href}
+                    className={`${item.hide ? "hidden" : ""}`}
+                    key={item.name}
+                  >
+                    <button className="btn btn-ghost btn-sm">
+                      {item.name}
+                    </button>
+                  </Link>
+                ))}
+              </div>
+              <div className="flex items-center gap-x-4 lg:gap-x-6">
+                {false && <div>Countries Select</div>}
+                <button
+                  type="button"
+                  className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+                >
+                  <span className="sr-only">View notifications</span>
+                  <BellIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+                <div
+                  className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200"
+                  aria-hidden="true"
+                />
+                <ApplicationLayoutUserMenu />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="overflow-hidden grow flex flex-col">{children}</div>
+          <div className="overflow-hidden grow flex flex-col">{children}</div>
+        </div>
       </div>
-    </div>
+    </TranslationsProvider>
   );
 }
