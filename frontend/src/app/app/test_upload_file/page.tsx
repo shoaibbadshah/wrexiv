@@ -3,33 +3,30 @@
 import { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/solid";
-import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
-
-type FileWithName = {
-  file: File;
-  name: string;
-};
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "@/lib/firebase";
+import { useCreateDocumentsMutation } from "@/graphql/generated";
 
 type Message = {
-  success: boolean;
+  status: "success" | "error" | "loading";
   content: string;
 };
 
-const AppTopPage = () => {
-  const axiosAuth = useAxiosAuth();
+type FileNameAndURL = {
+  name: string;
+  url: string;
+};
 
-  const [files, setFiles] = useState<FileWithName[]>([]);
+const AppTopPage = () => {
+  const [files, setFiles] = useState<File[]>([]);
   const [message, setMessage] = useState<Message | null>(null);
-  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [createDocuments, {}] = useCreateDocumentsMutation();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
     setMessage(null);
 
-    setFiles(prev => [
-      ...prev,
-      ...files.map(file => ({ file, name: file.name })),
-    ]);
+    setFiles(prev => [...prev, ...files]);
     event.target.value = "";
   };
 
@@ -41,31 +38,55 @@ const AppTopPage = () => {
     setFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmitFile = () => {
-    setMessage(null);
-    const formData = new FormData();
-    files.forEach(file => {
-      formData.append("documents", file.file);
+  const handleSubmitFile = async () => {
+    setMessage({
+      status: "loading",
+      content: "Uploading files...",
     });
 
-    setIsUploading(true);
-    axiosAuth
-      .post("/upload_documents", formData)
-      .then(response => {
-        setMessage({
-          success: response.data.success,
-          content: response.data.message,
+    const fileNameAndURLs: FileNameAndURL[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const storageRef = ref(
+        storage,
+        `talent_document_import/${Date.now()}-${files[i].name}`
+      );
+      await uploadBytesResumable(storageRef, files[i])
+        .then(snapshot => {
+          getDownloadURL(snapshot.ref).then(downloadURL => {
+            fileNameAndURLs.push({ name: files[i].name, url: downloadURL });
+          });
+        })
+        .catch(error => {
+          setMessage({
+            status: "error",
+            content: "Failed to upload files",
+          });
+          return;
         });
-      })
-      .catch(error => {
+    }
+    setMessage({
+      status: "loading",
+      content: "Processing files...",
+    });
+    createDocuments({
+      variables: {
+        input: {
+          documents: fileNameAndURLs,
+        },
+      },
+    })
+      .then(() => {
         setMessage({
-          success: false,
-          content: error.response?.data?.message || "An error occurred",
+          status: "success",
+          content: "Files uploaded successfully",
         });
-      })
-      .finally(() => {
-        setIsUploading(false);
         setFiles([]);
+      })
+      .catch(() => {
+        setMessage({
+          status: "error",
+          content: "Failed to process files",
+        });
       });
   };
 
@@ -117,7 +138,6 @@ const AppTopPage = () => {
                       onChange={handleFileChange}
                     />
                   </label>
-                  <p className="pl-1">or drag and drop</p>
                 </div>
                 <p className="text-xs leading-5 text-gray-600">
                   PDF, DOC, DOCX up to 10MB
@@ -155,16 +175,18 @@ const AppTopPage = () => {
             <div className="text-sm font-semibold ">
               {message && (
                 <span
-                  className={`${
-                    message.success ? "text-green-600" : "text-red-600"
-                  }`}
+                  className={`${(() => {
+                    switch (message.status) {
+                      case "success":
+                        return "text-green-600";
+                      case "error":
+                        return "text-red-600";
+                      case "loading":
+                        return "text-yellow-600";
+                    }
+                  })()}`}
                 >
                   {message.content}
-                </span>
-              )}
-              {isUploading && (
-                <span className={`${"text-yellow-600"}`}>
-                  Uploading files...
                 </span>
               )}
             </div>
