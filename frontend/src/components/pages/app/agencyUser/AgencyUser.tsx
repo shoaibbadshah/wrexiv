@@ -6,6 +6,7 @@ import {
   useUpdateMyAgencyMutation,
   Language,
 } from "@/graphql/generated";
+import { getDirtyValues } from "@/lib/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -41,7 +42,7 @@ const AgencyUser = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { errors, isDirty, dirtyFields },
     reset: resetForm,
   } = useForm<IAgencyUserSettingsForm>({
     resolver: zodResolver(initialSetupSchema),
@@ -59,15 +60,15 @@ const AgencyUser = () => {
 
   const onSubmit = (params: IAgencyUserSettingsForm) => {
     resetMutation();
-
     // Do not submit if form is not dirty
     if (!isDirty) {
       return;
     }
 
+    const dirtyValues = getDirtyValues(dirtyFields, params);
     updateMyAgency({
       variables: {
-        input: params,
+        input: dirtyValues,
       },
       onCompleted: () => {
         refetch();
