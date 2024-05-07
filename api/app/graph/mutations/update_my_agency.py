@@ -6,10 +6,11 @@ from app.models.agency import Agency
 from app.models.agency_user import AgencyUser
 from app import db
 from sqlalchemy.exc import SQLAlchemyError
+from app.graph.types.language_type import LanguageType
 
 class UpdateMyAgencyUserInput(graphene.InputObjectType):
     name = graphene.String()
-    language = graphene.String()
+    language = graphene.Field(LanguageType, required=True)
 
 class UpdateMyAgencyInput(graphene.InputObjectType):
     name = graphene.String()
@@ -34,6 +35,9 @@ class UpdateMyAgency(graphene.Mutation):
 
             # Update the agency user
             if input.get("agencyUser"):
+                import sys
+                print(input.agencyUser.get("name", g.current_agency_user.name), file=sys.stderr)
+                print(input.agencyUser.get("language", g.current_agency_user.name), file=sys.stderr)
                 AgencyUser.query.filter_by(id=g.current_agency_user.id,)\
                     .update({
                         "name": input.agencyUser.get("name", g.current_agency_user.name),
