@@ -2,11 +2,13 @@
 
 import AgencySettingsLayout from "@/components/layout/AgencySettingsLayout";
 import {
-  useLanguagesQuery,
   useMyAgencyUserQuery,
   useUpdateMyAgencyMutation,
+  Language,
 } from "@/graphql/generated";
+import { getDirtyValues } from "@/lib/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
 import nookies from "nookies";
@@ -16,50 +18,61 @@ import { useRouter } from "next/navigation";
 interface IAgencyUserSettingsForm {
   agencyUser: {
     name: string;
-    language: string;
+    language: Language;
   };
 }
 
 const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
   agencyUser: z.object({
     name: z.string().min(1, "Agency user name is required"),
-    language: z.string().min(1, "Language is required"),
+    language: z.nativeEnum(Language),
   }),
 });
 
 const AgencyUser = () => {
   const [
     updateMyAgency,
-    { error, reset, data: mutationData, loading: mutationLoading },
+    {
+      error,
+      reset: resetMutation,
+      data: mutationData,
+      loading: mutationLoading,
+    },
   ] = useUpdateMyAgencyMutation();
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
-  const { data: languagesData, loading: languagesLoading } =
-    useLanguagesQuery();
 
   const { t } = useTranslation();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, dirtyFields },
+    reset: resetForm,
   } = useForm<IAgencyUserSettingsForm>({
     resolver: zodResolver(initialSetupSchema),
   });
 
-  const onSubmit = (params: IAgencyUserSettingsForm) => {
-    reset();
+  useEffect(() => {
+    // Set the form values to the fetched data
+    resetForm({
+      agencyUser: {
+        name: data?.myAgencyUser?.name ?? "",
+        language: data?.myAgencyUser?.language ?? Language.En,
+      },
+    });
+  }, [data]);
 
-    // Do not submit if the current agency user name and language are the same
-    if (
-      params.agencyUser.name == data?.myAgencyUser?.name &&
-      params.agencyUser.language == data?.myAgencyUser?.language
-    ) {
+  const onSubmit = (params: IAgencyUserSettingsForm) => {
+    resetMutation();
+    // Do not submit if form is not dirty
+    if (!isDirty) {
       return;
     }
 
+    const dirtyValues = getDirtyValues(dirtyFields, params);
     updateMyAgency({
       variables: {
-        input: params,
+        input: dirtyValues,
       },
       onCompleted: async () => {
         await refetch();
@@ -95,10 +108,7 @@ const AgencyUser = () => {
               type="text"
               {...register("agencyUser.name")}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
-              defaultValue={data?.myAgencyUser?.name}
               disabled={loading}
-              // Using the key prop to force a re-render when the loading state changes
-              key={data?.myAgencyUser?.name}
             />
             {errors.agencyUser?.name?.message && (
               <p className="mt-1 text-red-500">
@@ -117,20 +127,13 @@ const AgencyUser = () => {
               id="agencyUser.language"
               {...register("agencyUser.language")}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
-              defaultValue={data?.myAgencyUser?.language}
-              disabled={loading || languagesLoading}
-              // Using the key prop to force a re-render when the loading state changes
-              key={`select-${loading}-${languagesLoading}`}
+              disabled={loading}
             >
-              {languagesData &&
-                languagesData.languages?.map(
-                  language =>
-                    language && (
-                      <option key={language.id} value={language.id}>
-                        {language.name}
-                      </option>
-                    )
-                )}
+              {Object.values(Language).map(lang => (
+                <option key={lang} value={lang}>
+                  {lang}
+                </option>
+              ))}
             </select>
             {errors.agencyUser?.language?.message && (
               <p className="mt-1 text-red-500">

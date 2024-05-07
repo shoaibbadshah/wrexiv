@@ -37,7 +37,7 @@ export type AgencyUserType = {
   agencyId: Scalars["UUID"];
   createdAt: Scalars["DateTime"];
   id: Scalars["UUID"];
-  language: Scalars["String"];
+  language: Language;
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
   userId: Scalars["UUID"];
@@ -55,8 +55,17 @@ export type CreateAgencyInput = {
 };
 
 export type CreateAgencyUserInput = {
-  language?: InputMaybe<Scalars["String"]>;
+  language: Language;
   name: Scalars["String"];
+};
+
+export type CreateDocuments = {
+  __typename?: "CreateDocuments";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type CreateDocumentsInput = {
+  documents?: InputMaybe<Array<InputMaybe<DocumentInput>>>;
 };
 
 export type CreateTalentProfile = {
@@ -70,15 +79,21 @@ export type CreateTalentProfileInput = {
   name: Scalars["String"];
 };
 
-export type LanguageType = {
-  __typename?: "LanguageType";
-  id: Scalars["String"];
+export type DocumentInput = {
   name: Scalars["String"];
+  url: Scalars["String"];
 };
+
+export enum Language {
+  En = "en",
+  Id = "id",
+  Ja = "ja",
+}
 
 export type Mutation = {
   __typename?: "Mutation";
   createAgency?: Maybe<CreateAgency>;
+  createDocuments?: Maybe<CreateDocuments>;
   createTalentProfile?: Maybe<CreateTalentProfile>;
   updateAgency?: Maybe<UpdateAgency>;
   updateAgencyUser?: Maybe<UpdateAgencyUser>;
@@ -87,6 +102,10 @@ export type Mutation = {
 
 export type MutationCreateAgencyArgs = {
   input: CreateAgencyInput;
+};
+
+export type MutationCreateDocumentsArgs = {
+  input: CreateDocumentsInput;
 };
 
 export type MutationCreateTalentProfileArgs = {
@@ -107,7 +126,6 @@ export type MutationUpdateMyAgencyArgs = {
 
 export type Query = {
   __typename?: "Query";
-  languages?: Maybe<Array<Maybe<LanguageType>>>;
   myAgencyUser?: Maybe<AgencyUserType>;
   talentProfiles?: Maybe<Array<TalentProfileType>>;
   user?: Maybe<UserType>;
@@ -154,7 +172,7 @@ export type UpdateMyAgencyInput = {
 };
 
 export type UpdateMyAgencyUserInput = {
-  language?: InputMaybe<Scalars["String"]>;
+  language?: InputMaybe<Language>;
   name?: InputMaybe<Scalars["String"]>;
 };
 
@@ -166,15 +184,16 @@ export type UserType = {
   updatedAt: Scalars["DateTime"];
 };
 
-export type LanguagesQueryVariables = Exact<{ [key: string]: never }>;
+export type CreateDocumentsMutationVariables = Exact<{
+  input: CreateDocumentsInput;
+}>;
 
-export type LanguagesQuery = {
-  __typename?: "Query";
-  languages?: Array<{
-    __typename?: "LanguageType";
-    id: string;
-    name: string;
-  } | null> | null;
+export type CreateDocumentsMutation = {
+  __typename?: "Mutation";
+  createDocuments?: {
+    __typename?: "CreateDocuments";
+    success?: boolean | null;
+  } | null;
 };
 
 export type MyAgencyUserQueryVariables = Exact<{ [key: string]: never }>;
@@ -185,7 +204,7 @@ export type MyAgencyUserQuery = {
     __typename?: "AgencyUserType";
     id: any;
     name: string;
-    language: string;
+    language: Language;
     createdAt: any;
     updatedAt: any;
     agencyId: any;
@@ -272,58 +291,55 @@ export type MeQuery = {
   } | null;
 };
 
-export const LanguagesDocument = gql`
-  query languages {
-    languages {
-      id
-      name
+export const CreateDocumentsDocument = gql`
+  mutation CreateDocuments($input: CreateDocumentsInput!) {
+    createDocuments(input: $input) {
+      success
     }
   }
 `;
+export type CreateDocumentsMutationFn = Apollo.MutationFunction<
+  CreateDocumentsMutation,
+  CreateDocumentsMutationVariables
+>;
 
 /**
- * __useLanguagesQuery__
+ * __useCreateDocumentsMutation__
  *
- * To run a query within a React component, call `useLanguagesQuery` and pass it any options that fit your needs.
- * When your component renders, `useLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useCreateDocumentsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDocumentsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useLanguagesQuery({
+ * const [createDocumentsMutation, { data, loading, error }] = useCreateDocumentsMutation({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useLanguagesQuery(
-  baseOptions?: Apollo.QueryHookOptions<LanguagesQuery, LanguagesQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<LanguagesQuery, LanguagesQueryVariables>(
-    LanguagesDocument,
-    options
-  );
-}
-export function useLanguagesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    LanguagesQuery,
-    LanguagesQueryVariables
+export function useCreateDocumentsMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateDocumentsMutation,
+    CreateDocumentsMutationVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<LanguagesQuery, LanguagesQueryVariables>(
-    LanguagesDocument,
-    options
-  );
+  return Apollo.useMutation<
+    CreateDocumentsMutation,
+    CreateDocumentsMutationVariables
+  >(CreateDocumentsDocument, options);
 }
-export type LanguagesQueryHookResult = ReturnType<typeof useLanguagesQuery>;
-export type LanguagesLazyQueryHookResult = ReturnType<
-  typeof useLanguagesLazyQuery
+export type CreateDocumentsMutationHookResult = ReturnType<
+  typeof useCreateDocumentsMutation
 >;
-export type LanguagesQueryResult = Apollo.QueryResult<
-  LanguagesQuery,
-  LanguagesQueryVariables
+export type CreateDocumentsMutationResult =
+  Apollo.MutationResult<CreateDocumentsMutation>;
+export type CreateDocumentsMutationOptions = Apollo.BaseMutationOptions<
+  CreateDocumentsMutation,
+  CreateDocumentsMutationVariables
 >;
 export const MyAgencyUserDocument = gql`
   query myAgencyUser {

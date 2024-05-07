@@ -6,10 +6,11 @@ from app import db
 from sqlalchemy.exc import SQLAlchemyError
 from flask import g
 from graphql import GraphQLError
+from app.graph.types.language_type import LanguageType
 
 class CreateAgencyUserInput(graphene.InputObjectType):
     name = graphene.String(required=True)
-    language = graphene.String(required=False)
+    language = graphene.Field(LanguageType, required=True)
 
 
 class CreateAgencyInput(graphene.InputObjectType):
