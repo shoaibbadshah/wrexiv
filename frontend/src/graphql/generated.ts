@@ -33,11 +33,11 @@ export type AgencyType = {
 
 export type AgencyUserType = {
   __typename?: "AgencyUserType";
-  agency?: Maybe<AgencyType>;
+  agency: AgencyType;
   agencyId: Scalars["UUID"];
   createdAt: Scalars["DateTime"];
   id: Scalars["UUID"];
-  language: Scalars["String"];
+  language: Language;
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
   userId: Scalars["UUID"];
@@ -55,7 +55,7 @@ export type CreateAgencyInput = {
 };
 
 export type CreateAgencyUserInput = {
-  language?: InputMaybe<Scalars["String"]>;
+  language: Language;
   name: Scalars["String"];
 };
 
@@ -84,11 +84,11 @@ export type DocumentInput = {
   url: Scalars["String"];
 };
 
-export type LanguageType = {
-  __typename?: "LanguageType";
-  id: Scalars["String"];
-  name: Scalars["String"];
-};
+export enum Language {
+  En = "en",
+  Id = "id",
+  Jp = "jp",
+}
 
 export type Mutation = {
   __typename?: "Mutation";
@@ -126,7 +126,6 @@ export type MutationUpdateMyAgencyArgs = {
 
 export type Query = {
   __typename?: "Query";
-  languages?: Maybe<Array<Maybe<LanguageType>>>;
   myAgencyUser?: Maybe<AgencyUserType>;
   talentProfiles?: Maybe<Array<TalentProfileType>>;
   user?: Maybe<UserType>;
@@ -173,7 +172,7 @@ export type UpdateMyAgencyInput = {
 };
 
 export type UpdateMyAgencyUserInput = {
-  language?: InputMaybe<Scalars["String"]>;
+  language: Language;
   name?: InputMaybe<Scalars["String"]>;
 };
 
@@ -197,17 +196,6 @@ export type CreateDocumentsMutation = {
   } | null;
 };
 
-export type LanguagesQueryVariables = Exact<{ [key: string]: never }>;
-
-export type LanguagesQuery = {
-  __typename?: "Query";
-  languages?: Array<{
-    __typename?: "LanguageType";
-    id: string;
-    name: string;
-  } | null> | null;
-};
-
 export type MyAgencyUserQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MyAgencyUserQuery = {
@@ -216,18 +204,18 @@ export type MyAgencyUserQuery = {
     __typename?: "AgencyUserType";
     id: any;
     name: string;
-    language: string;
+    language: Language;
     createdAt: any;
     updatedAt: any;
     agencyId: any;
     userId: any;
-    agency?: {
+    agency: {
       __typename?: "AgencyType";
       id: any;
       name: string;
       createdAt: any;
       updatedAt: any;
-    } | null;
+    };
   } | null;
 };
 
@@ -352,59 +340,6 @@ export type CreateDocumentsMutationResult =
 export type CreateDocumentsMutationOptions = Apollo.BaseMutationOptions<
   CreateDocumentsMutation,
   CreateDocumentsMutationVariables
->;
-export const LanguagesDocument = gql`
-  query languages {
-    languages {
-      id
-      name
-    }
-  }
-`;
-
-/**
- * __useLanguagesQuery__
- *
- * To run a query within a React component, call `useLanguagesQuery` and pass it any options that fit your needs.
- * When your component renders, `useLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useLanguagesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useLanguagesQuery(
-  baseOptions?: Apollo.QueryHookOptions<LanguagesQuery, LanguagesQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<LanguagesQuery, LanguagesQueryVariables>(
-    LanguagesDocument,
-    options
-  );
-}
-export function useLanguagesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    LanguagesQuery,
-    LanguagesQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<LanguagesQuery, LanguagesQueryVariables>(
-    LanguagesDocument,
-    options
-  );
-}
-export type LanguagesQueryHookResult = ReturnType<typeof useLanguagesQuery>;
-export type LanguagesLazyQueryHookResult = ReturnType<
-  typeof useLanguagesLazyQuery
->;
-export type LanguagesQueryResult = Apollo.QueryResult<
-  LanguagesQuery,
-  LanguagesQueryVariables
 >;
 export const MyAgencyUserDocument = gql`
   query myAgencyUser {
