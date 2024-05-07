@@ -1,5 +1,4 @@
 import graphene
-from app.graph.types.agency_type import AgencyType
 from graphql import GraphQLError
 from flask import g
 from app.models.agency import Agency

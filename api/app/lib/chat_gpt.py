@@ -46,6 +46,3 @@ Here is the extracted text:
         except Exception as e:
             logging.error(f"Unexpected error while parsing JSON from GPT-4: {e}")
             return json.loads("{}")
-
-
-chat_gpt = ChatGpt()

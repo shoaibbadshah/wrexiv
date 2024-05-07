@@ -1,9 +1,13 @@
-from app.classes.DocumentType import DocumentType
+from app.graph.types.document_type import DocumentType
 from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader
-from firebase_admin import storage
+from app.models.talent_document_import import TalentDocumentImport
+from app.models.talent_profile import TalentProfile
+from app.models.talent_document import TalentDocument
 from werkzeug.datastructures import FileStorage
-import io
+from firebase_admin import storage
+from app import db
 import time
+import io
 
 def store_document(document: FileStorage) -> str:
     BUCKET_NAME = "globaltalentdb.appspot.com"
@@ -49,3 +53,16 @@ def extract_document_content(document_type: DocumentType, document_url: str) -> 
             return extract_word_content(document_url)
     
     raise ValueError("Unsupported document type")
+
+def process_document(agency_id: str, document_url: str, document_name: str, document_json: dict):
+    talent_profile = TalentProfile(agency_id=agency_id, name=document_json.get("name"), bio=document_json.get("bio"))
+    db.session.add(talent_profile)
+    db.session.flush()
+    
+    talent_document = TalentDocument(talent_profile_id=talent_profile.id, name=document_name, kind="cover_letter", json=str(document_json), agency_id=agency_id)
+    db.session.add(talent_document)
+    db.session.flush()
+    
+    talent_document_import = TalentDocumentImport(file_url=document_url, talent_document_id=talent_document.id, json=str(document_json))
+    db.session.add(talent_document_import)
+    db.session.commit()
