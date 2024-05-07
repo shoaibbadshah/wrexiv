@@ -8,7 +8,7 @@ import enum
 
 class Language(enum.Enum):
     en = "en"
-    jp = "jp"
+    ja = "ja"
     id = "id"
 
     def __str__(self):

@@ -33,7 +33,7 @@ export type AgencyType = {
 
 export type AgencyUserType = {
   __typename?: "AgencyUserType";
-  agency: AgencyType;
+  agency?: Maybe<AgencyType>;
   agencyId: Scalars["UUID"];
   createdAt: Scalars["DateTime"];
   id: Scalars["UUID"];
@@ -87,7 +87,7 @@ export type DocumentInput = {
 export enum Language {
   En = "en",
   Id = "id",
-  Jp = "jp",
+  Ja = "ja",
 }
 
 export type Mutation = {
@@ -172,7 +172,7 @@ export type UpdateMyAgencyInput = {
 };
 
 export type UpdateMyAgencyUserInput = {
-  language: Language;
+  language?: InputMaybe<Language>;
   name?: InputMaybe<Scalars["String"]>;
 };
 
@@ -209,13 +209,13 @@ export type MyAgencyUserQuery = {
     updatedAt: any;
     agencyId: any;
     userId: any;
-    agency: {
+    agency?: {
       __typename?: "AgencyType";
       id: any;
       name: string;
       createdAt: any;
       updatedAt: any;
-    };
+    } | null;
   } | null;
 };
 
