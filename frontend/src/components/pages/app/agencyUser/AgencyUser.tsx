@@ -82,7 +82,7 @@ const AgencyUser = () => {
         });
 
         // use window.location.href to reload agency user language
-        window.location.href = `/app/${params.agencyUser.language}/agency_user`;
+        window.location.href = `/app/agency_user`;
       },
       onError: () => {
         // do nothing

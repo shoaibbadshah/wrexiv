@@ -4,7 +4,7 @@ import languages from "@/lib/translations/languages";
 
 import { i18nConfig } from "@/../i18n-config";
 
-export function middleware(request: NextRequest) {
+function hanldeRootPath(request: NextRequest) {
   const { locales, defaultLocale } = i18nConfig;
   const pathname = request.nextUrl.pathname;
 
@@ -38,7 +38,20 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+export function handleNonLangPath(request: NextRequest) {
+  return NextResponse.next();
+}
+
+export function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname.match(new RegExp(`^/(app|admin).*`))) {
+    return handleNonLangPath(request);
+  } else {
+    console.log(request.nextUrl.pathname, "hanldeRootPath");
+    return hanldeRootPath(request);
+  }
+}
+
 export const config = {
   matcher:
-    "/((?!api/|_next/static|_next/image|favicon.ico|/app|/admin|/api).*(?!png|svg|jpg|jpeg)$)",
+    "/((?!api/|_next/static|_next/image|favicon.ico).*$(?<!.jpg)(?<!.png)(?<!.jpeg)(?<!.svg))",
 };

@@ -26,33 +26,20 @@ export default function ApplicationLayout({ children }: Props) {
 
   useEffect(() => {
     if (!loading) {
-      const languagePathRegex = new RegExp(
-        `/app/(${i18nConfig.locales.join("|")})`
-      );
-      const pathnameWithoutLanguage = pathname.replace(
-        languagePathRegex,
-        "/app"
-      );
-
       if (!loading && data?.myAgencyUser?.language) {
+        const languageCookies = nookies.get(null, "LANGUAGE");
+        console.log("isLanguageCookieSet", languageCookies);
         nookies.set(null, "LANGUAGE", data.myAgencyUser.language, {
           maxAge: 30 * 24 * 60 * 60,
           path: "/app",
         });
       }
 
-      if (pathname === pathnameWithoutLanguage) {
-        const currentLanguage =
-          data?.myAgencyUser?.language || i18nConfig.defaultLocale;
-        const currentAppPath = pathname.split("/app")[1];
-        router.replace(`/app/${currentLanguage}/${currentAppPath}`);
-      }
-
-      if (!data?.myAgencyUser && pathnameWithoutLanguage !== GET_STARTED_URL) {
+      if (!data?.myAgencyUser && pathname !== GET_STARTED_URL) {
         router.replace(GET_STARTED_URL);
       }
 
-      if (data?.myAgencyUser && pathnameWithoutLanguage === GET_STARTED_URL) {
+      if (data?.myAgencyUser && pathname === GET_STARTED_URL) {
         router.replace(FIRST_APP_PAGE);
       }
     }
