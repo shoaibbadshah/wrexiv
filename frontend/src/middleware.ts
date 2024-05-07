@@ -46,7 +46,6 @@ export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.match(new RegExp(`^/(app|admin).*`))) {
     return handleNonLangPath(request);
   } else {
-    console.log(request.nextUrl.pathname, "hanldeRootPath");
     return hanldeRootPath(request);
   }
 }
