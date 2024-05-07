@@ -10,8 +10,6 @@ import { navigation } from "./navigation";
 import { usePathname, useRouter } from "next/navigation";
 import { FIRST_APP_PAGE, GET_STARTED_URL } from "@/constants/urls";
 import { useMyAgencyUserQuery } from "@/graphql/generated";
-import { i18nConfig } from "@/../i18n-config";
-import nookies from "nookies";
 import TranslationsProvider from "@/providers/TranslationProvider";
 
 type Props = {
