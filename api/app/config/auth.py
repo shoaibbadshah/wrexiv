@@ -4,6 +4,7 @@ from app.models.user import User
 from app.graph.dataloaders.agency_user_loader import AgencyUserLoader
 import firebase_admin
 from firebase_admin import credentials, auth as firebase_auth
+from firebase_admin._token_gen import ExpiredIdTokenError
 from flask import g, request, abort
 import os
 from app import db
@@ -55,6 +56,9 @@ def setup_auth(app):
         except ValueError as ve:
             app.logger.error(f"Token verification failed: {ve}")
             abort(401, description="Invalid token")
+        except ExpiredIdTokenError as eie:
+            app.logger.error(f"Token verification failed: {eie}")
+            abort(401, description="Token expired")
         except Exception as e:
             app.logger.error(f"Unexpected error in token verification: {e}")
             abort(500, description="Internal server error")
