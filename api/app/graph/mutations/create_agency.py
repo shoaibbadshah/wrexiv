@@ -35,7 +35,7 @@ class CreateAgency(graphene.Mutation):
         if input.get("name") is None:
             return GraphQLError("Agency name is required")
 
-        if input.get("agencyUser") is None or input.agencyUser.get("name"):
+        if input.get("agencyUser") is None or input.agencyUser.get("name") is None:
             return GraphQLError("Agency user data is required")
 
         try:
