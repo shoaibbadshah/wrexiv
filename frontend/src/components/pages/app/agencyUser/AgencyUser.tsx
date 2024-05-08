@@ -62,10 +62,6 @@ const AgencyUser = () => {
 
   const onSubmit = (params: IAgencyUserSettingsForm) => {
     resetMutation();
-    // Do not submit if form is not dirty
-    if (!isDirty) {
-      return;
-    }
 
     const dirtyValues = getDirtyValues(dirtyFields, params);
     updateMyAgency({
@@ -140,7 +136,7 @@ const AgencyUser = () => {
             <button
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={loading || mutationLoading}
+              disabled={loading || mutationLoading || !isDirty}
             >
               {t("common:apply")}
             </button>

@@ -31,6 +31,12 @@ class CreateAgency(graphene.Mutation):
         
         if g.get("current_agency") is not None:
             return GraphQLError("User is already associated with an agency")
+        
+        if input.get("name") is None:
+            return GraphQLError("Agency name is required")
+
+        if input.get("agencyUser") is None or input.agencyUser.get("name") is None:
+            return GraphQLError("Agency user data is required")
 
         try:
             language = Language.en
