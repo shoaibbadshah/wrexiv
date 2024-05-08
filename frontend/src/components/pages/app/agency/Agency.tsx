@@ -5,7 +5,9 @@ import {
   useMyAgencyUserQuery,
   useUpdateMyAgencyMutation,
 } from "@/graphql/generated";
+import { getDirtyValues } from "@/lib/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
 
@@ -20,7 +22,12 @@ const initialSetupSchema: ZodType<IAgencySettingsForm> = z.object({
 const Agency = () => {
   const [
     updateMyAgency,
-    { error, reset, data: mutationData, loading: mutationLoading },
+    {
+      error,
+      reset: resetMutation,
+      data: mutationData,
+      loading: mutationLoading,
+    },
   ] = useUpdateMyAgencyMutation();
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
@@ -28,22 +35,26 @@ const Agency = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, dirtyFields },
+    reset: resetForm,
   } = useForm<IAgencySettingsForm>({
     resolver: zodResolver(initialSetupSchema),
   });
 
+  useEffect(() => {
+    // Set the form values to the fetched data
+    resetForm({
+      name: data?.myAgencyUser?.agency?.name ?? "",
+    });
+  }, [data]);
+
   const onSubmit = (params: IAgencySettingsForm) => {
-    reset();
-
-    // Do not submit if the agency name is the same as the current agency name
-    if (params.name == data?.myAgencyUser?.agency?.name) {
-      return;
-    }
-
+    resetMutation();
+    
+    const dirtyValues = getDirtyValues(dirtyFields, params);
     updateMyAgency({
-      variables: {
-        input: params,
+    variables: {
+        input: dirtyValues,
       },
       onCompleted: () => {
         refetch();
@@ -69,10 +80,7 @@ const Agency = () => {
               type="text"
               {...register("name")}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
-              defaultValue={data?.myAgencyUser?.agency?.name}
               disabled={loading}
-              // Using the key prop to force a re-render when the loading state changes
-              key={data?.myAgencyUser?.agency?.name}
             />
             {errors.name && (
               <p className="mt-1 text-red-500">{errors.name.message}</p>
@@ -81,7 +89,7 @@ const Agency = () => {
           {error && <div className="text-red-500">{error.message}</div>}
           <div>
             <button
-              disabled={loading || mutationLoading}
+              disabled={loading || mutationLoading || !isDirty}
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
@@ -89,9 +97,7 @@ const Agency = () => {
             </button>
           </div>
           {mutationData?.updateMyAgency?.success && (
-            <div className="text-green-500">
-              Agency updated successfully
-            </div>
+            <div className="text-green-500">Agency updated successfully</div>
           )}
         </form>
       </div>
