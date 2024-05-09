@@ -14,8 +14,28 @@ function hanldeRootPath(request: NextRequest) {
 
   const pathnameWithoutLanguage = pathname.replace(
     new RegExp(`^/${currentLanguage}`),
-    ""
+    "/"
   );
+
+  const referer = request.headers.get("referer");
+
+  // If the referer has a language, redirect to the referer's language
+  if (referer !== null && currentLanguage === undefined) {
+    const refererUrl = new URL(referer);
+    const refererLanguage = refererUrl.pathname
+      .match(new RegExp(`^/(${Object.keys(languages).join("|")})($|/)`))?.[0]
+      .replaceAll("/", "");
+    let newPath;
+    if (refererLanguage !== undefined) {
+      newPath = `/${refererLanguage}${pathnameWithoutLanguage}`;
+      if (request.nextUrl.search) newPath += request.nextUrl.search;
+      return NextResponse.redirect(new URL(newPath, request.url));
+    } else {
+      return NextResponse.rewrite(
+        new URL(`/${defaultLocale}${pathnameWithoutLanguage}`, request.url)
+      );
+    }
+  }
 
   // If the current language is undefined, redirect to the default locale
   if (currentLanguage === undefined) {
