@@ -3,29 +3,17 @@ from langchain_community.document_loaders import Docx2txtLoader, PyPDFLoader
 from app.models.talent_document_import import TalentDocumentImport
 from app.models.talent_profile import TalentProfile
 from app.models.talent_document import TalentDocument
-from werkzeug.datastructures import FileStorage
-from firebase_admin import storage
+from app.lib.chat_gpt import ChatGpt
+from celery import shared_task
 from app import db
-import time
-import io
 
-def store_document(document: FileStorage) -> str:
-    BUCKET_NAME = "globaltalentdb.appspot.com"
-    DOCUMENT_FOLDER_NAME = "talent_document_import"
-
-    bucket = storage.bucket(BUCKET_NAME)
-    splitted_document_filename = document.filename.split(".")
-    name = "".join(splitted_document_filename[:-1])
-    ext = splitted_document_filename[-1]
-    document.filename = f"{DOCUMENT_FOLDER_NAME}/{name}-{time.time()}.{ext}"
-
-    blob = bucket.blob(document.filename)
-    doc_bytes_io = io.BytesIO()
-    document.save(doc_bytes_io)
-    doc_bytes_io.seek(0)
-    blob.upload_from_file(doc_bytes_io, content_type=document.content_type)
-    blob.make_public()
-    return blob.public_url
+@shared_task()
+def process_document(agency_id: str, document_name: str, document_url: str):
+    document_type = check_document_type(document_name)
+    document_text = extract_document_content(document_type, document_url)
+    chat_gpt = ChatGpt()
+    document_json = chat_gpt.document_text_to_json(document_text)
+    process_document_result(agency_id, document_url, document_name, document_json)
 
 def extract_word_content(docx_url: str) -> str:
     loader = Docx2txtLoader(docx_url)
@@ -37,8 +25,8 @@ def extract_pdf_content(pdf_url: str) -> str:
     data = loader.load()
     return data[0].page_content
 
-def check_document_type(document: str) -> DocumentType | None:
-    ext = document.split(".")[-1].lower()
+def check_document_type(document_name: str) -> DocumentType | None:
+    ext = document_name.split(".")[-1].lower()
     if ext in ["pdf"]:
         return DocumentType.PDF
     elif ext in ["docx", "doc"]:
@@ -54,7 +42,7 @@ def extract_document_content(document_type: DocumentType, document_url: str) -> 
     
     raise ValueError("Unsupported document type")
 
-def process_document(agency_id: str, document_url: str, document_name: str, document_json: dict):
+def process_document_result(agency_id: str, document_url: str, document_name: str, document_json: dict):
     talent_profile = TalentProfile(agency_id=agency_id, name=document_json.get("name"), bio=document_json.get("bio"))
     db.session.add(talent_profile)
     db.session.flush()

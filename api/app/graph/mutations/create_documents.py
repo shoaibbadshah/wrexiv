@@ -1,5 +1,4 @@
-from app.lib.document_utils import extract_document_content, check_document_type, process_document
-from app.lib.chat_gpt import ChatGpt
+from app.lib.document_utils import process_document
 from graphql import GraphQLError
 from flask import abort, g
 import graphene
@@ -26,12 +25,8 @@ class CreateDocuments(graphene.Mutation):
             return GraphQLError("User is not associated with an agency")
         
         for doc in input.documents:
-            document_type = check_document_type(doc.name)
             try:
-                document_text = extract_document_content(document_type, doc.url)
-                chat_gpt = ChatGpt()
-                document_json = chat_gpt.document_text_to_json(document_text)
-                process_document(g.current_agency.id, doc.url, doc.name, document_json)
+                process_document.delay(g.current_agency.id, doc.name, doc.url)
             except ValueError as e:
                 logging.error(f"Error processing document {doc.name}: {e}")
                 abort(400, f"Error processing document {doc.name}")

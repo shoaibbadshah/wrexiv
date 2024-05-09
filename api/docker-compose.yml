@@ -1,6 +1,19 @@
 version: "3"
 
 services:
+  celery:
+    container_name: globaltalentdb-celery
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    volumes:
+      - ./app:/usr/src/app/app
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    command: celery -A app.app.celery_app worker --loglevel=info
+
   api:
     container_name: globaltalentdb-api
     build:
@@ -9,7 +22,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./app:/usr/src/app
+      - ./app:/usr/src/app/app
     depends_on:
       - db
     env_file:
@@ -30,5 +43,17 @@ services:
     ports:
       - 5432:5432
 
+  redis:
+    container_name: globaltalentdb-redis
+    image: redis:7.2.4
+    ports:
+      - "6379:6379"
+    volumes:
+      - globaltalentdb-redis-store:/root/redis
+    environment:
+      - REDIS_PASSWORD=password
+      - REDIS_PORT=6379
+
 volumes:
   globaltalentdb-db-store:
+  globaltalentdb-redis-store:
