@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import Container from "@/components/molecules/Container";
 import { FIRST_APP_PAGE } from "@/constants/urls";
-import { useCreateAgencyMutation } from "@/graphql/generated";
+import { Language, useCreateAgencyMutation } from "@/graphql/generated";
 import { ZodType, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -39,7 +39,7 @@ const InitialSetupForm = () => {
       name: params.name,
       agencyUser: {
         name: params.agencyUser.name,
-        language: navigator?.language?.split("-")[0],
+        language: navigator?.language?.split("-")[0] as Language,
       },
     };
 
