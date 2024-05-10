@@ -7,9 +7,8 @@ from app.lib.chat_gpt import ChatGpt
 from celery import shared_task
 from app import db
 
-@shared_task()
-def process_document(agency_id: str, document_name: str, document_url: str):
-    task_id = str(process_document.request.id)
+@shared_task(ignore_result=False)
+def process_document(agency_id: str, document_name: str, document_url: str, task_id: str):
     document_type = check_document_type(document_name)
     document_text = extract_document_content(document_type, document_url)
     chat_gpt = ChatGpt()

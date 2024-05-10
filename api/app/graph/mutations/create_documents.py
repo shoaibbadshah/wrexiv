@@ -5,6 +5,7 @@ from flask import abort, g
 from app import db
 import graphene
 import logging
+import uuid
 
 class DocumentInput(graphene.InputObjectType):
     name = graphene.String(required=True)
@@ -28,8 +29,9 @@ class CreateDocuments(graphene.Mutation):
         
         for doc in input.documents:
             try:
-                task = process_document.delay(g.current_agency.id, doc.name, doc.url)
-                document_processing_task = DocumentProcessingTask(id=task.id, document_name=doc.name, document_url=doc.url, agency_id=g.current_agency.id)
+                document_task_id = str(uuid.uuid4())
+                task = process_document.delay(g.current_agency.id, doc.name, doc.url, document_task_id)
+                document_processing_task = DocumentProcessingTask(id=document_task_id, current_task_id=task.id, document_name=doc.name, document_url=doc.url, agency_id=g.current_agency.id)
                 db.session.add(document_processing_task)
                 db.session.commit()
             except ValueError as e:

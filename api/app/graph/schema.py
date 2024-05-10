@@ -10,6 +10,7 @@ from app.graph.mutations.create_documents import CreateDocuments
 from app.graph.resolvers.me_resolver import MeResolver
 from app.graph.resolvers.talent_profiles_resolver import TalentProfilesResolver
 from app.graph.resolvers.my_agency_user_resolver import MyAgencyUserResolver
+from app.graph.resolvers.document_statuses_resolver import DocumentStatusesResolver
 
 
 
@@ -26,6 +27,7 @@ class Query(
     MeResolver,
     TalentProfilesResolver,
     MyAgencyUserResolver,
+    DocumentStatusesResolver,
 
     graphene.ObjectType,
 ):
