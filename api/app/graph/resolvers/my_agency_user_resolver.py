@@ -1,4 +1,3 @@
-from app.graph.types.agency_type import AgencyType
 from app.graph.types.agency_user_type import AgencyUserType
 import graphene
 from flask import g

@@ -37,6 +37,7 @@ export type AgencyUserType = {
   agencyId: Scalars["UUID"];
   createdAt: Scalars["DateTime"];
   id: Scalars["UUID"];
+  language: Language;
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
   userId: Scalars["UUID"];
@@ -54,6 +55,7 @@ export type CreateAgencyInput = {
 };
 
 export type CreateAgencyUserInput = {
+  language: Language;
   name: Scalars["String"];
 };
 
@@ -82,11 +84,19 @@ export type DocumentInput = {
   url: Scalars["String"];
 };
 
+export enum Language {
+  En = "en",
+  Id = "id",
+  Ja = "ja",
+}
+
 export type Mutation = {
   __typename?: "Mutation";
   createAgency?: Maybe<CreateAgency>;
   createDocuments?: Maybe<CreateDocuments>;
   createTalentProfile?: Maybe<CreateTalentProfile>;
+  updateAgency?: Maybe<UpdateAgency>;
+  updateAgencyUser?: Maybe<UpdateAgencyUser>;
   updateMyAgency?: Maybe<UpdateMyAgency>;
 };
 
@@ -100,6 +110,14 @@ export type MutationCreateDocumentsArgs = {
 
 export type MutationCreateTalentProfileArgs = {
   input: CreateTalentProfileInput;
+};
+
+export type MutationUpdateAgencyArgs = {
+  input: UpdateAgencyInput;
+};
+
+export type MutationUpdateAgencyUserArgs = {
+  input: UpdateAgencyUserInput;
 };
 
 export type MutationUpdateMyAgencyArgs = {
@@ -123,6 +141,26 @@ export type TalentProfileType = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type UpdateAgency = {
+  __typename?: "UpdateAgency";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UpdateAgencyInput = {
+  id: Scalars["UUID"];
+  name?: InputMaybe<Scalars["String"]>;
+};
+
+export type UpdateAgencyUser = {
+  __typename?: "UpdateAgencyUser";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UpdateAgencyUserInput = {
+  id: Scalars["UUID"];
+  name?: InputMaybe<Scalars["String"]>;
+};
+
 export type UpdateMyAgency = {
   __typename?: "UpdateMyAgency";
   success?: Maybe<Scalars["Boolean"]>;
@@ -134,6 +172,7 @@ export type UpdateMyAgencyInput = {
 };
 
 export type UpdateMyAgencyUserInput = {
+  language?: InputMaybe<Language>;
   name?: InputMaybe<Scalars["String"]>;
 };
 
@@ -165,6 +204,7 @@ export type MyAgencyUserQuery = {
     __typename?: "AgencyUserType";
     id: any;
     name: string;
+    language: Language;
     createdAt: any;
     updatedAt: any;
     agencyId: any;
@@ -306,6 +346,7 @@ export const MyAgencyUserDocument = gql`
     myAgencyUser {
       id
       name
+      language
       createdAt
       updatedAt
       agencyId
