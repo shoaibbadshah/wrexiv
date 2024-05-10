@@ -1,6 +1,8 @@
+from app.models.document_processing_task import DocumentProcessingTask
 from app.lib.document_utils import process_document
 from graphql import GraphQLError
 from flask import abort, g
+from app import db
 import graphene
 import logging
 
@@ -26,7 +28,10 @@ class CreateDocuments(graphene.Mutation):
         
         for doc in input.documents:
             try:
-                process_document.delay(g.current_agency.id, doc.name, doc.url)
+                task = process_document.delay(g.current_agency.id, doc.name, doc.url)
+                document_processing_task = DocumentProcessingTask(id=task.id, document_name=doc.name, document_url=doc.url, agency_id=g.current_agency.id)
+                db.session.add(document_processing_task)
+                db.session.commit()
             except ValueError as e:
                 logging.error(f"Error processing document {doc.name}: {e}")
                 abort(400, f"Error processing document {doc.name}")
