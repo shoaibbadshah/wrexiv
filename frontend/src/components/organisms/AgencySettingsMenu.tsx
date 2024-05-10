@@ -35,7 +35,7 @@ const AgencySettingsMenu = () => {
       <ul className="menu w-56 h-screen">
         {navigations.map(nav => {
           return (
-            <li key={t(nav.href)}>
+            <li key={nav.labelKey}>
               <Link
                 href={nav.href}
                 className={checkPathname(pathname, nav.href) ? "active" : ""}
