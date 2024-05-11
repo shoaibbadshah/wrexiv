@@ -13,6 +13,7 @@ jobs:
             run:
                 shell: bash
                 working-directory: ./frontend
+
         runs-on: ubuntu-latest
         timeout-minutes: 5
         steps:
@@ -44,6 +45,7 @@ jobs:
                 github_token: ${{ secrets.GITHUB_TOKEN }}
                 prettier_flags: "src/**/*.{js,jsx,ts,tsx}"
                 fail_on_error: false
+
             - name: Run ReviewDog Stylelint
               uses: reviewdog/action-stylelint@v1.23.0
               with:
@@ -52,7 +54,6 @@ jobs:
                   github_token: ${{secrets.GITHUB_TOKEN}}
                   stylelint_input: 'src/**/*.css'
                   fail_on_error: false
-
 
             - name: Run tsc
               uses: EPMatt/reviewdog-action-tsc@v1.7.0
