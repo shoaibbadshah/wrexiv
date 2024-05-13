@@ -27,3 +27,5 @@ docx2txt
 pypdf
 aiodataloader 
 Flask[async]
+celery
+celery[redis]
