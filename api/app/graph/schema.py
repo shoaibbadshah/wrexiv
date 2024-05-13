@@ -6,7 +6,7 @@ from app.graph.mutations.update_agency_user import UpdateAgencyUser
 from app.graph.mutations.update_my_agency import UpdateMyAgency
 from app.graph.mutations.create_talent_profile import CreateTalentProfile
 from app.graph.mutations.create_documents import CreateDocuments
-from app.graph.mutations.retry_documents import RetryDocument
+from app.graph.mutations.retry_document import RetryDocument
 
 from app.graph.resolvers.me_resolver import MeResolver
 from app.graph.resolvers.talent_profiles_resolver import TalentProfilesResolver
