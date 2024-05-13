@@ -14,7 +14,7 @@ const TalentProfiles = () => {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   const handleRetry = (id: string) => {
     retryDocument({ variables: { input: { id } } });
