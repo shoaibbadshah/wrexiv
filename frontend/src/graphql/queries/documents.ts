@@ -20,4 +20,12 @@ const DOCUMENT_STATUSES = gql`
   }
 `;
 
-export { CREATE_DOCUMENRTS, DOCUMENT_STATUSES };
+const RETRY_DOCUMENT = gql`
+  mutation RetryDocument($input: RetryDocumentInput!) {
+    retryDocument(input: $input) {
+      success
+    }
+  }
+`;
+
+export { CREATE_DOCUMENRTS, DOCUMENT_STATUSES, RETRY_DOCUMENT };

@@ -16,7 +16,7 @@ class DocumentStatusesResolver:
         if g.get("current_agency") is None:
             return GraphQLError("User is not associated with an agency")
         
-        document_processing_tasks = DocumentProcessingTask.query.filter_by(agency_id=g.current_agency.id).all()
+        document_processing_tasks = DocumentProcessingTask.query.filter_by(agency_id=g.current_agency.id).order_by(DocumentProcessingTask.created_at.desc()).all()
         document_statuses = []
         for task in document_processing_tasks:
             result = AsyncResult(str(task.current_task_id))

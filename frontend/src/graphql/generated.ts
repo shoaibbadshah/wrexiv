@@ -96,6 +96,7 @@ export type Mutation = {
   createAgency?: Maybe<CreateAgency>;
   createDocuments?: Maybe<CreateDocuments>;
   createTalentProfile?: Maybe<CreateTalentProfile>;
+  retryDocument?: Maybe<RetryDocument>;
   updateAgency?: Maybe<UpdateAgency>;
   updateAgencyUser?: Maybe<UpdateAgencyUser>;
   updateMyAgency?: Maybe<UpdateMyAgency>;
@@ -111,6 +112,10 @@ export type MutationCreateDocumentsArgs = {
 
 export type MutationCreateTalentProfileArgs = {
   input: CreateTalentProfileInput;
+};
+
+export type MutationRetryDocumentArgs = {
+  input: RetryDocumentInput;
 };
 
 export type MutationUpdateAgencyArgs = {
@@ -131,6 +136,15 @@ export type Query = {
   myAgencyUser?: Maybe<AgencyUserType>;
   talentProfiles?: Maybe<Array<TalentProfileType>>;
   user?: Maybe<UserType>;
+};
+
+export type RetryDocument = {
+  __typename?: "RetryDocument";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type RetryDocumentInput = {
+  id: Scalars["UUID"];
 };
 
 export type TalentProfileType = {
@@ -209,6 +223,18 @@ export type DocumentStatusesQuery = {
     createdAt: any;
     updatedAt: any;
   }> | null;
+};
+
+export type RetryDocumentMutationVariables = Exact<{
+  input: RetryDocumentInput;
+}>;
+
+export type RetryDocumentMutation = {
+  __typename?: "Mutation";
+  retryDocument?: {
+    __typename?: "RetryDocument";
+    success?: boolean | null;
+  } | null;
 };
 
 export type MyAgencyUserQueryVariables = Exact<{ [key: string]: never }>;
@@ -415,6 +441,56 @@ export type DocumentStatusesLazyQueryHookResult = ReturnType<
 export type DocumentStatusesQueryResult = Apollo.QueryResult<
   DocumentStatusesQuery,
   DocumentStatusesQueryVariables
+>;
+export const RetryDocumentDocument = gql`
+  mutation RetryDocument($input: RetryDocumentInput!) {
+    retryDocument(input: $input) {
+      success
+    }
+  }
+`;
+export type RetryDocumentMutationFn = Apollo.MutationFunction<
+  RetryDocumentMutation,
+  RetryDocumentMutationVariables
+>;
+
+/**
+ * __useRetryDocumentMutation__
+ *
+ * To run a mutation, you first call `useRetryDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRetryDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [retryDocumentMutation, { data, loading, error }] = useRetryDocumentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRetryDocumentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RetryDocumentMutation,
+    RetryDocumentMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RetryDocumentMutation,
+    RetryDocumentMutationVariables
+  >(RetryDocumentDocument, options);
+}
+export type RetryDocumentMutationHookResult = ReturnType<
+  typeof useRetryDocumentMutation
+>;
+export type RetryDocumentMutationResult =
+  Apollo.MutationResult<RetryDocumentMutation>;
+export type RetryDocumentMutationOptions = Apollo.BaseMutationOptions<
+  RetryDocumentMutation,
+  RetryDocumentMutationVariables
 >;
 export const MyAgencyUserDocument = gql`
   query myAgencyUser {

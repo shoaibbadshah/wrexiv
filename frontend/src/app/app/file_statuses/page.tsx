@@ -1,11 +1,15 @@
 "use client";
 
-import { useDocumentStatusesQuery } from "@/graphql/generated";
+import {
+  useDocumentStatusesQuery,
+  useRetryDocumentMutation,
+} from "@/graphql/generated";
 import Link from "next/link";
 import { useEffect } from "react";
 
 const TalentProfiles = () => {
   const { data, loading, refetch } = useDocumentStatusesQuery();
+  const [retryDocument] = useRetryDocumentMutation();
   const fileStatuses = data?.documentStatuses || [];
 
   useEffect(() => {
@@ -13,7 +17,9 @@ const TalentProfiles = () => {
   }, []);
 
   const handleRetry = (id: string) => {
-    console.log("retrying", id);
+    retryDocument({ variables: { input: { id } } });
+    // Delay refetch to give time for the server to process the retry
+    setTimeout(() => refetch(), 100);
   };
 
   return (
@@ -72,6 +78,10 @@ const TalentProfiles = () => {
                     >
                       Status
                     </th>
+                    <th
+                      scope="col"
+                      className="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
+                    ></th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
