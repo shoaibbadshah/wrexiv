@@ -37,6 +37,7 @@ export type AgencyUserType = {
   agencyId: Scalars["UUID"];
   createdAt: Scalars["DateTime"];
   id: Scalars["UUID"];
+  language: Language;
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
   userId: Scalars["UUID"];
@@ -54,6 +55,7 @@ export type CreateAgencyInput = {
 };
 
 export type CreateAgencyUserInput = {
+  language: Language;
   name: Scalars["String"];
 };
 
@@ -90,6 +92,12 @@ export type DocumentStatusType = {
   status: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
+
+export enum Language {
+  En = "en",
+  Id = "id",
+  Ja = "ja",
+}
 
 export type Mutation = {
   __typename?: "Mutation";
@@ -188,6 +196,7 @@ export type UpdateMyAgencyInput = {
 };
 
 export type UpdateMyAgencyUserInput = {
+  language?: InputMaybe<Language>;
   name?: InputMaybe<Scalars["String"]>;
 };
 
@@ -245,6 +254,7 @@ export type MyAgencyUserQuery = {
     __typename?: "AgencyUserType";
     id: any;
     name: string;
+    language: Language;
     createdAt: any;
     updatedAt: any;
     agencyId: any;
@@ -497,6 +507,7 @@ export const MyAgencyUserDocument = gql`
     myAgencyUser {
       id
       name
+      language
       createdAt
       updatedAt
       agencyId

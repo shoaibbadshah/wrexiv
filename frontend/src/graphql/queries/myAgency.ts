@@ -5,6 +5,7 @@ const MY_AGENCY_USER = gql`
     myAgencyUser {
       id
       name
+      language
       createdAt
       updatedAt
       agencyId

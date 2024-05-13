@@ -4,27 +4,37 @@ import AgencySettingsLayout from "@/components/layout/AgencySettingsLayout";
 import {
   useMyAgencyUserQuery,
   useUpdateMyAgencyMutation,
+  Language,
 } from "@/graphql/generated";
+import { getDirtyValues } from "@/lib/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
 
 interface IAgencyUserSettingsForm {
   agencyUser: {
     name: string;
+    language: Language;
   };
 }
 
 const initialSetupSchema: ZodType<IAgencyUserSettingsForm> = z.object({
   agencyUser: z.object({
     name: z.string().min(1, "Agency user name is required"),
+    language: z.nativeEnum(Language),
   }),
 });
 
 const AgencyUser = () => {
   const [
     updateMyAgency,
-    { error, reset, data: mutationData, loading: mutationLoading },
+    {
+      error,
+      reset: resetMutation,
+      data: mutationData,
+      loading: mutationLoading,
+    },
   ] = useUpdateMyAgencyMutation();
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
@@ -32,22 +42,29 @@ const AgencyUser = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, dirtyFields },
+    reset: resetForm,
   } = useForm<IAgencyUserSettingsForm>({
     resolver: zodResolver(initialSetupSchema),
   });
 
+  useEffect(() => {
+    // Set the form values to the fetched data
+    resetForm({
+      agencyUser: {
+        name: data?.myAgencyUser?.name ?? "",
+        language: data?.myAgencyUser?.language ?? Language.En,
+      },
+    });
+  }, [data]);
+
   const onSubmit = (params: IAgencyUserSettingsForm) => {
-    reset();
+    resetMutation();
 
-    // Do not submit if the agency user name is the same as the current agency user name
-    if (params.agencyUser.name == data?.myAgencyUser?.name) {
-      return;
-    }
-
+    const dirtyValues = getDirtyValues(dirtyFields, params);
     updateMyAgency({
       variables: {
-        input: params,
+        input: dirtyValues,
       },
       onCompleted: () => {
         refetch();
@@ -74,11 +91,8 @@ const AgencyUser = () => {
             <input
               id="agencyUser.name"
               type="text"
-              {...register("agencyUser.name", {
-                required: "Agency name is required",
-              })}
+              {...register("agencyUser.name")}
               className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
-              defaultValue={data?.myAgencyUser?.name}
               disabled={loading}
             />
             {errors.agencyUser?.name?.message && (
@@ -87,12 +101,37 @@ const AgencyUser = () => {
               </p>
             )}
           </div>
+          <div>
+            <label
+              htmlFor="agencyUser.language"
+              className="block text-sm font-medium mb-1"
+            >
+              Language
+            </label>
+            <select
+              id="agencyUser.language"
+              {...register("agencyUser.language")}
+              className="border px-3 py-2 rounded w-full disabled:bg-gray-100"
+              disabled={loading}
+            >
+              {Object.values(Language).map(lang => (
+                <option key={lang} value={lang}>
+                  {lang}
+                </option>
+              ))}
+            </select>
+            {errors.agencyUser?.language?.message && (
+              <p className="mt-1 text-red-500">
+                {errors.agencyUser.language.message}
+              </p>
+            )}
+          </div>
           {error && <div className="text-red-500">{error.message}</div>}
           <div>
             <button
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={loading || mutationLoading}
+              disabled={loading || mutationLoading || !isDirty}
             >
               Submit
             </button>

@@ -26,6 +26,12 @@ def create_app():
     from app.graph.schema import schema
     from flask_graphql import GraphQLView
 
+    from app.commands.seed_db import seed_db_command
+    from app.commands.reset_db import reset_db_command
+
+    app.cli.add_command(seed_db_command)
+    app.cli.add_command(reset_db_command)
+
     app.add_url_rule(
         "/graphql",
         view_func=GraphQLView.as_view("graphql", schema=schema, graphiql=True),
