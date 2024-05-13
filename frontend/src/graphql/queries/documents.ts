@@ -8,4 +8,16 @@ const CREATE_DOCUMENRTS = gql`
   }
 `;
 
-export { CREATE_DOCUMENRTS };
+const DOCUMENT_STATUSES = gql`
+  query DocumentStatuses {
+    documentStatuses {
+      id
+      documentName
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export { CREATE_DOCUMENRTS, DOCUMENT_STATUSES };

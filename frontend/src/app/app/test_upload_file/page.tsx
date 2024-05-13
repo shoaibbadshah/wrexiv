@@ -6,6 +6,7 @@ import { DocumentPlusIcon } from "@heroicons/react/24/solid";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { useCreateDocumentsMutation } from "@/graphql/generated";
+import Link from "next/link";
 
 type Message = {
   status: "success" | "error" | "loading";
@@ -105,6 +106,14 @@ const AppTopPage = () => {
                   Get started by uploading files below to add new talent.
                 </p>
               </div>
+              <Link href="/app/file_statuses">
+                <button
+                  type="button"
+                  className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  View uploaded files
+                </button>
+              </Link>
             </div>
           </div>
 

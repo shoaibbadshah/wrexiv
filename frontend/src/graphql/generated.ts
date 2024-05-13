@@ -82,11 +82,22 @@ export type DocumentInput = {
   url: Scalars["String"];
 };
 
+export type DocumentStatusType = {
+  __typename?: "DocumentStatusType";
+  createdAt: Scalars["DateTime"];
+  documentName: Scalars["String"];
+  id: Scalars["UUID"];
+  status: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   createAgency?: Maybe<CreateAgency>;
   createDocuments?: Maybe<CreateDocuments>;
   createTalentProfile?: Maybe<CreateTalentProfile>;
+  updateAgency?: Maybe<UpdateAgency>;
+  updateAgencyUser?: Maybe<UpdateAgencyUser>;
   updateMyAgency?: Maybe<UpdateMyAgency>;
 };
 
@@ -102,12 +113,21 @@ export type MutationCreateTalentProfileArgs = {
   input: CreateTalentProfileInput;
 };
 
+export type MutationUpdateAgencyArgs = {
+  input: UpdateAgencyInput;
+};
+
+export type MutationUpdateAgencyUserArgs = {
+  input: UpdateAgencyUserInput;
+};
+
 export type MutationUpdateMyAgencyArgs = {
   input: UpdateMyAgencyInput;
 };
 
 export type Query = {
   __typename?: "Query";
+  documentStatuses?: Maybe<Array<DocumentStatusType>>;
   myAgencyUser?: Maybe<AgencyUserType>;
   talentProfiles?: Maybe<Array<TalentProfileType>>;
   user?: Maybe<UserType>;
@@ -121,6 +141,26 @@ export type TalentProfileType = {
   id: Scalars["UUID"];
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
+};
+
+export type UpdateAgency = {
+  __typename?: "UpdateAgency";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UpdateAgencyInput = {
+  id: Scalars["UUID"];
+  name?: InputMaybe<Scalars["String"]>;
+};
+
+export type UpdateAgencyUser = {
+  __typename?: "UpdateAgencyUser";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type UpdateAgencyUserInput = {
+  id: Scalars["UUID"];
+  name?: InputMaybe<Scalars["String"]>;
 };
 
 export type UpdateMyAgency = {
@@ -155,6 +195,20 @@ export type CreateDocumentsMutation = {
     __typename?: "CreateDocuments";
     success?: boolean | null;
   } | null;
+};
+
+export type DocumentStatusesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type DocumentStatusesQuery = {
+  __typename?: "Query";
+  documentStatuses?: Array<{
+    __typename?: "DocumentStatusType";
+    id: any;
+    documentName: string;
+    status: string;
+    createdAt: any;
+    updatedAt: any;
+  }> | null;
 };
 
 export type MyAgencyUserQueryVariables = Exact<{ [key: string]: never }>;
@@ -300,6 +354,67 @@ export type CreateDocumentsMutationResult =
 export type CreateDocumentsMutationOptions = Apollo.BaseMutationOptions<
   CreateDocumentsMutation,
   CreateDocumentsMutationVariables
+>;
+export const DocumentStatusesDocument = gql`
+  query DocumentStatuses {
+    documentStatuses {
+      id
+      documentName
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+/**
+ * __useDocumentStatusesQuery__
+ *
+ * To run a query within a React component, call `useDocumentStatusesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDocumentStatusesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDocumentStatusesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDocumentStatusesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    DocumentStatusesQuery,
+    DocumentStatusesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<DocumentStatusesQuery, DocumentStatusesQueryVariables>(
+    DocumentStatusesDocument,
+    options
+  );
+}
+export function useDocumentStatusesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    DocumentStatusesQuery,
+    DocumentStatusesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    DocumentStatusesQuery,
+    DocumentStatusesQueryVariables
+  >(DocumentStatusesDocument, options);
+}
+export type DocumentStatusesQueryHookResult = ReturnType<
+  typeof useDocumentStatusesQuery
+>;
+export type DocumentStatusesLazyQueryHookResult = ReturnType<
+  typeof useDocumentStatusesLazyQuery
+>;
+export type DocumentStatusesQueryResult = Apollo.QueryResult<
+  DocumentStatusesQuery,
+  DocumentStatusesQueryVariables
 >;
 export const MyAgencyUserDocument = gql`
   query myAgencyUser {
