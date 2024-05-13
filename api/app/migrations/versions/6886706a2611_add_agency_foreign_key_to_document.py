@@ -1,4 +1,4 @@
-"""add document_processing_tasks table
+"""add agency foreign key to document processing task
 
 Revision ID: 6886706a2611
 Revises: be0c9ac0c5a5
