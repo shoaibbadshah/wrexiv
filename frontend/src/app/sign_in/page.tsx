@@ -3,7 +3,6 @@
 import Container from "@/components/molecules/Container";
 import ProviderAuthButtons from "@/components/molecules/ProviderAuthButtons";
 import { FIRST_APP_PAGE } from "@/constants/urls";
-import useCurrentUser from "@/hooks/useCurrentUser";
 import useFlash from "@/hooks/useFlash";
 import { signInToFirebaseAuth, signInWithGoogle } from "@/lib/firebase";
 import { sendEmailVerification } from "@firebase/auth";
@@ -19,7 +18,6 @@ interface IFormInput {
 const SingIn = () => {
   const router = useRouter();
   const { showMessage } = useFlash();
-  const { refetch: refetchUser } = useCurrentUser();
 
   const {
     register,
@@ -31,7 +29,7 @@ const SingIn = () => {
     const { email, password } = params;
     const result = await signInToFirebaseAuth(email, password);
     if (result.user.emailVerified) {
-      await refetchUser();
+      // await refetchUser();
       router.replace(FIRST_APP_PAGE);
     } else {
       await sendEmailVerification(result.user);

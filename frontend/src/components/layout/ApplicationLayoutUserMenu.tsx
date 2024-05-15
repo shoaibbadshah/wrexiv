@@ -11,11 +11,7 @@ import { signOutAuth } from "@/store/authSlice";
 import { client } from "@/providers/ApolloClientProvider";
 import { usePathname } from "next/navigation";
 
-const userNavigation = [
-  { name: "User Settings", href: "/app/user" },
-  { name: "Tenant Settings", href: "/app/tenant" },
-  { name: "Agency Settings", href: "/app/agency" },
-];
+const userNavigation = [{ name: "Agency Settings", href: "/app/agency" }];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
