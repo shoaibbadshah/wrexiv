@@ -3,6 +3,7 @@ import uuid
 from sqlalchemy import String, Column, ForeignKey
 from app import db
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
 
 
 class TalentUser(db.Model):
@@ -18,6 +19,11 @@ class TalentUser(db.Model):
         onupdate=func.now(),
         nullable=False,
     )
+
+    user_id = Column(UUIDType(binary=False), ForeignKey("users.id"), nullable=False)
+    user = relationship("User", back_populates="talent_user", uselist=False)
+
+    talent_profile = relationship("TalentProfile", back_populates="talent_user", uselist=False)
 
     __mapper_args__ = {"polymorphic_identity": "talent_user"}
 
