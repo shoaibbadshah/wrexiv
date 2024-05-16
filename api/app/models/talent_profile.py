@@ -12,6 +12,7 @@ class TalentProfile(db.Model):
     name = Column(String(100), nullable=False)
     avatar = db.Column(db.String(255), nullable=True)
     bio = db.Column(db.Text, nullable=False)
+    email = Column(String(100), nullable=True)
     created_at = Column(db.DateTime(timezone=True), default=func.now(), nullable=False)
     updated_at = Column(
         db.DateTime(timezone=True),
