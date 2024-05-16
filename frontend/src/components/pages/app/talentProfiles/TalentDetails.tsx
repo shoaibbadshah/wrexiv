@@ -195,7 +195,12 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
                         </div>
                       </div>
                     ) : (
-                      <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
+                      <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6 flex justify-between items-center">
+                        <div>
+                          <button className="rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Invite Talent
+                          </button>
+                        </div>
                         <div className="flex justify-end space-x-3">
                           <button
                             type="button"
