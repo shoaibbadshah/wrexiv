@@ -1,37 +1,45 @@
-import i18n from "i18next";
+import i18n, { Resource } from "i18next";
 import { initReactI18next } from "react-i18next";
-import languages from "./translations/languages";
-import countries from "./translations/countries";
+import { createInstance } from "i18next";
+import { i18nConfig } from "@/../i18n-config";
+import id from "@/translations/id.json";
+import en from "@/translations/en.json";
+import ja from "@/translations/ja.json";
 
-// the translations
-// (tip move them in a JSON file and import them,
-// or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
-const resources = {
-  en: {
-    translation: {
-      "Welcome to React": "Welcome to React and react-i18next",
-      languages: languages,
-      countries: countries,
-    },
-  },
-  fr: {
-    translation: {
-      "Welcome to React": "Bienvenue à React et react-i18next",
-    },
-  },
-};
+export default async function initTranslations(
+  locale: string,
+  namespaces: string[],
+  i18nInstance?: typeof i18n
+) {
+  i18nInstance = i18nInstance || createInstance();
+  i18nInstance.use(initReactI18next);
 
-i18n
-  .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
+  const detectionOptions = {
+    order: ["cookie"],
+    lookupFromPathIndex: 1,
+    lookupCookie: "i18next",
+  };
+
+  const resources = {
+    en: en,
+    id: id,
+    ja: ja,
+  };
+
+  await i18nInstance.init({
+    lng: locale,
     resources,
-    lng: "en", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
-    // lng: "en", // language to use, more information here: https://www.i18next.com/overview/configuration-options#languages-namespaces-resources
-    // you can use the i18n.changeLanguage function to change the language manually: https://www.i18next.com/overview/api#changelanguage
-    // if you're using a language detector, do not define the lng option
-    interpolation: {
-      escapeValue: false, // react already safes from xss
-    },
+    fallbackLng: i18nConfig.defaultLocale,
+    supportedLngs: i18nConfig.locales,
+    defaultNS: namespaces[0],
+    fallbackNS: namespaces[0],
+    ns: namespaces,
+    preload: resources ? [] : i18nConfig.locales,
+    detection: detectionOptions,
   });
-
-export default i18n;
+  return {
+    i18n: i18nInstance,
+    resources: i18nInstance.services.resourceStore.data,
+    t: i18nInstance.t,
+  };
+}

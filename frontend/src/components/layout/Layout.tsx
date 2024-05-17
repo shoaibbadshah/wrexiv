@@ -15,7 +15,6 @@ import ApolloClientProvider from "@/providers/ApolloClientProvider";
 import Snackbar from "../organisms/Snackbar";
 import useFlash from "@/hooks/useFlash";
 import { FIRST_APP_PAGE } from "@/constants/urls";
-import TranslationProvider from "@/providers/TranslationProvider";
 import AdminLayout from "./AdminLayout";
 import MuiThemeProvider from "@/providers/MuiThemeProvider";
 
@@ -84,10 +83,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <ReduxProvider>
       <ApolloClientProvider>
         <MuiThemeProvider>
-          <TranslationProvider>
-            <LayoutRouter>{children}</LayoutRouter>
-            <Snackbar />
-          </TranslationProvider>
+          <LayoutRouter>{children}</LayoutRouter>
+          <Snackbar />
         </MuiThemeProvider>
       </ApolloClientProvider>
     </ReduxProvider>
