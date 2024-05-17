@@ -1,10 +1,10 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { DocumentPlusIcon } from "@heroicons/react/24/solid";
 import { useCreateDocumentsMutation } from "@/graphql/generated";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/lib/firebase";
+import { MultipleFileUploader } from "@/components/molecules/MultipleFileUploader";
 
 type PropsType = {
   open: boolean;
@@ -146,35 +146,7 @@ export default function TalentAddForm({ open, handleClose }: PropsType) {
                         >
                           Talent Files
                         </label>
-                        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-                          <div className="text-center">
-                            <DocumentPlusIcon
-                              className="mx-auto h-12 w-12 text-gray-300"
-                              aria-hidden="true"
-                            />
-                            <div className="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
-                              <label
-                                htmlFor="file-upload"
-                                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                              >
-                                <span>Upload files</span>
-                                <input
-                                  id="file-upload"
-                                  name="file-upload"
-                                  type="file"
-                                  className="sr-only"
-                                  accept=".pdf,.doc,.docx"
-                                  multiple
-                                  onChange={handleFileChange}
-                                />
-                              </label>
-                              <p className="pl-1">or drag and drop</p>
-                            </div>
-                            <p className="text-xs leading-5 text-gray-600">
-                              PDF, DOC, DOCX up to 10MB
-                            </p>
-                          </div>
-                        </div>
+                        <MultipleFileUploader setFiles={setFiles} />
                       </div>
 
                       {files.length > 0 && (
