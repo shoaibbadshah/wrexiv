@@ -6,5 +6,6 @@ class TalentProfileType(graphene.ObjectType):
     name = graphene.String(required=True)
     avatar = graphene.String()
     bio = graphene.String()
+    email = graphene.String()
     created_at = graphene.DateTime(required=True)
     updated_at = graphene.DateTime(required=True)
