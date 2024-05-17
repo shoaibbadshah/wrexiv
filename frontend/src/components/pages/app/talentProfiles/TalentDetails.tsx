@@ -8,6 +8,9 @@ import TalentDeleteWarning from "./TalentDeleteWarning";
 import EditableImage from "@/components/molecules/EditableImage";
 import { TalentProfileType } from "@/graphql/generated";
 import TalentInvitationForm from "./TalentInvitationForm";
+import Notification, {
+  NotificationMessage,
+} from "@/components/atoms/Notification";
 
 type PropsType = {
   open: boolean;
@@ -20,6 +23,8 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [data, setData] = useState<TalentProfileType>(talent);
   const [openInvitationForm, setOpenInvitationForm] = useState<boolean>(false);
+  const [notificationMessage, setNotificationMessage] =
+    useState<NotificationMessage | null>(null);
 
   const handleDelete = (talent: TalentProfileType) => {
     console.log(`Delete talent with name: ${talent.name}`);
@@ -47,9 +52,17 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
     setOpenInvitationForm(open);
   };
 
+  const inviteTalent = (email: string) => {
+    console.log(`Invite talent with email: ${email}`);
+    setNotificationMessage({
+      message: "Talent has been invited",
+      type: "success",
+    });
+  };
+
   const handleInviteTalent = () => {
     if (talent.email !== null) {
-      console.log(`Invite talent with email: ${talent.email}`);
+      inviteTalent(talent.email);
     } else {
       handleOpenInvitationForm(true);
     }
@@ -242,22 +255,24 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
             </div>
           </div>
 
-          {openDeleteWarning && (
-            <TalentDeleteWarning
-              open={openDeleteWarning}
-              handleOpen={setOpenDeleteWarning}
-              talent={talent}
-              handleDelete={handleDelete}
-            />
-          )}
+          <TalentDeleteWarning
+            open={openDeleteWarning}
+            handleOpen={setOpenDeleteWarning}
+            talent={talent}
+            handleDelete={handleDelete}
+          />
         </div>
 
-        {openInvitationForm && (
-          <TalentInvitationForm
-            open={openInvitationForm}
-            handleClose={() => handleOpenInvitationForm(false)}
-          />
-        )}
+        <TalentInvitationForm
+          open={openInvitationForm}
+          handleClose={() => handleOpenInvitationForm(false)}
+          handleInvite={inviteTalent}
+        />
+
+        <Notification
+          message={notificationMessage}
+          setMessage={setNotificationMessage}
+        />
       </Dialog>
     </Transition.Root>
   );

@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 type PropsType = {
   open: boolean;
   handleClose: () => void;
+  handleInvite: (email: string) => void;
 };
 
 interface ITalentInvitationForm {
@@ -18,7 +19,11 @@ const initialSetupSchema: ZodType<ITalentInvitationForm> = z.object({
   email: z.string().email("Invalid email address"),
 });
 
-export default function TalentInvitationForm({ open, handleClose }: PropsType) {
+export default function TalentInvitationForm({
+  open,
+  handleClose,
+  handleInvite,
+}: PropsType) {
   const {
     register,
     handleSubmit,
@@ -32,25 +37,25 @@ export default function TalentInvitationForm({ open, handleClose }: PropsType) {
   };
 
   const onSubmit = (params: ITalentInvitationForm) => {
-    console.log(params);
+    handleInvite(params.email);
+    handleClose();
   };
 
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-20" onClose={() => handleClose()}>
-        <div className="fixed inset-0" />
         <div className="fixed inset-0 overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden bg-gray-500 bg-opacity-50 transition-opacity">
-            <div className="pointer-events-none fixed flex max-w-full mt-16 inset-0">
-              <Transition.Child
-                as={Fragment}
-                enter="transform transition ease-in-out duration-500 sm:duration-700"
-                enterFrom="translate-x-full"
-                enterTo="translate-x-0"
-                leave="transform transition ease-in-out duration-500 sm:duration-700"
-                leaveFrom="translate-x-0"
-                leaveTo="translate-x-full"
-              >
+          <Transition.Child
+            as={Fragment}
+            enter="transform transition ease-in-out duration-200"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transform transition ease-in-out duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="absolute inset-0 overflow-hidden bg-gray-800 bg-opacity-20 transition-opacity">
+              <div className="pointer-events-none fixed flex max-w-full mt-16 inset-0 mx-2">
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-2xl m-auto overflow-hidden">
                   <form
                     className="flex h-full flex-col bg-white shadow-xl"
@@ -126,15 +131,15 @@ export default function TalentInvitationForm({ open, handleClose }: PropsType) {
                           className={`inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
                                                         ${!isDirty ? "opacity-50 cursor-not-allowed" : ""}`}
                         >
-                          Create
+                          Invite
                         </button>
                       </div>
                     </div>
                   </form>
                 </Dialog.Panel>
-              </Transition.Child>
+              </div>
             </div>
-          </div>
+          </Transition.Child>
         </div>
       </Dialog>
     </Transition.Root>
