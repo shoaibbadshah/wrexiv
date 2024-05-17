@@ -6,7 +6,10 @@ import Image from "next/image";
 
 import TalentDeleteWarning from "./TalentDeleteWarning";
 import EditableImage from "@/components/molecules/EditableImage";
-import { TalentProfileType } from "@/graphql/generated";
+import {
+  TalentProfileType,
+  useCreateTalentUserInvitationMutation,
+} from "@/graphql/generated";
 import TalentInvitationForm from "./TalentInvitationForm";
 import FloatingAlert, { AlertMessage } from "@/components/atoms/Notification";
 
@@ -22,6 +25,9 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
   const [data, setData] = useState<TalentProfileType>(talent);
   const [openInvitationForm, setOpenInvitationForm] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<AlertMessage | null>(null);
+
+  const [createTalentUserInvitation, { loading: mutationLoading }] =
+    useCreateTalentUserInvitationMutation();
 
   const handleDelete = (talent: TalentProfileType) => {
     console.log(`Delete talent with name: ${talent.name}`);
@@ -50,10 +56,24 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
   };
 
   const inviteTalent = (email: string) => {
-    console.log(`Invite talent with email: ${email}`);
-    setAlertMessage({
-      message: "Talent has been invited",
-      type: "success",
+    createTalentUserInvitation({
+      variables: {
+        input: {
+          email,
+        },
+      },
+      onError: () => {
+        setAlertMessage({
+          message: "Failed to invite talent",
+          type: "error",
+        });
+      },
+      onCompleted: () => {
+        setAlertMessage({
+          message: "Talent has been invited",
+          type: "success",
+        });
+      },
     });
   };
 
@@ -223,7 +243,8 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
                         <div>
                           <button
                             onClick={handleInviteTalent}
-                            className="rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                            disabled={mutationLoading}
                           >
                             Invite Talent
                           </button>

@@ -79,6 +79,15 @@ export type CreateTalentProfileInput = {
   name: Scalars["String"];
 };
 
+export type CreateTalentUserInvitation = {
+  __typename?: "CreateTalentUserInvitation";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type CreateTalentUserInvitationInput = {
+  email: Scalars["String"];
+};
+
 export type DocumentInput = {
   name: Scalars["String"];
   url: Scalars["String"];
@@ -95,6 +104,7 @@ export type Mutation = {
   createAgency?: Maybe<CreateAgency>;
   createDocuments?: Maybe<CreateDocuments>;
   createTalentProfile?: Maybe<CreateTalentProfile>;
+  createTalentUserInvitation?: Maybe<CreateTalentUserInvitation>;
   updateAgency?: Maybe<UpdateAgency>;
   updateAgencyUser?: Maybe<UpdateAgencyUser>;
   updateMyAgency?: Maybe<UpdateMyAgency>;
@@ -110,6 +120,10 @@ export type MutationCreateDocumentsArgs = {
 
 export type MutationCreateTalentProfileArgs = {
   input: CreateTalentProfileInput;
+};
+
+export type MutationCreateTalentUserInvitationArgs = {
+  input: CreateTalentUserInvitationInput;
 };
 
 export type MutationUpdateAgencyArgs = {
@@ -277,6 +291,18 @@ export type CreateTalentProfileMutation = {
       createdAt: any;
       updatedAt: any;
     } | null;
+  } | null;
+};
+
+export type CreateTalentUserInvitationMutationVariables = Exact<{
+  input: CreateTalentUserInvitationInput;
+}>;
+
+export type CreateTalentUserInvitationMutation = {
+  __typename?: "Mutation";
+  createTalentUserInvitation?: {
+    __typename?: "CreateTalentUserInvitation";
+    success?: boolean | null;
   } | null;
 };
 
@@ -632,6 +658,59 @@ export type CreateTalentProfileMutationOptions = Apollo.BaseMutationOptions<
   CreateTalentProfileMutation,
   CreateTalentProfileMutationVariables
 >;
+export const CreateTalentUserInvitationDocument = gql`
+  mutation CreateTalentUserInvitation(
+    $input: CreateTalentUserInvitationInput!
+  ) {
+    createTalentUserInvitation(input: $input) {
+      success
+    }
+  }
+`;
+export type CreateTalentUserInvitationMutationFn = Apollo.MutationFunction<
+  CreateTalentUserInvitationMutation,
+  CreateTalentUserInvitationMutationVariables
+>;
+
+/**
+ * __useCreateTalentUserInvitationMutation__
+ *
+ * To run a mutation, you first call `useCreateTalentUserInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTalentUserInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTalentUserInvitationMutation, { data, loading, error }] = useCreateTalentUserInvitationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateTalentUserInvitationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateTalentUserInvitationMutation,
+    CreateTalentUserInvitationMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateTalentUserInvitationMutation,
+    CreateTalentUserInvitationMutationVariables
+  >(CreateTalentUserInvitationDocument, options);
+}
+export type CreateTalentUserInvitationMutationHookResult = ReturnType<
+  typeof useCreateTalentUserInvitationMutation
+>;
+export type CreateTalentUserInvitationMutationResult =
+  Apollo.MutationResult<CreateTalentUserInvitationMutation>;
+export type CreateTalentUserInvitationMutationOptions =
+  Apollo.BaseMutationOptions<
+    CreateTalentUserInvitationMutation,
+    CreateTalentUserInvitationMutationVariables
+  >;
 export const MeDocument = gql`
   query Me {
     user {
