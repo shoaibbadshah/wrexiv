@@ -70,8 +70,8 @@ export default function TalentInvitationForm({
                               Invite Talent
                             </Dialog.Title>
                             <p className="text-sm text-gray-500">
-                              This talent's email can't be extracted from the
-                              file. Please enter the email manually.
+                              This talent&apos;s email can&apos;t be extracted
+                              from the file. Please enter the email manually.
                             </p>
                           </div>
                           <div className="flex h-7 items-center">
