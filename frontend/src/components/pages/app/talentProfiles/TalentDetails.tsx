@@ -7,6 +7,7 @@ import Image from "next/image";
 import TalentDeleteWarning from "./TalentDeleteWarning";
 import EditableImage from "@/components/molecules/EditableImage";
 import { TalentProfileType } from "@/graphql/generated";
+import TalentInvitationForm from "./TalentInvitationForm";
 
 type PropsType = {
   open: boolean;
@@ -18,6 +19,7 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
   const [openDeleteWarning, setOpenDeleteWarning] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [data, setData] = useState<TalentProfileType>(talent);
+  const [openInvitationForm, setOpenInvitationForm] = useState<boolean>(false);
 
   const handleDelete = (talent: TalentProfileType) => {
     console.log(`Delete talent with name: ${talent.name}`);
@@ -39,6 +41,18 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
 
   const handleAvatarChange = () => {
     console.log("Avatar changed");
+  };
+
+  const handleOpenInvitationForm = (open: boolean) => {
+    setOpenInvitationForm(open);
+  };
+
+  const handleInviteTalent = () => {
+    if (talent.email !== null) {
+      console.log(`Invite talent with email: ${talent.email}`);
+    } else {
+      handleOpenInvitationForm(true);
+    }
   };
 
   return (
@@ -197,7 +211,10 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
                     ) : (
                       <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6 flex justify-between items-center">
                         <div>
-                          <button className="rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                          <button
+                            onClick={handleInviteTalent}
+                            className="rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
                             Invite Talent
                           </button>
                         </div>
@@ -234,6 +251,13 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
             />
           )}
         </div>
+
+        {openInvitationForm && (
+          <TalentInvitationForm
+            open={openInvitationForm}
+            handleClose={() => handleOpenInvitationForm(false)}
+          />
+        )}
       </Dialog>
     </Transition.Root>
   );

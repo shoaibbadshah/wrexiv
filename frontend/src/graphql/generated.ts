@@ -136,6 +136,7 @@ export type TalentProfileType = {
   avatar?: Maybe<Scalars["String"]>;
   bio?: Maybe<Scalars["String"]>;
   createdAt: Scalars["DateTime"];
+  email?: Maybe<Scalars["String"]>;
   id: Scalars["UUID"];
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
@@ -253,6 +254,7 @@ export type TalentProfilesQuery = {
     name: string;
     bio?: string | null;
     avatar?: string | null;
+    email?: string | null;
     createdAt: any;
     updatedAt: any;
   }> | null;
@@ -517,6 +519,7 @@ export const TalentProfilesDocument = gql`
       name
       bio
       avatar
+      email
       createdAt
       updatedAt
     }
