@@ -2,20 +2,30 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { DocumentPlusIcon } from "@heroicons/react/24/solid";
+import { useCreateDocumentsMutation } from "@/graphql/generated";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "@/lib/firebase";
 
 type PropsType = {
   open: boolean;
   handleClose: () => void;
 };
 
+type Message = {
+  status: "success" | "error" | "loading";
+  content: string;
+};
+
 export default function TalentAddForm({ open, handleClose }: PropsType) {
-  const [uploadedFileNames, setUploadedFileNames] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const [message, setMessage] = useState<Message | null>(null);
+  const [createDocuments, {}] = useCreateDocumentsMutation();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    const newFileNames = files.map(file => file.name);
+    setMessage(null);
 
-    setUploadedFileNames(prev => [...prev, ...newFileNames]);
+    setFiles(prev => [...prev, ...files]);
     event.target.value = "";
   };
 
@@ -24,7 +34,60 @@ export default function TalentAddForm({ open, handleClose }: PropsType) {
     index: number
   ) => {
     event.preventDefault();
-    setUploadedFileNames(prev => prev.filter((_, i) => i !== index));
+    setFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSubmitFile = async () => {
+    setMessage({
+      status: "loading",
+      content: "Uploading files...",
+    });
+
+    const uploadTasks = [];
+    for (let i = 0; i < files.length; i++) {
+      const storageRef = ref(
+        storage,
+        `talent_document_import/${Date.now()}-${files[i].name}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, files[i]);
+      uploadTasks.push(uploadTask);
+    }
+    const res = await Promise.all(uploadTasks);
+    const downloadUrlPromises = res.map(snapshot =>
+      getDownloadURL(snapshot.ref)
+    );
+
+    const downloadUrls = await Promise.all(downloadUrlPromises);
+
+    const fileNameAndURLs = files.map((file, index) => ({
+      name: file.name,
+      url: downloadUrls[index],
+    }));
+
+    setMessage({
+      status: "loading",
+      content: "Processing files...",
+    });
+    createDocuments({
+      variables: {
+        input: {
+          documents: fileNameAndURLs,
+        },
+      },
+    })
+      .then(() => {
+        setMessage({
+          status: "success",
+          content: "Files uploaded successfully",
+        });
+        setFiles([]);
+      })
+      .catch(() => {
+        setMessage({
+          status: "error",
+          content: "Failed to process files",
+        });
+      });
   };
 
   return (
@@ -114,18 +177,18 @@ export default function TalentAddForm({ open, handleClose }: PropsType) {
                         </div>
                       </div>
 
-                      {uploadedFileNames.length > 0 && (
-                        <div className="mt-4 text-sm text-gray-600 px-6">
+                      {files.length > 0 && (
+                        <div className="mb-4 text-sm text-gray-600 px-6">
                           <strong className="block mb-2">
                             Uploaded files:
                           </strong>
                           <ul className="space-y-2">
-                            {uploadedFileNames.map((name, index) => (
+                            {files.map((file, index) => (
                               <li
                                 key={index}
                                 className="flex items-center justify-between p-2 bg-gray-100 rounded"
                               >
-                                <span>{name}</span>
+                                <span>{file.name}</span>
                                 <button
                                   className="text-red-600 hover:text-red-800 transition"
                                   onClick={event =>
@@ -145,7 +208,27 @@ export default function TalentAddForm({ open, handleClose }: PropsType) {
                     </div>
 
                     {/* Action buttons */}
-                    <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
+                    <div className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6 flex flex-row justify-between">
+                      <div className="flex items-center max-w-[60%] sm:max-w-[75%] md:max-w-[80%] overflow-hidden">
+                        <div className="text-sm font-semibold ">
+                          {message && (
+                            <span
+                              className={`${(() => {
+                                switch (message.status) {
+                                  case "success":
+                                    return "text-green-600";
+                                  case "error":
+                                    return "text-red-600";
+                                  case "loading":
+                                    return "text-yellow-600";
+                                }
+                              })()}`}
+                            >
+                              {message.content}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                       <div className="flex justify-end space-x-3">
                         <button
                           type="button"
@@ -156,9 +239,11 @@ export default function TalentAddForm({ open, handleClose }: PropsType) {
                         </button>
                         <button
                           type="button"
-                          disabled={uploadedFileNames.length === 0}
-                          className={`inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
-                                                        ${uploadedFileNames.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                          disabled={
+                            files.length === 0 || message?.status === "loading"
+                          }
+                          className={`inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed`}
+                          onClick={handleSubmitFile}
                         >
                           Create
                         </button>
