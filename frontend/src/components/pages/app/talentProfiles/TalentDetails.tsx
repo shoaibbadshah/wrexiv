@@ -58,7 +58,7 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
   };
 
   const handleInviteTalent = () => {
-    if (talent.email !== null) {
+    if (talent.email) {
       inviteTalent(talent.email);
     } else {
       handleOpenInvitationForm(true);
