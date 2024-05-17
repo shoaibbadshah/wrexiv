@@ -6,7 +6,6 @@ import { useTalentProfilesQuery } from "@/graphql/generated";
 import TalentDetails from "./TalentDetails";
 import TalentAddForm from "./TalentAddForm";
 import { TalentProfilesQuery } from "@/graphql/generated";
-import { NotificationMessage } from "@/components/atoms/Notification";
 
 type Talent = NonNullable<TalentProfilesQuery["talentProfiles"]>[0];
 
@@ -17,7 +16,6 @@ const TalentProfiles = () => {
   const [selectedTalent, setSelectedTalent] = useState<Talent | null>(null);
   const [openDetails, setOpenDetails] = useState<boolean>(false);
   const [openForm, setOpenForm] = useState<boolean>(false);
-  const [notificationMessage, setNotificationMessage] = useState<NotificationMessage | null>(null);
 
   const handleOpenDetails = (open: boolean, talent: Talent | null = null) => {
     setOpenDetails(open);

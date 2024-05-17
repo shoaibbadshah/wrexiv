@@ -1,17 +1,17 @@
 import { Snackbar, Alert } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 
-export type NotificationMessage = {
+export type AlertMessage = {
   message: string;
   type: "success" | "error";
 };
 
-type NotificationProps = {
-  message: NotificationMessage | null;
-  setMessage: Dispatch<SetStateAction<NotificationMessage | null>>;
+type FloatingAlertProps = {
+  message: AlertMessage | null;
+  setMessage: Dispatch<SetStateAction<AlertMessage | null>>;
 };
 
-const Notification = ({ message, setMessage }: NotificationProps) => {
+const FloatingAlert = ({ message, setMessage }: FloatingAlertProps) => {
   return (
     <Snackbar
       sx={{ marginTop: "64px" }}
@@ -24,7 +24,7 @@ const Notification = ({ message, setMessage }: NotificationProps) => {
         onClose={setMessage.bind(null, null)}
         severity={message?.type}
         variant="filled"
-        sx={{ width: "100%", zIndex: 50 }}
+        sx={{ width: "100%", minWidth: "300px", borderRadius: "0.375rem" }}
       >
         {message?.message}
       </Alert>
@@ -32,4 +32,4 @@ const Notification = ({ message, setMessage }: NotificationProps) => {
   );
 };
 
-export default Notification;
+export default FloatingAlert;
