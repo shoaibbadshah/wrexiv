@@ -11,7 +11,7 @@ import {
   useCreateTalentUserInvitationMutation,
 } from "@/graphql/generated";
 import TalentInvitationForm from "./TalentInvitationForm";
-import FloatingAlert, { AlertMessage } from "@/components/atoms/Notification";
+import FloatingAlert, { AlertMessage } from "@/components/atoms/FloatingAlert";
 
 type PropsType = {
   open: boolean;
