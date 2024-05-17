@@ -37,13 +37,8 @@ export const MultipleFileUploader = ({
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files: File[] = [];
-    if (e.target.files) {
-      for (let i = 0; i < e.target.files.length; i++) {
-        files.push(e.target.files[i]);
-      }
-      setFiles(prev => [...prev, ...files]);
-    }
+    const files = Array.from(e.target.files || []);
+    setFiles(prev => [...prev, ...files]);
   };
 
   return (

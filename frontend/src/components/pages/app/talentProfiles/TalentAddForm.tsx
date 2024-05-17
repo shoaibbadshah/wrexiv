@@ -21,14 +21,6 @@ export default function TalentAddForm({ open, handleClose }: PropsType) {
   const [message, setMessage] = useState<Message | null>(null);
   const [createDocuments, {}] = useCreateDocumentsMutation();
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || []);
-    setMessage(null);
-
-    setFiles(prev => [...prev, ...files]);
-    event.target.value = "";
-  };
-
   const handleRemoveFile = (
     event: React.MouseEvent<HTMLButtonElement>,
     index: number
