@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { z, ZodType } from "zod";
@@ -28,9 +28,16 @@ export default function TalentInvitationForm({
     register,
     handleSubmit,
     formState: { errors, isDirty },
+    reset: resetForm,
   } = useForm<ITalentInvitationForm>({
     resolver: zodResolver(initialSetupSchema),
   });
+
+  useEffect(() => {
+    if (!open) {
+      resetForm();
+    }
+  }, [open]);
 
   const handleCancel = () => {
     handleClose();
