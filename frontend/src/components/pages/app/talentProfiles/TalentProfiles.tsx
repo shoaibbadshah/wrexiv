@@ -52,7 +52,7 @@ const TalentProfiles = () => {
         if (error) {
           return (
             <p className="mt-12 text-center text-sm text-red-700">
-              Error loading talent data. Please try again later.
+              Error: {error.message}
             </p>
           );
         }
