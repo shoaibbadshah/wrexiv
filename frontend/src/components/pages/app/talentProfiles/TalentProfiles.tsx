@@ -67,7 +67,7 @@ const TalentProfiles = () => {
           return (
             <p className="mt-12 text-center text-sm text-gray-700">
               There are no talent records. Let’s upload a new talent from the
-              "New Talent" button.
+              &quot;New Talent&quot; button.
             </p>
           );
         }
