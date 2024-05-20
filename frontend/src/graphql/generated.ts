@@ -89,7 +89,7 @@ export type DocumentStatusType = {
   createdAt: Scalars["DateTime"];
   documentName: Scalars["String"];
   id: Scalars["UUID"];
-  status: Scalars["String"];
+  status: TaskStatusType;
   updatedAt: Scalars["DateTime"];
 };
 
@@ -146,6 +146,11 @@ export type Query = {
   user?: Maybe<UserType>;
 };
 
+export type QueryDocumentStatusesArgs = {
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+};
+
 export type RetryDocument = {
   __typename?: "RetryDocument";
   success?: Maybe<Scalars["Boolean"]>;
@@ -164,6 +169,12 @@ export type TalentProfileType = {
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
+
+export enum TaskStatusType {
+  Failure = "FAILURE",
+  Pending = "PENDING",
+  Success = "SUCCESS",
+}
 
 export type UpdateAgency = {
   __typename?: "UpdateAgency";
@@ -220,7 +231,10 @@ export type CreateDocumentsMutation = {
   } | null;
 };
 
-export type DocumentStatusesQueryVariables = Exact<{ [key: string]: never }>;
+export type DocumentStatusesQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+}>;
 
 export type DocumentStatusesQuery = {
   __typename?: "Query";
@@ -228,7 +242,7 @@ export type DocumentStatusesQuery = {
     __typename?: "DocumentStatusType";
     id: any;
     documentName: string;
-    status: string;
+    status: TaskStatusType;
     createdAt: any;
     updatedAt: any;
   }> | null;
@@ -392,8 +406,8 @@ export type CreateDocumentsMutationOptions = Apollo.BaseMutationOptions<
   CreateDocumentsMutationVariables
 >;
 export const DocumentStatusesDocument = gql`
-  query DocumentStatuses {
-    documentStatuses {
+  query DocumentStatuses($limit: Int, $offset: Int) {
+    documentStatuses(limit: $limit, offset: $offset) {
       id
       documentName
       status
@@ -415,6 +429,8 @@ export const DocumentStatusesDocument = gql`
  * @example
  * const { data, loading, error } = useDocumentStatusesQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
  *   },
  * });
  */

@@ -8,7 +8,13 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 const TalentProfiles = () => {
-  const { data, loading, error, refetch } = useDocumentStatusesQuery();
+  const { data, loading, error, refetch } = useDocumentStatusesQuery({
+    // TODO: Implement pagination
+    variables: {
+      limit: 20,
+      offset: 0,
+    },
+  });
   const [retryDocument] = useRetryDocumentMutation();
   const fileStatuses = data?.documentStatuses || [];
 

@@ -9,8 +9,8 @@ const CREATE_DOCUMENRTS = gql`
 `;
 
 const DOCUMENT_STATUSES = gql`
-  query DocumentStatuses {
-    documentStatuses {
+  query DocumentStatuses($limit: Int, $offset: Int) {
+    documentStatuses(limit: $limit, offset: $offset) {
       id
       documentName
       status
