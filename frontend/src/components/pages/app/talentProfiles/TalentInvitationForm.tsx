@@ -37,7 +37,7 @@ export default function TalentInvitationForm({
     if (!open) {
       resetForm();
     }
-  }, [open]);
+  }, [open, resetForm]);
 
   const handleCancel = () => {
     handleClose();
