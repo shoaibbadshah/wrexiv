@@ -140,7 +140,7 @@ export default function TalentAddForm({ open, handleClose }: PropsType) {
                         </label>
                         <MultipleFileUploader
                           setFiles={setFiles}
-                          accept=".pdf,.doc,.docx"
+                          accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                           maxFileSizeMB={10}
                         />
                       </div>
