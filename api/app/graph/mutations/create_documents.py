@@ -31,7 +31,7 @@ class CreateDocuments(graphene.Mutation):
             try:
                 document_id = str(uuid.uuid4())
                 task = process_document.delay(g.current_agency.id, doc.name, doc.url, document_id)
-                document_processing_task = DocumentProcessingTask(id=document_id, current_task_id=task.id, document_name=doc.name, document_url=doc.url, agency_id=g.current_agency.id)
+                document_processing_task = DocumentProcessingTask(id=document_id, celery_task_id=task.id, document_name=doc.name, document_url=doc.url, agency_id=g.current_agency.id)
                 db.session.add(document_processing_task)
                 db.session.commit()
             except ValueError as e:

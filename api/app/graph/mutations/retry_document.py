@@ -27,13 +27,13 @@ class RetryDocument(graphene.Mutation):
         if document_processing_task is None:
             return GraphQLError("Document not found")
         
-        document_state = AsyncResult(str(document_processing_task.current_task_id)).state
+        document_state = AsyncResult(str(document_processing_task.celery_task_id)).state
         if document_state != "FAILURE":
             return GraphQLError("Document is not in a failed state")
         
         try:
             task = process_document.delay(g.current_agency.id, document_processing_task.document_name, document_processing_task.document_url, document_processing_task.id)
-            DocumentProcessingTask().query.filter_by(id=input.id).update({"current_task_id": task.id})
+            DocumentProcessingTask().query.filter_by(id=input.id).update({"celery_task_id": task.id})
             db.session.commit()
         except ValueError as e:
             logging.error(f"Error processing document {document_processing_task.document_name}: {e}")

@@ -13,7 +13,7 @@ def process_document(agency_id: str, document_name: str, document_url: str, docu
     document_text = extract_document_content(document_type, document_url)
     chat_gpt = ChatGpt()
     document_json = chat_gpt.document_text_to_json(document_text)
-    process_document_result(agency_id, document_name, document_json, document_id)
+    process_document_result(agency_id, document_name, document_url, document_json, document_id)
 
 def extract_word_content(docx_url: str) -> str:
     loader = Docx2txtLoader(docx_url)
@@ -42,7 +42,7 @@ def extract_document_content(document_type: DocumentType, document_url: str) -> 
     
     raise ValueError("Unsupported document type")
 
-def process_document_result(agency_id: str, document_name: str, document_json: dict, document_id: str):
+def process_document_result(agency_id: str, document_name: str, document_url: str, document_json: dict, document_id: str):
     talent_profile = TalentProfile(agency_id=agency_id, name=document_json.get("name"), bio=document_json.get("bio"))
     db.session.add(talent_profile)
     db.session.flush()
@@ -51,6 +51,6 @@ def process_document_result(agency_id: str, document_name: str, document_json: d
     db.session.add(talent_document)
     db.session.flush()
     
-    talent_document_import = TalentDocumentImport(talent_document_id=talent_document.id, json=str(document_json), document_processing_task_id=document_id)
+    talent_document_import = TalentDocumentImport(talent_document_id=talent_document.id, json=str(document_json), document_processing_task_id=document_id, file_url=document_url)
     db.session.add(talent_document_import)
     db.session.commit()

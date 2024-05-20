@@ -7,9 +7,9 @@ from sqlalchemy import ForeignKey
 class DocumentProcessingTask(db.Model):
     __tablename__ = "document_processing_tasks"
     id = Column(UUIDType(binary=False), primary_key=True)
-    current_task_id = Column(UUIDType(binary=False), nullable=False)
+    celery_task_id = Column(UUIDType(binary=False), nullable=False)
     document_name = Column(db.String(255), nullable=False)
-    document_url = Column(db.String(255), nullable=False)
+    document_url = Column(db.String(2083), nullable=False)
 
     created_at = Column(db.DateTime(timezone=True), default=func.now(), nullable=False)
     updated_at = Column(
