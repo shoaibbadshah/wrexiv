@@ -10,12 +10,17 @@ import {
 
 type MultipleFileUploaderProps = {
   setFiles: Dispatch<SetStateAction<File[]>>;
+  accept: string;
+  maxFileSizeMB: number;
 };
 
 export const MultipleFileUploader = ({
   setFiles,
+  accept,
+  maxFileSizeMB,
 }: MultipleFileUploaderProps) => {
   const [fileEnter, setFileEnter] = useState(false);
+  const acceptArray = accept.split(",");
 
   const handleFileDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -25,20 +30,31 @@ export const MultipleFileUploader = ({
       for (let i = 0; i < e.dataTransfer.items.length; i++) {
         if (e.dataTransfer.items[i].kind === "file") {
           let file = e.dataTransfer.items[i].getAsFile();
-          if (file) files.push(file);
+          if (file && file.name.toLowerCase().match(acceptArray.join("|"))) {
+            files.push(file);
+          }
         }
       }
     } else {
       for (let i = 0; i < e.dataTransfer.files.length; i++) {
-        files.push(e.dataTransfer.files[i]);
+        let file = e.dataTransfer.files[i];
+        if (file.name.toLowerCase().match(acceptArray.join("|"))) {
+          files.push(file);
+        }
       }
     }
-    setFiles(prev => [...prev, ...files]);
+    const filteredFiles = files.filter(
+      file => file.size <= maxFileSizeMB * 1024 * 1024
+    );
+    setFiles(prev => [...prev, ...filteredFiles]);
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    setFiles(prev => [...prev, ...files]);
+    const filteredFiles = files.filter(
+      file => file.size <= maxFileSizeMB * 1024 * 1024
+    );
+    setFiles(prev => [...prev, ...filteredFiles]);
   };
 
   return (
@@ -83,7 +99,7 @@ export const MultipleFileUploader = ({
                 name="file-upload"
                 type="file"
                 className="sr-only"
-                accept=".pdf,.doc,.docx"
+                accept={accept}
                 multiple
                 onChange={handleFileChange}
               />
@@ -91,14 +107,10 @@ export const MultipleFileUploader = ({
             <p className="pl-1">or drag and drop</p>
           </div>
           <p className="text-xs leading-5 text-gray-600">
-            PDF, DOC, DOCX up to 10MB
+            {acceptArray.join(", ").replace(/\./g, "").toUpperCase()} up to{" "}
+            {maxFileSizeMB}MB
           </p>
-          <input
-            id="file"
-            type="file"
-            className="hidden"
-            onChange={handleFileChange}
-          />
+          <input className="hidden" onChange={handleFileChange} />
         </div>
       </div>
     </div>
