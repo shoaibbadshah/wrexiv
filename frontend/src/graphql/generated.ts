@@ -93,6 +93,15 @@ export type DocumentInput = {
   url: Scalars["String"];
 };
 
+export type DocumentStatusType = {
+  __typename?: "DocumentStatusType";
+  createdAt: Scalars["DateTime"];
+  documentName: Scalars["String"];
+  id: Scalars["UUID"];
+  status: TaskStatusType;
+  updatedAt: Scalars["DateTime"];
+};
+
 export enum Language {
   En = "en",
   Id = "id",
@@ -105,6 +114,7 @@ export type Mutation = {
   createDocuments?: Maybe<CreateDocuments>;
   createTalentProfile?: Maybe<CreateTalentProfile>;
   createTalentUserInvitation?: Maybe<CreateTalentUserInvitation>;
+  retryDocument?: Maybe<RetryDocument>;
   updateAgency?: Maybe<UpdateAgency>;
   updateAgencyUser?: Maybe<UpdateAgencyUser>;
   updateMyAgency?: Maybe<UpdateMyAgency>;
@@ -126,6 +136,10 @@ export type MutationCreateTalentUserInvitationArgs = {
   input: CreateTalentUserInvitationInput;
 };
 
+export type MutationRetryDocumentArgs = {
+  input: RetryDocumentInput;
+};
+
 export type MutationUpdateAgencyArgs = {
   input: UpdateAgencyInput;
 };
@@ -140,9 +154,24 @@ export type MutationUpdateMyAgencyArgs = {
 
 export type Query = {
   __typename?: "Query";
+  documentStatuses?: Maybe<Array<DocumentStatusType>>;
   myAgencyUser?: Maybe<AgencyUserType>;
   talentProfiles?: Maybe<Array<TalentProfileType>>;
   user?: Maybe<UserType>;
+};
+
+export type QueryDocumentStatusesArgs = {
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+};
+
+export type RetryDocument = {
+  __typename?: "RetryDocument";
+  success?: Maybe<Scalars["Boolean"]>;
+};
+
+export type RetryDocumentInput = {
+  id: Scalars["UUID"];
 };
 
 export type TalentProfileType = {
@@ -155,6 +184,12 @@ export type TalentProfileType = {
   name: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
+
+export enum TaskStatusType {
+  Failure = "FAILURE",
+  Pending = "PENDING",
+  Success = "SUCCESS",
+}
 
 export type UpdateAgency = {
   __typename?: "UpdateAgency";
@@ -207,6 +242,35 @@ export type CreateDocumentsMutation = {
   __typename?: "Mutation";
   createDocuments?: {
     __typename?: "CreateDocuments";
+    success?: boolean | null;
+  } | null;
+};
+
+export type DocumentStatusesQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+}>;
+
+export type DocumentStatusesQuery = {
+  __typename?: "Query";
+  documentStatuses?: Array<{
+    __typename?: "DocumentStatusType";
+    id: any;
+    documentName: string;
+    status: TaskStatusType;
+    createdAt: any;
+    updatedAt: any;
+  }> | null;
+};
+
+export type RetryDocumentMutationVariables = Exact<{
+  input: RetryDocumentInput;
+}>;
+
+export type RetryDocumentMutation = {
+  __typename?: "Mutation";
+  retryDocument?: {
+    __typename?: "RetryDocument";
     success?: boolean | null;
   } | null;
 };
@@ -368,6 +432,119 @@ export type CreateDocumentsMutationResult =
 export type CreateDocumentsMutationOptions = Apollo.BaseMutationOptions<
   CreateDocumentsMutation,
   CreateDocumentsMutationVariables
+>;
+export const DocumentStatusesDocument = gql`
+  query DocumentStatuses($limit: Int, $offset: Int) {
+    documentStatuses(limit: $limit, offset: $offset) {
+      id
+      documentName
+      status
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+/**
+ * __useDocumentStatusesQuery__
+ *
+ * To run a query within a React component, call `useDocumentStatusesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDocumentStatusesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDocumentStatusesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useDocumentStatusesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    DocumentStatusesQuery,
+    DocumentStatusesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<DocumentStatusesQuery, DocumentStatusesQueryVariables>(
+    DocumentStatusesDocument,
+    options
+  );
+}
+export function useDocumentStatusesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    DocumentStatusesQuery,
+    DocumentStatusesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    DocumentStatusesQuery,
+    DocumentStatusesQueryVariables
+  >(DocumentStatusesDocument, options);
+}
+export type DocumentStatusesQueryHookResult = ReturnType<
+  typeof useDocumentStatusesQuery
+>;
+export type DocumentStatusesLazyQueryHookResult = ReturnType<
+  typeof useDocumentStatusesLazyQuery
+>;
+export type DocumentStatusesQueryResult = Apollo.QueryResult<
+  DocumentStatusesQuery,
+  DocumentStatusesQueryVariables
+>;
+export const RetryDocumentDocument = gql`
+  mutation RetryDocument($input: RetryDocumentInput!) {
+    retryDocument(input: $input) {
+      success
+    }
+  }
+`;
+export type RetryDocumentMutationFn = Apollo.MutationFunction<
+  RetryDocumentMutation,
+  RetryDocumentMutationVariables
+>;
+
+/**
+ * __useRetryDocumentMutation__
+ *
+ * To run a mutation, you first call `useRetryDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRetryDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [retryDocumentMutation, { data, loading, error }] = useRetryDocumentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRetryDocumentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RetryDocumentMutation,
+    RetryDocumentMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RetryDocumentMutation,
+    RetryDocumentMutationVariables
+  >(RetryDocumentDocument, options);
+}
+export type RetryDocumentMutationHookResult = ReturnType<
+  typeof useRetryDocumentMutation
+>;
+export type RetryDocumentMutationResult =
+  Apollo.MutationResult<RetryDocumentMutation>;
+export type RetryDocumentMutationOptions = Apollo.BaseMutationOptions<
+  RetryDocumentMutation,
+  RetryDocumentMutationVariables
 >;
 export const MyAgencyUserDocument = gql`
   query myAgencyUser {
