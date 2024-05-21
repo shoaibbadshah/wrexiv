@@ -33,6 +33,12 @@ export default function TalentInvitationForm({
     resolver: zodResolver(initialSetupSchema),
   });
 
+  useEffect(() => {
+    if (!open) {
+      resetForm();
+    }
+  }, [open, resetForm]);
+
   const handleCancel = () => {
     handleClose();
   };
