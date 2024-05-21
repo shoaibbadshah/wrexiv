@@ -6,6 +6,7 @@ import { DocumentPlusIcon } from "@heroicons/react/24/solid";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { useCreateDocumentsMutation } from "@/graphql/generated";
+import Link from "next/link";
 
 type Message = {
   status: "success" | "error" | "loading";
@@ -44,26 +45,27 @@ const AppTopPage = () => {
       content: "Uploading files...",
     });
 
-    const fileNameAndURLs: FileNameAndURL[] = [];
+    const uploadTasks = [];
     for (let i = 0; i < files.length; i++) {
       const storageRef = ref(
         storage,
         `talent_document_import/${Date.now()}-${files[i].name}`
       );
-      await uploadBytesResumable(storageRef, files[i])
-        .then(snapshot => {
-          getDownloadURL(snapshot.ref).then(downloadURL => {
-            fileNameAndURLs.push({ name: files[i].name, url: downloadURL });
-          });
-        })
-        .catch(error => {
-          setMessage({
-            status: "error",
-            content: "Failed to upload files",
-          });
-          return;
-        });
+      const uploadTask = uploadBytesResumable(storageRef, files[i]);
+      uploadTasks.push(uploadTask);
     }
+    const res = await Promise.all(uploadTasks);
+    const downloadUrlPromises = res.map(snapshot =>
+      getDownloadURL(snapshot.ref)
+    );
+
+    const downloadUrls = await Promise.all(downloadUrlPromises);
+
+    const fileNameAndURLs = files.map((file, index) => ({
+      name: file.name,
+      url: downloadUrls[index],
+    }));
+
     setMessage({
       status: "loading",
       content: "Processing files...",
@@ -105,6 +107,14 @@ const AppTopPage = () => {
                   Get started by uploading files below to add new talent.
                 </p>
               </div>
+              <Link href="/app/file_statuses">
+                <button
+                  type="button"
+                  className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  View uploaded files
+                </button>
+              </Link>
             </div>
           </div>
 
@@ -201,8 +211,8 @@ const AppTopPage = () => {
             </button>
             <button
               type="button"
-              disabled={files.length === 0}
-              className={`inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${files.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+              disabled={files.length === 0 || message?.status === "loading"}
+              className={`inline-flex items-center justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${files.length === 0 || message?.status === "loading" ? "opacity-50 cursor-not-allowed" : ""}`}
               onClick={handleSubmitFile}
             >
               Create

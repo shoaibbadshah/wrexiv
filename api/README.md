@@ -38,13 +38,14 @@ psql -h localhost -p 5432 -U app_user -d app_db
 
 
 ### How to add or update the database schema
-Create or update the models in the `app\models` directory. Then, go to the `api` container.
+Create or update the models in the `app\models` directory. Import the model to the `app\models\__init__.py` file. Then, go to the `api` container.
 ```
 docker exec -it globaltalentdb-api /bin/bash
 ```
 
 Then, run the following commands in the container
 ```
+cd app
 flask db migrate -m <migration message>
 flask db upgrade
 ```
