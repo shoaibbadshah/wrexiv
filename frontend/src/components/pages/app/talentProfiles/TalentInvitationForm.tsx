@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { z, ZodType } from "zod";
@@ -28,6 +28,7 @@ export default function TalentInvitationForm({
     register,
     handleSubmit,
     formState: { errors, isDirty },
+    reset: resetForm,
   } = useForm<ITalentInvitationForm>({
     resolver: zodResolver(initialSetupSchema),
   });
@@ -40,6 +41,12 @@ export default function TalentInvitationForm({
     handleInvite(params.email);
     handleClose();
   };
+
+  useEffect(() => {
+    if (!open) {
+      resetForm();
+    }
+  }, [open, resetForm]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
