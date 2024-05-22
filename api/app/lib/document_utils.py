@@ -43,7 +43,7 @@ def extract_document_content(document_type: DocumentType, document_url: str) -> 
     raise ValueError("Unsupported document type")
 
 def process_document_result(agency_id: str, document_name: str, document_url: str, document_json: dict, document_id: str):
-    talent_profile = TalentProfile(agency_id=agency_id, name=document_json.get("name"), bio=document_json.get("bio"))
+    talent_profile = TalentProfile(agency_id=agency_id, name=document_json.get("name"), bio=document_json.get("bio"), email=document_json.get("email"))
     db.session.add(talent_profile)
     db.session.flush()
     

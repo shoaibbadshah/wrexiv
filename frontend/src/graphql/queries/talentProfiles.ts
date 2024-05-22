@@ -7,6 +7,7 @@ const TALENT_PROFILES = gql`
       name
       bio
       avatar
+      email
       createdAt
       updatedAt
     }

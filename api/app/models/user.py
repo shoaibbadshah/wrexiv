@@ -9,7 +9,7 @@ from sqlalchemy.sql import func
 class User(db.Model):
     __tablename__ = "users"
 
-    ROLE_TYPES = [("agency_user", "Agency User")]
+    ROLE_TYPES = [("agency_user", "Agency User"), ("talent_user", "Talent User")]
 
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
 
@@ -28,6 +28,7 @@ class User(db.Model):
     role_type = Column(ChoiceType(ROLE_TYPES), nullable=True)
 
     agency_user = relationship("AgencyUser", back_populates="user", uselist=False)
+    talent_user = relationship("TalentUser", back_populates="user", uselist=False)
 
     def __repr__(self):
         return f"<User {self.email}>"
