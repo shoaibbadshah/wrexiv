@@ -61,6 +61,7 @@ Here is the extracted text:
             logging.error(f"Unexpected error while parsing JSON from GPT-4: {e}")
             return json.loads("{}")
 
+
     def document_image_to_json(self, document_image_url: str):
         response = self.client.chat.completions.create(
             model="gpt-4o",
@@ -94,6 +95,17 @@ Here is the extracted text:
 
         try:
             json_data = json.loads(response.choices[0].message.tool_calls[0].function.arguments)
+
+            # For every value in the JSON, if the value is a "null" string, set it to None
+            for key, value in json_data.items():
+                if value == "null":
+                    json_data[key] = None
+            
+            # Validate email
+            if json_data.get("email") is not None:
+                if not validate_email(json_data.get("email")):
+                    json_data["email"] = None
+            
             return json_data
         except Exception as e:
             logging.error(f"Unexpected error while parsing JSON from GPT-4: {e}")
