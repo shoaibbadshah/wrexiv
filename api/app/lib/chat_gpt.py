@@ -8,7 +8,7 @@ class ChatGpt:
     def __init__(self):
         self.client = OpenAI()
 
-    def document_text_to_json(self, document_text: str):
+    def document_text_to_json(self, document_text: str) -> dict:
         prompt = """
 I extracted text from a document. Please extract job seeker's information from the text.
 
@@ -62,9 +62,9 @@ Here is the extracted text:
             return json.loads("{}")
 
 
-    def document_image_to_json(self, document_image_url: str):
+    def document_image_to_json(self, document_image_url: str) -> dict:
         response = self.client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4-turbo",
             messages=[
                 {
                     "role": "system", 
