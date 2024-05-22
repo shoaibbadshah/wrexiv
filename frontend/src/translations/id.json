@@ -1,0 +1,16 @@
+{
+    "common": {
+        "language": "Bahasa",
+        "apply": "Terapkan",
+        "en": "Bahasa Inggris",
+        "id": "Bahasa Indonesia",
+        "ja": "Bahasa Jepang"
+    },
+    "app": {
+        "agency-settings": "Pengaturan Agensi",
+        "agency": "Agensi",
+        "agency-name": "Nama Agensi",
+        "agency-user": "Pengguna Agensi",
+        "agency-user-name": "Nama Pengguna Agensi"
+    }
+}

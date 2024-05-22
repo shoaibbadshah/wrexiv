@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
+import { useTranslation } from "react-i18next";
 
 interface IAgencyUserSettingsForm {
   agencyUser: {
@@ -39,6 +40,7 @@ const AgencyUser = () => {
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
 
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -66,8 +68,11 @@ const AgencyUser = () => {
       variables: {
         input: dirtyValues,
       },
-      onCompleted: () => {
-        refetch();
+      onCompleted: async () => {
+        await refetch();
+
+        // use window.location.href to reload agency user language
+        window.location.href = `/app/agency_user`;
       },
       onError: () => {
         // do nothing
@@ -79,14 +84,14 @@ const AgencyUser = () => {
   return (
     <AgencySettingsLayout>
       <div className="mx-12 py-8 w-full max-w-2xl">
-        <h1 className="font-bold text-xl mb-4">Agency User</h1>
+        <h1 className="font-bold text-xl mb-4">{t("agency-user")}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label
               htmlFor="agencyUser.name"
               className="block text-sm font-medium mb-1"
             >
-              Agency User Name
+              {t("agency-user-name")}
             </label>
             <input
               id="agencyUser.name"
@@ -106,7 +111,7 @@ const AgencyUser = () => {
               htmlFor="agencyUser.language"
               className="block text-sm font-medium mb-1"
             >
-              Language
+              {t("common:language")}
             </label>
             <select
               id="agencyUser.language"
@@ -116,7 +121,7 @@ const AgencyUser = () => {
             >
               {Object.values(Language).map(lang => (
                 <option key={lang} value={lang}>
-                  {lang}
+                  {t(`common:${lang}`)}
                 </option>
               ))}
             </select>
@@ -133,7 +138,7 @@ const AgencyUser = () => {
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={loading || mutationLoading || !isDirty}
             >
-              Submit
+              {t("common:apply")}
             </button>
           </div>
           {mutationData?.updateMyAgency?.success && (

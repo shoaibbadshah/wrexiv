@@ -9,6 +9,7 @@ import { getDirtyValues } from "@/lib/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { ZodType, z } from "zod";
 
 interface IAgencySettingsForm {
@@ -32,6 +33,7 @@ const Agency = () => {
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
 
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -69,11 +71,11 @@ const Agency = () => {
   return (
     <AgencySettingsLayout>
       <div className="mx-12 py-8 w-full max-w-2xl">
-        <h1 className="font-bold text-xl mb-4">Agency</h1>
+        <h1 className="font-bold text-xl mb-4">{t("agency")}</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-1">
-              Agency Name
+              {t("agency-name")}
             </label>
             <input
               id="name"
@@ -93,7 +95,7 @@ const Agency = () => {
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Submit
+              {t("common:apply")}
             </button>
           </div>
           {mutationData?.updateMyAgency?.success && (

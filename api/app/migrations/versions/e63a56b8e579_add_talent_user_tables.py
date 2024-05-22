@@ -1,7 +1,7 @@
 """add talent user tables
 
 Revision ID: e63a56b8e579
-Revises: 79e48e74c6f6
+Revises: 86ce7acc90d9
 Create Date: 2024-05-16 10:52:11.562770
 
 """
@@ -12,7 +12,7 @@ import sqlalchemy_utils
 
 # revision identifiers, used by Alembic.
 revision = 'e63a56b8e579'
-down_revision = '79e48e74c6f6'
+down_revision = '86ce7acc90d9'
 branch_labels = None
 depends_on = None
 

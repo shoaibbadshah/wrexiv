@@ -48,6 +48,12 @@ export default function TalentInvitationForm({
     handleClose();
   };
 
+  useEffect(() => {
+    if (!open) {
+      resetForm();
+    }
+  }, [open, resetForm]);
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-20" onClose={() => handleClose()}>
