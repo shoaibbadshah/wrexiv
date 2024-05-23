@@ -60,6 +60,7 @@ export default function TalentDetails({ open, handleOpen, talent }: PropsType) {
       variables: {
         input: {
           email,
+          talentProfileId: talent.id,
         },
       },
       onError: () => {

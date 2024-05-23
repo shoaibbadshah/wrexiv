@@ -20,5 +20,7 @@ class TalentUserInvitation(db.Model):
         nullable=False,
     )
 
+    talent_profile_id = Column(UUIDType(binary=False), ForeignKey("talent_profiles.id"), nullable=True)
+
     def __repr__(self):
         return f"<TalentUserInvitation {self.name}>"

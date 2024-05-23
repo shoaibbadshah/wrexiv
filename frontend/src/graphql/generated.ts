@@ -86,6 +86,7 @@ export type CreateTalentUserInvitation = {
 
 export type CreateTalentUserInvitationInput = {
   email: Scalars["String"];
+  talentProfileId: Scalars["UUID"];
 };
 
 export type DocumentInput = {
