@@ -17,14 +17,16 @@ def extract_word_content(docx_url: str) -> dict:
     loader = Docx2txtLoader(docx_url)
     data = loader.load()
     chat_gpt = ChatGpt()
-    document_json = chat_gpt.document_text_to_json(data[0].page_content)
+    document_text = "\n".join(list(map(lambda x: x.page_content, data)))
+    document_json = chat_gpt.document_text_to_json(document_text)
     return document_json
 
 def extract_pdf_content(pdf_url: str) -> dict:
     loader = PyPDFLoader(pdf_url)
     data = loader.load()
     chat_gpt = ChatGpt()
-    document_json = chat_gpt.document_text_to_json(data[0].page_content)
+    document_text = "\n".join(list(map(lambda x: x.page_content, data)))
+    document_json = chat_gpt.document_text_to_json(document_text)
     return document_json
 
 def extract_image_content(image_url: str) -> dict:
