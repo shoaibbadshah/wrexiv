@@ -11,6 +11,7 @@ class TalentUserInvitation(db.Model):
     agency_id = Column(UUIDType(binary=False), ForeignKey("agencies.id"), nullable=False)
     accepted_at = Column(db.DateTime(timezone=True), nullable=True)
 
+    invited_at = Column(db.DateTime(timezone=True), default=None, nullable=True)
     created_at = Column(db.DateTime(timezone=True), default=func.now(), nullable=False)
     updated_at = Column(
         db.DateTime(timezone=True),
