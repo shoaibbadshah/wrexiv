@@ -33,7 +33,7 @@ class RetryDocument(graphene.Mutation):
         
         try:
             task = process_document.delay(g.current_agency.id, document_processing_task.document_name, document_processing_task.document_url, document_processing_task.id)
-            DocumentProcessingTask().query.filter_by(id=input.id).update({"celery_task_id": task.id})
+            document_processing_task.celery_task_id = task.id
             db.session.commit()
         except ValueError as e:
             logging.error(f"Error processing document {document_processing_task.document_name}: {e}")
