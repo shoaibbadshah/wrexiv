@@ -11,7 +11,6 @@ provider "vercel" {
 }
 
 variable "vercel_api_token" {}
-variable "api_url" {}
 variable "gtm_id" {}
 variable "contentful_space_id" {}
 variable "contentful_access_token" {}
@@ -38,12 +37,12 @@ resource "vercel_project" "globaltalentdb" {
   environment = [
     {
       key    = "NEXT_PUBLIC_GRAPHQL_API_URL"
-      value  = var.api_url
+      value  = google_cloud_run_v2_service.api.uri
       target = ["production", "preview"]
     },
     {
       key    = "NEXT_PUBLIC_API_URL"
-      value  = var.api_url
+      value  = google_cloud_run_v2_service.api.uri
       target = ["production", "preview"]
     },
     {
@@ -87,4 +86,6 @@ resource "vercel_project" "globaltalentdb" {
       target = ["production", "preview"]
     }
   ]
+
+  depends_on = [google_cloud_run_v2_service.api]
 }

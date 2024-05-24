@@ -1,13 +1,11 @@
 provider "google" {
-  credentials = file("./credentials.json")
-  project     = "globaltalentdb"
-  region      = "asia-northeast1"
-  zone        = "asia-northeast1-a"
+  project = "globaltalentdb"
+  region  = "asia-northeast1"
+  zone    = "asia-northeast1-a"
 }
 
 variable "github_personal_token" {}
 variable "openai_api_key" {}
-variable "db_host" {}
 variable "db_name" {}
 variable "db_password" {}
 variable "db_user" {}
@@ -20,6 +18,8 @@ variable "scrapin_api_key_personal" {}
 variable "crawlbase_api_key" {}
 variable "prospeo_api_key" {}
 variable "sendgrid_api_key" {}
+variable "app_env" {}
+variable "instance_connection_name" {}
 
 # terraform import google_cloud_run_v2_service.api globaltalentdb/asia-northeast1/globaltalentdb-api
 resource "google_cloud_run_v2_service" "api" {
@@ -34,7 +34,7 @@ resource "google_cloud_run_v2_service" "api" {
       name = "cloudsql"
 
       cloud_sql_instance {
-        instances = ["globaltalentdb:us-central1:globaltalentdb-db"]
+        instances = [var.instance_connection_name]
       }
     }
     containers {
@@ -47,10 +47,6 @@ resource "google_cloud_run_v2_service" "api" {
       env {
         name  = "OPENAI_API_KEY"
         value = var.openai_api_key
-      }
-      env {
-        name  = "DB_HOST"
-        value = var.db_host
       }
       env {
         name  = "DB_NAME"
@@ -132,7 +128,29 @@ resource "google_cloud_run_v2_service" "api" {
         name  = "SENDGRID_API_KEY"
         value = var.sendgrid_api_key
       }
+      env {
+        name  = "APP_ENV"
+        value = var.app_env
+      }
+      env {
+        name  = "INSTANCE_CONNECTION_NAME"
+        value = var.instance_connection_name
+      }
     }
   }
 }
 
+data "google_iam_policy" "api" {
+  binding {
+    role    = "roles/run.invoker"
+    members = ["allUsers"]
+  }
+}
+
+resource "google_cloud_run_service_iam_policy" "api" {
+  location = google_cloud_run_v2_service.api.location
+  project  = google_cloud_run_v2_service.api.project
+  service  = google_cloud_run_v2_service.api.name
+
+  policy_data = data.google_iam_policy.api.policy_data
+}
