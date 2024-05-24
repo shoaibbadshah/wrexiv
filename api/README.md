@@ -84,4 +84,3 @@ python -m pytest tests/services/test_facilities_service.py::test_specific_functi
 - enum はハマったので一旦 DB で使わない
 - repositories も一旦使わない
 - services も一旦使わない
-
