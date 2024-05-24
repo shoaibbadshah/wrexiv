@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo "Running Flask Database Upgrade..."
+cd app
 flask db upgrade
 if [ $? -ne 0 ]; then
   echo "Failed to upgrade database."
