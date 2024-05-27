@@ -9,9 +9,10 @@ class TalentUserInvitation(db.Model):
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     email = Column(db.String(100), nullable=False)
     agency_id = Column(UUIDType(binary=False), ForeignKey("agencies.id"), nullable=False)
+    
+    sent_at = Column(db.DateTime(timezone=True), nullable=True)
     accepted_at = Column(db.DateTime(timezone=True), nullable=True)
 
-    invited_at = Column(db.DateTime(timezone=True), nullable=True)
     created_at = Column(db.DateTime(timezone=True), default=func.now(), nullable=False)
     updated_at = Column(
         db.DateTime(timezone=True),
