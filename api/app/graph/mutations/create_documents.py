@@ -1,4 +1,5 @@
 from app.models.document_processing_task import DocumentProcessingTask
+from app.utilities.validation_utilities import validate_url
 from app.lib.document_utils import process_document
 from graphql import GraphQLError
 from flask import abort, g
@@ -26,6 +27,11 @@ class CreateDocuments(graphene.Mutation):
         
         if g.get("current_agency") is None:
             return GraphQLError("User is not associated with an agency")
+        
+        # Validate URLs
+        for doc in input.documents:
+            if not validate_url(doc.url):
+                return GraphQLError(f"Invalid URL for document {doc.name}")
         
         for doc in input.documents:
             try:
