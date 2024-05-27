@@ -2,8 +2,9 @@ PROJECT_ID = globaltalentdb
 REGION = asia-northeast1
 DOCKER_PKG_PATH = $(REGION)-docker.pkg.dev
 API_IMAGE_NAME = $(DOCKER_PKG_PATH)/$(PROJECT_ID)/$(PROJECT_ID)/$(PROJECT_ID)-api
-IMAGE_NAME = $(DOCKER_PKG_PATH)/$(PROJECT_ID)/$(PROJECT_ID)/$(PROJECT_ID)-celery
-DOCKER_FILE_PATH = ./docker/deploy/Dockerfile
+CELERY_IMAGE_NAME = $(DOCKER_PKG_PATH)/$(PROJECT_ID)/$(PROJECT_ID)/$(PROJECT_ID)-celery
+API_DOCKER_FILE_PATH = ./docker/deploy/Dockerfile-api
+CELERY_DOCKER_FILE_PATH = ./docker/deploy/Dockerfile-celery
 SERVICE_NAME = globaltalentdb-api
 DB_VOLUME_NAME = globaltalentdb-db
 DB_SERVICE_NAME = db
@@ -21,13 +22,16 @@ set-project:
 	gcloud config set project $(PROJECT_ID)
 
 build-docker-image:
-	docker buildx build --platform linux/amd64 -t $(API_IMAGE_NAME) -f $(DOCKER_FILE_PATH) .
+	docker buildx build --platform linux/amd64 -t $(API_IMAGE_NAME) -f $(API_DOCKER_FILE_PATH) .
+	docker buildx build --platform linux/amd64 -t $(CELERY_IMAGE_NAME) -f $(CELERY_DOCKER_FILE_PATH) .
 
 push-docker-image:
 	docker push $(API_IMAGE_NAME)
+	docker push $(CELERY_IMAGE_NAME)
 
 deploy-to-gcloud:
 	gcloud run deploy $(SERVICE_NAME) --image $(API_IMAGE_NAME) --platform managed --region $(REGION) --allow-unauthenticated
+	gcloud run deploy $(SERVICE_NAME) --image $(CELERY_IMAGE_NAME) --platform managed --region $(REGION) --allow-unauthenticated
 
 deploy-ready: login configure-docker set-project
 
