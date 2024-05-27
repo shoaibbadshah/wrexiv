@@ -10,20 +10,29 @@ from app import db
 @shared_task(ignore_result=False)
 def process_document(agency_id: str, document_name: str, document_url: str, document_id: str):
     document_type = check_document_type(document_name)
-    document_text = extract_document_content(document_type, document_url)
-    chat_gpt = ChatGpt()
-    document_json = chat_gpt.document_text_to_json(document_text)
+    document_json = extract_document_content(document_type, document_url)
     process_document_result(agency_id, document_name, document_url, document_json, document_id)
 
-def extract_word_content(docx_url: str) -> str:
+def extract_word_content(docx_url: str) -> dict:
     loader = Docx2txtLoader(docx_url)
     data = loader.load()
-    return data[0].page_content
+    chat_gpt = ChatGpt()
+    document_text = "\n".join(list(map(lambda x: x.page_content, data)))
+    document_json = chat_gpt.document_text_to_json(document_text)
+    return document_json
 
-def extract_pdf_content(pdf_url: str) -> str:
+def extract_pdf_content(pdf_url: str) -> dict:
     loader = PyPDFLoader(pdf_url)
     data = loader.load()
-    return data[0].page_content
+    chat_gpt = ChatGpt()
+    document_text = "\n".join(list(map(lambda x: x.page_content, data)))
+    document_json = chat_gpt.document_text_to_json(document_text)
+    return document_json
+
+def extract_image_content(image_url: str) -> dict:
+    chat_gpt = ChatGpt()
+    document_json = chat_gpt.document_image_to_json(image_url)
+    return document_json
 
 def check_document_type(document_name: str) -> DocumentType | None:
     ext = document_name.split(".")[-1].lower()
@@ -31,6 +40,8 @@ def check_document_type(document_name: str) -> DocumentType | None:
         return DocumentType.PDF
     elif ext in ["docx", "doc"]:
         return DocumentType.WORD
+    elif ext in ["png", "jpg", "jpeg"]:
+        return DocumentType.IMAGE
     return None
 
 def extract_document_content(document_type: DocumentType, document_url: str) -> str:
@@ -39,6 +50,8 @@ def extract_document_content(document_type: DocumentType, document_url: str) -> 
             return extract_pdf_content(document_url)
         case DocumentType.WORD:
             return extract_word_content(document_url)
+        case DocumentType.IMAGE:
+            return extract_image_content(document_url)
     
     raise ValueError("Unsupported document type")
 
