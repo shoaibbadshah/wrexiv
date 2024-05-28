@@ -5,7 +5,8 @@ API_IMAGE_NAME = $(DOCKER_PKG_PATH)/$(PROJECT_ID)/$(PROJECT_ID)/$(PROJECT_ID)-ap
 CELERY_IMAGE_NAME = $(DOCKER_PKG_PATH)/$(PROJECT_ID)/$(PROJECT_ID)/$(PROJECT_ID)-celery
 API_DOCKER_FILE_PATH = ./docker/deploy/Dockerfile-api
 CELERY_DOCKER_FILE_PATH = ./docker/deploy/Dockerfile-celery
-SERVICE_NAME = globaltalentdb-api
+API_SERVICE_NAME = globaltalentdb-api
+CELERY_SERVICE_NAME = globaltalentdb-celery
 DB_VOLUME_NAME = globaltalentdb-db
 DB_SERVICE_NAME = db
 DB_USER = app_user
@@ -30,8 +31,8 @@ push-docker-image:
 	docker push $(CELERY_IMAGE_NAME)
 
 deploy-to-gcloud:
-	gcloud run deploy $(SERVICE_NAME) --image $(API_IMAGE_NAME) --platform managed --region $(REGION) --allow-unauthenticated
-	gcloud run deploy $(SERVICE_NAME) --image $(CELERY_IMAGE_NAME) --platform managed --region $(REGION) --allow-unauthenticated
+	gcloud run deploy $(API_SERVICE_NAME) --image $(API_IMAGE_NAME) --platform managed --region $(REGION) --allow-unauthenticated
+	gcloud run deploy $(CELERY_SERVICE_NAME) --image $(CELERY_IMAGE_NAME) --platform managed --region $(REGION)
 
 deploy-ready: login configure-docker set-project
 
