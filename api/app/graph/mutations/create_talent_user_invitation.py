@@ -31,13 +31,13 @@ class CreateTalentUserInvitation(graphene.Mutation):
             if existing_talent_user_invitation is not None:
                 # Update the email and invited_at fields
                 existing_talent_user_invitation.email = input.email
-                existing_talent_user_invitation.invited_at = func.now()
+                existing_talent_user_invitation.sent_at = func.now()
             else:            
                 new_talent_user_invitation = TalentUserInvitation(
                     email=input.email,
                     agency_id=g.current_agency.id,
                     talent_profile_id=input.talent_profile_id,
-                    invited_at=func.now(),
+                    sent_at=func.now(),
                 )
                 db.session.add(new_talent_user_invitation)
 
