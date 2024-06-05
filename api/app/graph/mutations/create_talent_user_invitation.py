@@ -1,4 +1,6 @@
 from app.models.talent_user_invitation import TalentUserInvitation
+from app.models.talent_profile import TalentProfile
+from app.lib.email import send_talent_invitation
 import graphene
 from app import db
 from sqlalchemy.exc import SQLAlchemyError
@@ -25,9 +27,16 @@ class CreateTalentUserInvitation(graphene.Mutation):
         if g.get("current_agency") is None:
             return GraphQLError("User is not associated with an agency")
         
+        # Check if talent_profile_id is valid
+        talent_profile = TalentProfile.query.get(input.talent_profile_id)
+        if talent_profile is None:
+            return GraphQLError("Talent profile not found")
+        
         try:
             # Check if the user is already invited
             existing_talent_user_invitation = TalentUserInvitation.query.filter_by(talent_profile_id=input.talent_profile_id).first()
+
+            send_talent_invitation(to=input.email, talent_name=talent_profile.name, agency_name=g.current_agency.name)
             if existing_talent_user_invitation is not None:
                 # Update the email and invited_at fields
                 existing_talent_user_invitation.email = input.email
@@ -43,12 +52,13 @@ class CreateTalentUserInvitation(graphene.Mutation):
 
             db.session.commit()
 
-            ## TODO: Send email to the user
-
 
         except SQLAlchemyError as e:
             db.session.rollback()
             logging.error(e)
             abort(500, "Failed to create talent user invitation")
+        except Exception as e:
+            logging.error(e)
+            abort(500, f"Failed to send email to {input.email}")
 
         return CreateTalentUserInvitation(success=True)
