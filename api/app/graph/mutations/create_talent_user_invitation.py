@@ -3,13 +3,11 @@ from app.models.talent_profile import TalentProfile
 from app.lib.mailer import Mailer
 from app import db
 
+from flask import g, abort, current_app as app
 from sqlalchemy.exc import SQLAlchemyError
-from flask import current_app as app
 from graphql import GraphQLError
 from sqlalchemy import func
-from flask import g, abort
 import graphene
-
 
 
 class CreateTalentUserInvitationInput(graphene.InputObjectType):
