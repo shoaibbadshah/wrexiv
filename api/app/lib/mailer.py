@@ -1,6 +1,7 @@
-import os
-from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, TemplateId, DynamicTemplateData
+from sendgrid import SendGridAPIClient
+
+import os
 
 class Mailer:
     def __init__(self):

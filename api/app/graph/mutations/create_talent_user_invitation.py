@@ -1,12 +1,14 @@
 from app.models.talent_user_invitation import TalentUserInvitation
 from app.models.talent_profile import TalentProfile
 from app.lib.mailer import Mailer
-import graphene
 from app import db
+
 from sqlalchemy.exc import SQLAlchemyError
-from flask import g, abort
 from graphql import GraphQLError
 from sqlalchemy import func
+from flask import g, abort
+import graphene
+
 import logging
 
 
@@ -55,7 +57,6 @@ class CreateTalentUserInvitation(graphene.Mutation):
                 db.session.add(new_talent_user_invitation)
 
             db.session.commit()
-
 
         except SQLAlchemyError as e:
             db.session.rollback()
