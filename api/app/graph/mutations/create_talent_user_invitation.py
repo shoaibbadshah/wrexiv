@@ -4,12 +4,12 @@ from app.lib.mailer import Mailer
 from app import db
 
 from sqlalchemy.exc import SQLAlchemyError
+from flask import current_app as app
 from graphql import GraphQLError
 from sqlalchemy import func
 from flask import g, abort
 import graphene
 
-import logging
 
 
 class CreateTalentUserInvitationInput(graphene.InputObjectType):
@@ -63,7 +63,7 @@ class CreateTalentUserInvitation(graphene.Mutation):
 
         except SQLAlchemyError as e:
             db.session.rollback()
-            logging.error(e)
+            app.logger.error(e)
             abort(500, "Failed to create talent user invitation")
 
         return CreateTalentUserInvitation(success=True)

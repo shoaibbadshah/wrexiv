@@ -1,7 +1,7 @@
 from sendgrid.helpers.mail import Mail, TemplateId, DynamicTemplateData
 from sendgrid import SendGridAPIClient
 
-import logging
+from flask import current_app as app
 import os
 
 class Mailer:
@@ -23,7 +23,8 @@ class Mailer:
         try:
             self.client.send(message)
         except Exception as e:
-            logging.error(e)
+            app.logger.error(e)
             return False
         
+        app.logger.info(f"Email sent to {to}")
         return True
