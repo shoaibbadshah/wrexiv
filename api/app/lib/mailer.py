@@ -1,4 +1,4 @@
-from sendgrid.helpers.mail import Mail, TemplateId, DynamicTemplateData
+from sendgrid.helpers.mail import Mail, TemplateId, DynamicTemplateData, From
 from sendgrid import SendGridAPIClient
 
 from flask import current_app as app
@@ -10,11 +10,14 @@ class Mailer:
 
     def send_talent_invitation(self, to: str, talent_name: str, agency_name: str):
         message = Mail(
-            from_email="info@globaldeel.com",
+            from_email=From(
+                name=os.environ.get('SENDGRID_FROM_NAME'),
+                email=os.environ.get('SENDGRID_FROM_EMAIL')
+            ),
             to_emails=[to],
         )
 
-        message.template_id = TemplateId("d-215c9813fcba4f1b80135dce7c5b5d54")
+        message.template_id = TemplateId(os.environ.get('SENDGRID_TALENT_INVITATION_TEMPLATE_ID'))
         message.dynamic_template_data = DynamicTemplateData({
             "talent_name": talent_name,
             "agency_name": agency_name
