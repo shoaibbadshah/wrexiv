@@ -1,6 +1,7 @@
 from sendgrid.helpers.mail import Mail, TemplateId, DynamicTemplateData
 from sendgrid import SendGridAPIClient
 
+import logging
 import os
 
 class Mailer:
@@ -19,5 +20,10 @@ class Mailer:
             "agency_name": agency_name
         })
 
-        self.client.send(message)
-
+        try:
+            self.client.send(message)
+        except Exception as e:
+            logging.error(e)
+            return False
+        
+        return True

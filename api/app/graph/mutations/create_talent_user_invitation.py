@@ -34,11 +34,14 @@ class CreateTalentUserInvitation(graphene.Mutation):
         if talent_profile is None:
             return GraphQLError("Talent profile not found")
         
-        try:
-            # Send email to talent
-            mailer = Mailer()
-            mailer.send_talent_invitation(to=input.email, talent_name=talent_profile.name, agency_name=g.current_agency.name)
+        # Send email to talent
+        mailer = Mailer()
+        email_success = mailer.send_talent_invitation(to=input.email, talent_name=talent_profile.name, agency_name=g.current_agency.name)
 
+        if not email_success:
+            abort(500, f"Failed to send email to {input.email}")
+        
+        try:
             # Check if the user is already invited
             existing_talent_user_invitation = TalentUserInvitation.query.filter_by(talent_profile_id=input.talent_profile_id).first()
 
@@ -62,8 +65,5 @@ class CreateTalentUserInvitation(graphene.Mutation):
             db.session.rollback()
             logging.error(e)
             abort(500, "Failed to create talent user invitation")
-        except Exception as e:
-            logging.error(e)
-            abort(500, f"Failed to send email to {input.email}")
 
         return CreateTalentUserInvitation(success=True)
