@@ -32,7 +32,6 @@ push-docker-image:
 
 deploy-to-gcloud:
 	gcloud run deploy $(API_SERVICE_NAME) --image $(API_IMAGE_NAME) --platform managed --region $(REGION) --allow-unauthenticated
-	gcloud run deploy $(CELERY_SERVICE_NAME) --image $(CELERY_IMAGE_NAME) --platform managed --region $(REGION)
 
 deploy-ready: login configure-docker set-project
 

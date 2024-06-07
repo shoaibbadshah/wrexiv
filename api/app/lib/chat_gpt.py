@@ -48,7 +48,7 @@ Here is the extracted text:
 
             # For every value in the JSON, if the value is a "null" string, set it to None
             for key, value in json_data.items():
-                if value.lower() == "null":
+                if type(value) is str and value.lower() == "null":
                     json_data[key] = None
             
             # Validate email

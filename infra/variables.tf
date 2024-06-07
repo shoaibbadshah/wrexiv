@@ -13,11 +13,12 @@ variable "scrapin_api_key_personal" {}
 variable "crawlbase_api_key" {}
 variable "prospeo_api_key" {}
 variable "sendgrid_api_key" {}
+variable "redis_url" {}
 variable "app_env" {}
 variable "instance_connection_name" {}
 
 
-# Vercell
+# Vercel
 variable "vercel_api_token" {}
 variable "gtm_id" {}
 variable "contentful_space_id" {}
