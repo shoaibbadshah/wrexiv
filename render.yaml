@@ -1,6 +1,7 @@
 services:
   - type: worker
     name: celery-worker
+    plan: standard
     region: singapore
     runtime: python
     rootDir: "api/"
@@ -16,6 +17,7 @@ services:
       - fromGroup: GlobalTalentDB
   - type: web
     name: api
+    plan: standard
     region: singapore
     runtime: python
     rootDir: "api/"
