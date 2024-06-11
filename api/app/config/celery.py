@@ -1,5 +1,6 @@
 from celery import Celery, Task
 from flask import Flask
+import logging
 import os
 
 def setup_celery(app: Flask) -> Celery:
@@ -15,6 +16,7 @@ def setup_celery(app: Flask) -> Celery:
     class FlaskTask(Task):
         def __call__(self, *args: object, **kwargs: object) -> object:
             with app.app_context():
+                logging.info(f"Executing task: {self.name}")
                 return self.run(*args, **kwargs)
 
     celery_app = Celery(app.name, task_cls=FlaskTask)
