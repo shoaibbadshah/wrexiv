@@ -7,7 +7,7 @@ services:
     rootDir: "api/"
     buildCommand: "pip install -r app/requirements.txt"
     startCommand: "./entrypoint-celery.sh"
-    autoDeploy: false
+    autoDeploy: true
     envVars:
       - key: REDIS_URL
         fromService:
@@ -23,7 +23,7 @@ services:
     rootDir: "api/"
     buildCommand: "pip install -r app/requirements.txt"
     startCommand: "./entrypoint-api.sh"
-    autoDeploy: false
+    autoDeploy: true
     envVars:
       - key: REDIS_URL
         fromService:
