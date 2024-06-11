@@ -9,7 +9,12 @@ from flask import g, request, abort
 import os
 from app import db
 
-cred_path = os.path.join(os.path.dirname(__file__), "credentials.json")
+
+cred_path = os.getenv(
+    "CREDENTIALS_PATH",
+    os.path.join(os.path.dirname(__file__), "credentials.json")
+)
+
 cred = credentials.Certificate(cred_path)
 firebase_admin.initialize_app(cred)
 

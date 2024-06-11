@@ -13,6 +13,7 @@ services:
           name: celery-redis
           type: redis
           property: connectionString
+      - fromGroup: GlobalTalentDB
   - type: web
     name: api
     region: singapore
@@ -27,6 +28,7 @@ services:
           name: celery-redis
           type: redis
           property: connectionString
+      - fromGroup: GlobalTalentDB
   - type: redis
     name: celery-redis
     region: singapore
