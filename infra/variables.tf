@@ -28,3 +28,4 @@ variable "contentful_environment" {}
 variable "mui_pro_license_key" {}
 variable "stripe_publishable_key" {}
 variable "stripe_secret_key" {}
+variable "api_url" {}

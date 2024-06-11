@@ -7,10 +7,10 @@ def setup_cors(app):
         resources={
             r"/graphql/*": {
                 "origins": [
-                    "http://localhost:3000",
                     "*",
-                    "https://globaltalentdb.com",
-                    "https://www.globaltalentdb.com",
+                    # "http://localhost:3000",
+                    # "https://globaltalentdb.com",
+                    # "https://www.globaltalentdb.com",
                 ]
             },
             r"/chain/*": {

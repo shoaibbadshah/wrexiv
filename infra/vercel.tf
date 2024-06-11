@@ -15,12 +15,12 @@ resource "vercel_project" "globaltalentdb" {
   environment = [
     {
       key    = "NEXT_PUBLIC_GRAPHQL_API_URL"
-      value  = google_cloud_run_v2_service.api.uri
+      value  = var.api_url
       target = ["production", "preview"]
     },
     {
       key    = "NEXT_PUBLIC_API_URL"
-      value  = google_cloud_run_v2_service.api.uri
+      value  = var.api_url
       target = ["production", "preview"]
     },
     {
@@ -65,5 +65,5 @@ resource "vercel_project" "globaltalentdb" {
     }
   ]
 
-  depends_on = [google_cloud_run_v2_service.api]
+  # depends_on = [google_cloud_run_v2_service.api]
 }
