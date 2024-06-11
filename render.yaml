@@ -14,7 +14,7 @@ services:
           type: redis
           property: connectionString
   - type: web
-    name: app
+    name: api
     region: singapore
     runtime: python
     rootDir: "api/"
