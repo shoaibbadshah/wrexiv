@@ -18,7 +18,7 @@ services:
     region: singapore
     runtime: python
     rootDir: "api/"
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "pip install -r app/requirements.txt"
     startCommand: "./entrypoint-api.sh"
     autoDeploy: false
     envVars:
