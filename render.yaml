@@ -3,7 +3,7 @@ services:
     name: celery-worker
     region: singapore
     runtime: python
-    rootDir: "/api"
+    rootDir: "api/"
     buildCommand: "pip install -r app/requirements.txt"
     startCommand: "./entrypoint-celery.sh"
     autoDeploy: false
@@ -17,7 +17,7 @@ services:
     name: app
     region: singapore
     runtime: python
-    rootDir: "/api"
+    rootDir: "api/"
     buildCommand: "pip install -r requirements.txt"
     startCommand: "./entrypoint-api.sh"
     autoDeploy: false
