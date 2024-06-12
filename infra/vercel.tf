@@ -64,6 +64,4 @@ resource "vercel_project" "globaltalentdb" {
       target = ["production", "preview"]
     }
   ]
-
-  # depends_on = [google_cloud_run_v2_service.api]
 }
