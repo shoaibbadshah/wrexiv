@@ -1,6 +1,6 @@
 "use client";
 import axios from "axios";
-import { getAccessToken, getCurrentUser } from "../firebase";
+import { getAccessToken, getCurrentUser } from "../lib/firebase";
 import { parseCookies } from "nookies";
 
 const useAxiosAuth = () => {
