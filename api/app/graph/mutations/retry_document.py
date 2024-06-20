@@ -1,5 +1,6 @@
 from app.models.document_processing_task import DocumentProcessingTask
 from app.lib.document_utils import process_document
+from sqlalchemy.exc import SQLAlchemyError
 from graphql import GraphQLError
 from flask import abort, g
 from app import db
@@ -33,10 +34,11 @@ class RetryDocument(graphene.Mutation):
         
         try:
             task = process_document.delay(g.current_agency.id, document_processing_task.document_name, document_processing_task.document_url, document_processing_task.id)
-            DocumentProcessingTask().query.filter_by(id=input.id).update({"celery_task_id": task.id})
+            document_processing_task.celery_task_id = task.id
             db.session.commit()
-        except ValueError as e:
+        except (SQLAlchemyError, ValueError) as e:
             logging.error(f"Error processing document {document_processing_task.document_name}: {e}")
+            db.session.rollback()
             abort(400, f"Error processing document {document_processing_task.document_name}")
 
 

@@ -9,6 +9,8 @@ class TalentUserInvitation(db.Model):
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     email = Column(db.String(100), nullable=False)
     agency_id = Column(UUIDType(binary=False), ForeignKey("agencies.id"), nullable=False)
+    
+    sent_at = Column(db.DateTime(timezone=True), nullable=True)
     accepted_at = Column(db.DateTime(timezone=True), nullable=True)
 
     created_at = Column(db.DateTime(timezone=True), default=func.now(), nullable=False)
@@ -18,6 +20,8 @@ class TalentUserInvitation(db.Model):
         onupdate=func.now(),
         nullable=False,
     )
+
+    talent_profile_id = Column(UUIDType(binary=False), ForeignKey("talent_profiles.id"), nullable=True)
 
     def __repr__(self):
         return f"<TalentUserInvitation {self.name}>"

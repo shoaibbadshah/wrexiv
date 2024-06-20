@@ -1,6 +1,7 @@
 from app.models.document_processing_task import DocumentProcessingTask
 from app.utilities.validation_utilities import validate_url
 from app.lib.document_utils import process_document
+from sqlalchemy.exc import SQLAlchemyError
 from graphql import GraphQLError
 from flask import abort, g
 from app import db
@@ -40,8 +41,9 @@ class CreateDocuments(graphene.Mutation):
                 document_processing_task = DocumentProcessingTask(id=document_id, celery_task_id=task.id, document_name=doc.name, document_url=doc.url, agency_id=g.current_agency.id)
                 db.session.add(document_processing_task)
                 db.session.commit()
-            except ValueError as e:
+            except (SQLAlchemyError, ValueError) as e:
                 logging.error(f"Error processing document {doc.name}: {e}")
+                db.session.rollback()
                 abort(400, f"Error processing document {doc.name}")
 
         return CreateDocuments(success=True)
