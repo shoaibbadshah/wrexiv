@@ -1,26 +1,3 @@
-terraform {
-  required_providers {
-    vercel = {
-      source = "vercel/vercel"
-    }
-  }
-}
-
-provider "vercel" {
-  api_token = var.vercel_api_token
-}
-
-variable "vercel_api_token" {}
-variable "api_url" {}
-variable "gtm_id" {}
-variable "contentful_space_id" {}
-variable "contentful_access_token" {}
-variable "contentful_management_access_token" {}
-variable "contentful_environment" {}
-variable "mui_pro_license_key" {}
-variable "stripe_publishable_key" {}
-variable "stripe_secret_key" {}
-
 resource "vercel_project" "globaltalentdb" {
   name            = "globaltalentdb"
   framework       = "nextjs"

@@ -11,7 +11,11 @@ from app import db
 def process_document(agency_id: str, document_name: str, document_url: str, document_id: str):
     document_type = check_document_type(document_name)
     document_json = extract_document_content(document_type, document_url)
-    process_document_result(agency_id, document_name, document_url, document_json, document_id)
+
+    if document_json == {}:
+        raise ValueError(f"Extracted document content is empty for {document_name}")
+    else:
+        process_document_result(agency_id, document_name, document_url, document_json, document_id)
 
 def extract_word_content(docx_url: str) -> dict:
     loader = Docx2txtLoader(docx_url)
@@ -44,7 +48,7 @@ def check_document_type(document_name: str) -> DocumentType | None:
         return DocumentType.IMAGE
     return None
 
-def extract_document_content(document_type: DocumentType, document_url: str) -> str:
+def extract_document_content(document_type: DocumentType, document_url: str) -> dict:
     match document_type:
         case DocumentType.PDF:
             return extract_pdf_content(document_url)

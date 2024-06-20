@@ -1,17 +1,22 @@
 from celery import Celery, Task
 from flask import Flask
+import logging
+import os
 
 def setup_celery(app: Flask) -> Celery:
+    redis_url = os.getenv("REDIS_URL", "redis://redis")
     app.config.from_mapping(
         CELERY=dict(
-            broker_url="redis://redis",
-            result_backend="redis://redis",
+            broker_url=redis_url,
+            result_backend=redis_url,
             task_ignore_result=True,
         ),
     )
+    
     class FlaskTask(Task):
         def __call__(self, *args: object, **kwargs: object) -> object:
             with app.app_context():
+                logging.info(f"Executing task: {self.name}")
                 return self.run(*args, **kwargs)
 
     celery_app = Celery(app.name, task_cls=FlaskTask)

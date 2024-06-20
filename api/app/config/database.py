@@ -11,10 +11,15 @@ def init_app(app, db):
         db_pass = os.getenv("DB_PASSWORD")
         db_name = os.getenv("DB_NAME")
         connection_name = os.getenv("INSTANCE_CONNECTION_NAME")
-        socket_path = f"/cloudsql/{connection_name}"
-        database_url = (
-            f"postgresql+psycopg2://{db_user}:{db_pass}@/{db_name}?host={socket_path}"
-        )
+        if connection_name:
+            socket_path = f"/cloudsql/{connection_name}"
+            database_url = (
+                f"postgresql+psycopg2://{db_user}:{db_pass}@/{db_name}?host={socket_path}"
+            )
+        else:
+            db_host = os.getenv("DB_HOST", "localhost")
+            db_port = os.getenv("DB_PORT", "5432")
+            database_url = f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
     elif flask_env == "testing":
         database_url = "postgresql://app_user:password@db/app_db"
         logging.info("Connecting to test DB")

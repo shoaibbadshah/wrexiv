@@ -1,0 +1,39 @@
+services:
+  - type: worker
+    name: celery-worker
+    plan: standard
+    region: singapore
+    runtime: python
+    rootDir: "api/"
+    buildCommand: "pip install -r app/requirements.txt"
+    startCommand: "./entrypoint-celery.sh"
+    autoDeploy: true
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          name: celery-redis
+          type: redis
+          property: connectionString
+      - fromGroup: GlobalTalentDB
+  - type: web
+    name: api
+    plan: standard
+    region: singapore
+    runtime: python
+    rootDir: "api/"
+    buildCommand: "pip install -r app/requirements.txt"
+    startCommand: "./entrypoint-api.sh"
+    autoDeploy: true
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          name: celery-redis
+          type: redis
+          property: connectionString
+      - fromGroup: GlobalTalentDB
+  - type: redis
+    name: celery-redis
+    region: singapore
+    plan: starter # we choose a plan with persistence to ensure tasks are not lost upon restart
+    maxmemoryPolicy: noeviction # recommended policy for queues
+    ipAllowList: [] # only allow internal connections
