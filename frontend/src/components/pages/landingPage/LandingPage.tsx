@@ -8,7 +8,6 @@ import {
   ServerIcon,
 } from "@heroicons/react/20/solid";
 import FAQSection from "./FAQSection";
-import Image from "next/image";
 
 const features = [
   {
@@ -92,11 +91,10 @@ export default function LandingPage() {
       <main>
         {/* Hero section */}
         <div className="relative isolate overflow-hidden bg-gray-900 pb-16 pt-14 sm:pb-20">
-          <Image
+          <img
             src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2830&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"
             alt=""
             className="absolute inset-0 -z-10 h-full w-full object-cover"
-            fill
           />
           <div
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -149,35 +147,35 @@ export default function LandingPage() {
 
             {/* Logo cloud */}
             <div className="mx-auto grid max-w-lg grid-cols-4 items-center gap-x-8 gap-y-10 sm:max-w-xl sm:grid-cols-6 sm:gap-x-10 lg:mx-0 lg:max-w-none lg:grid-cols-5">
-              <Image
+              <img
                 className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
                 src="https://tailwindui.com/img/logos/158x48/transistor-logo-white.svg"
                 alt="Transistor"
                 width={158}
                 height={48}
               />
-              <Image
+              <img
                 className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
                 src="https://tailwindui.com/img/logos/158x48/reform-logo-white.svg"
                 alt="Reform"
                 width={158}
                 height={48}
               />
-              <Image
+              <img
                 className="col-span-2 max-h-12 w-full object-contain lg:col-span-1"
                 src="https://tailwindui.com/img/logos/158x48/tuple-logo-white.svg"
                 alt="Tuple"
                 width={158}
                 height={48}
               />
-              <Image
+              <img
                 className="col-span-2 max-h-12 w-full object-contain sm:col-start-2 lg:col-span-1"
                 src="https://tailwindui.com/img/logos/158x48/savvycal-logo-white.svg"
                 alt="SavvyCal"
                 width={158}
                 height={48}
               />
-              <Image
+              <img
                 className="col-span-2 col-start-2 max-h-12 w-full object-contain sm:col-start-auto lg:col-span-1"
                 src="https://tailwindui.com/img/logos/158x48/statamic-logo-white.svg"
                 alt="Statamic"
@@ -219,7 +217,7 @@ export default function LandingPage() {
           </div>
           <div className="relative overflow-hidden pt-16">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <Image
+              <img
                 src="https://tailwindui.com/img/component-images/project-app-screenshot.png"
                 alt="App screenshot"
                 className="mb-[-12%] rounded-xl shadow-2xl ring-1 ring-gray-900/10"
@@ -265,11 +263,10 @@ export default function LandingPage() {
           <div className="mx-auto flex max-w-7xl flex-col items-center gap-x-8 gap-y-10 px-6 sm:gap-y-8 lg:px-8 xl:flex-row xl:items-stretch">
             <div className="-mt-8 w-full max-w-2xl xl:-mb-8 xl:w-96 xl:flex-none">
               <div className="relative aspect-[2/1] h-full md:-mx-8 xl:mx-0 xl:aspect-auto">
-                <Image
+                <img
                   className="absolute inset-0 h-full w-full rounded-2xl bg-gray-800 object-cover shadow-2xl"
                   src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2102&q=80"
                   alt=""
-                  fill
                 />
               </div>
             </div>

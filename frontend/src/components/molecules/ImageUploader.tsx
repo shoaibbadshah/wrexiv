@@ -3,7 +3,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/lib/firebase";
-import Image from "next/image";
 
 type PropsType = {
   handleUploaded: (url: string) => void;
@@ -44,19 +43,17 @@ const ImageUploader = ({ handleUploaded }: PropsType) => {
     if (imgUrl) {
       handleUploaded(imgUrl);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgUrl]);
 
   return (
     <div>
       <input type="file" onChange={handleSubmit} />
       {imgUrl && (
-        <div style={{ height: 200, maxHeight: 200 }} className="relative">
-          <Image
+        <div style={{ height: 200, maxHeight: 200 }}>
+          <img
             src={imgUrl}
             alt="uploaded file"
             style={{ height: "100%", width: "100%", objectFit: "contain" }}
-            fill
           />
         </div>
       )}

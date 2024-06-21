@@ -6,7 +6,6 @@ import {
   ServerIcon,
   SignalIcon,
 } from "@heroicons/react/24/outline";
-import Image from "next/image";
 
 const navigation = [
   { name: "Projects", href: "#", icon: FolderIcon, current: true },
@@ -87,14 +86,11 @@ const ProjectSideBar = () => {
                 href="#"
                 className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800"
               >
-                <div className="relative">
-                  <Image
-                    className="h-8 w-8 rounded-full bg-gray-800"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt=""
-                    fill
-                  />
-                </div>
+                <img
+                  className="h-8 w-8 rounded-full bg-gray-800"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                  alt=""
+                />
                 <span className="sr-only">Your profile</span>
                 <span aria-hidden="true">Planetaria</span>
               </a>

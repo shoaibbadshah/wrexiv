@@ -48,14 +48,14 @@ const Agency = () => {
     resetForm({
       name: data?.myAgencyUser?.agency?.name ?? "",
     });
-  }, [data, resetForm]);
+  }, [data]);
 
   const onSubmit = (params: IAgencySettingsForm) => {
     resetMutation();
-
+    
     const dirtyValues = getDirtyValues(dirtyFields, params);
     updateMyAgency({
-      variables: {
+    variables: {
         input: dirtyValues,
       },
       onCompleted: () => {

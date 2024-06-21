@@ -6,7 +6,7 @@ type Values = any | { [key: string]: any };
 export function getDirtyValues(
   dirtyFields: DirtyFields,
   allValues: Values
-): Values {
+): object {
   if (dirtyFields === false) return {};
   // If *any* item in an array was modified, the entire array must be submitted, because there's no way to indicate
   // "placeholders" for unchanged elements. `dirtyFields` is `true` for leaves.

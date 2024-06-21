@@ -12,7 +12,6 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ZodType, z } from "zod";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/navigation";
 
 interface IAgencyUserSettingsForm {
   agencyUser: {
@@ -40,7 +39,6 @@ const AgencyUser = () => {
   ] = useUpdateMyAgencyMutation();
 
   const { data, loading, refetch } = useMyAgencyUserQuery();
-  const router = useRouter();
 
   const { t } = useTranslation();
   const {
@@ -60,7 +58,7 @@ const AgencyUser = () => {
         language: data?.myAgencyUser?.language ?? Language.En,
       },
     });
-  }, [data, resetForm]);
+  }, [data]);
 
   const onSubmit = (params: IAgencyUserSettingsForm) => {
     resetMutation();
@@ -73,10 +71,8 @@ const AgencyUser = () => {
       onCompleted: async () => {
         await refetch();
 
-        // Refresh the page if the language has changed
-        if (data?.myAgencyUser?.language !== params.agencyUser.language) {
-          router.refresh();
-        }
+        // use window.location.href to reload agency user language
+        window.location.href = `/app/agency_user`;
       },
       onError: () => {
         // do nothing
